@@ -71,27 +71,25 @@ renderSidebar();
 
 import { supabase } from './supabase.js'
 
-const form = document.querySelector('#formRegistro')
+window.registrarPersona = async function () {
 
-form.addEventListener('submit', async (e) => {
-  e.preventDefault()
-
-  const nombre = document.querySelector('#nombre').value
-  const edad = document.querySelector('#edad').value
-  const plan_id = document.querySelector('#plan').value
+  const nombre = document.getElementById('r_nombre').value
+  const plan_id = document.getElementById('r_plan').value
 
   const { error } = await supabase
     .from('personas')
     .insert([
-      { nombre, edad, plan_id }
+      {
+        nombre: nombre,
+        edad: 18,
+        plan_id: plan_id
+      }
     ])
 
-    
   if (error) {
     console.error(error)
-    alert('Error al guardar')
+    alert('❌ Error al registrar')
   } else {
-    alert('Guardado correctamente 🔥')
-    form.reset()
+    alert('✅ Registrado correctamente bro 🔥')
   }
-})
+}
