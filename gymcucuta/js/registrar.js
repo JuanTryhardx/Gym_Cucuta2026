@@ -65,4 +65,33 @@ function limpiarForm() {
   document.getElementById('r_inicio').value = new Date().toISOString().split('T')[0];
 }
 
+
 renderSidebar();
+
+
+import { supabase } from './supabase.js'
+
+const form = document.querySelector('#formRegistro')
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault()
+
+  const nombre = document.querySelector('#nombre').value
+  const edad = document.querySelector('#edad').value
+  const plan_id = document.querySelector('#plan').value
+
+  const { error } = await supabase
+    .from('personas')
+    .insert([
+      { nombre, edad, plan_id }
+    ])
+
+    
+  if (error) {
+    console.error(error)
+    alert('Error al guardar')
+  } else {
+    alert('Guardado correctamente 🔥')
+    form.reset()
+  }
+})
