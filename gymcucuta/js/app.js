@@ -124,3 +124,9 @@ async function pruebaConexion() {
 }
 
 pruebaConexion()
+
+import './login.js'
+import './registrar.js'
+import './eventos.js'
+import './personas.js'
+

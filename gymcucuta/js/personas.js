@@ -105,3 +105,68 @@ function guardarEdicion() {
 }
 
 render();
+
+import { supabase } from './supabase.js'
+
+async function cargarPersonas() {
+  const { data, error } = await supabase
+    .from('personas')
+    .select('*')
+
+  if (error) {
+    console.error(error)
+    return
+  }
+
+  const tbody = document.getElementById('tablaPersonas')
+  const emptyMsg = document.getElementById('emptyMsg')
+  const countLabel = document.getElementById('countLabel')
+
+  if (!data || data.length === 0) {
+    emptyMsg.style.display = 'block'
+    tbody.innerHTML = ''
+    countLabel.textContent = '0 miembros'
+    return
+  }
+
+  emptyMsg.style.display = 'none'
+  countLabel.textContent = `${data.length} miembros`
+
+  tbody.innerHTML = data.map(p => `
+    <tr>
+      <td>${p.nombre}</td>
+      <td>-</td>
+      <td>-</td>
+      <td>${p.plan_id}</td>
+      <td>-</td>
+      <td>-</td>
+      <td>Activo</td>
+      <td>
+        <button onclick="eliminar(${p.id})">🗑️</button>
+      </td>
+    </tr>
+  `).join('')
+}
+
+// eliminar persona
+window.eliminar = async function(id) {
+  const confirmacion = confirm('¿Eliminar esta persona?')
+
+  if (!confirmacion) return
+
+  const { error } = await supabase
+    .from('personas')
+    .delete()
+    .eq('id', id)
+
+  if (error) {
+    console.error(error)
+    alert('Error al eliminar')
+  } else {
+    alert('Eliminado correctamente')
+    cargarPersonas()
+  }
+}
+
+// ejecutar al cargar
+cargarPersonas()
