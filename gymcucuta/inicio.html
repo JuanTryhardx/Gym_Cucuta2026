@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inicio - App Gym Cúcuta</title>
+  <link rel="stylesheet" href="css/main.css"/>
+  <link rel="stylesheet" href="css/inicio.css"/>
+</head>
+<body>
+  <div id="navbar-container"></div>
+
+  <div class="page-content">
+    <!-- HERO -->
+    <div class="hero-banner">
+      <div class="hero-text">
+        <h1>¡Bienvenido al Panel<br><span>App Gym Cúcuta</span>!</h1>
+        <p>Gestiona tu gimnasio de manera fácil, rápida y profesional.</p>
+      </div>
+      <div class="hero-img">💪</div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid" id="statsGrid"></div>
+
+    <!-- NOTICIAS + ACCIONES -->
+    <div class="home-grid">
+      <div class="card noticias-card">
+        <div class="card-title">📢 Noticias y Actualizaciones
+          <button class="btn-secondary" style="margin-left:auto;font-size:0.78rem" onclick="openNoticiaModal()">+ Publicar</button>
+        </div>
+        <div id="noticiasLista"></div>
+      </div>
+
+      <div class="side-col">
+        <div class="card">
+          <div class="card-title">⚡ Acciones Rápidas</div>
+          <div class="quick-actions">
+            <a href="registrar.html" class="qa-btn">➕ Registrar Persona</a>
+            <a href="personas.html" class="qa-btn">👥 Ver Miembros</a>
+            <a href="informes.html" class="qa-btn">📊 Ver Informes</a>
+            <a href="eventos.html" class="qa-btn">📅 Eventos</a>
+          </div>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <div class="card-title">📅 Próximos Eventos</div>
+          <div id="proximosEventos"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL NOTICIA -->
+  <div id="noticiaModal" class="modal-overlay" style="display:none">
+    <div class="modal-box">
+      <h3>📢 Nueva Noticia</h3>
+      <div class="form-group"><label>Título</label><input id="nTitulo" placeholder="Título de la noticia"/></div>
+      <div class="form-group" style="margin-top:12px"><label>Contenido</label><textarea id="nContenido" rows="3" placeholder="Descripción..."></textarea></div>
+      <div class="form-row" style="margin-top:12px">
+        <div class="form-group">
+          <label>Tipo</label>
+          <select id="nTipo">
+            <option value="info">ℹ️ Información</option>
+            <option value="update">🔄 Actualización</option>
+            <option value="aviso">⚠️ Aviso</option>
+            <option value="logro">🏆 Logro</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:18px;justify-content:flex-end">
+        <button class="btn-secondary" onclick="closeNoticiaModal()">Cancelar</button>
+        <button class="btn-primary" onclick="publicarNoticia()">Publicar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script src="js/inicio.js"></script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+.hero-banner {
+  background: linear-gradient(135deg, #0d1f35 0%, #0a0f1a 60%, #0d2a3a 100%);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 36px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-banner::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 80% 50%, rgba(56,189,248,0.08) 0%, transparent 70%);
+}
+.hero-text h1 {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+.hero-text h1 span { color: var(--blue-light); }
+.hero-text p { color: var(--text-muted); margin-top: 8px; font-size: 0.95rem; }
+.hero-img { font-size: 5rem; filter: drop-shadow(0 0 20px rgba(56,189,248,0.3)); }
+
+.home-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 20px;
+}
+@media (max-width: 900px) { .home-grid { grid-template-columns: 1fr; } }
+
+.noticias-card { flex: 1; }
+
+.noticia-item {
+  display: flex; gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(56,189,248,0.07);
+}
+.noticia-item:last-child { border-bottom: none; }
+.noticia-badge-icon {
+  width: 42px; height: 42px; flex-shrink: 0;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+}
+.noticia-badge-icon.info { background: rgba(56,189,248,0.12); }
+.noticia-badge-icon.update { background: rgba(34,197,94,0.12); }
+.noticia-badge-icon.aviso { background: rgba(251,191,36,0.12); }
+.noticia-badge-icon.logro { background: rgba(168,85,247,0.12); }
+.noticia-body { flex: 1; }
+.noticia-title { font-weight: 700; color: var(--text); font-size: 0.95rem; margin-bottom: 3px; }
+.noticia-content { color: var(--text-muted); font-size: 0.84rem; line-height: 1.4; }
+.noticia-meta { display: flex; gap: 8px; align-items: center; margin-top: 6px; }
+.noticia-date { color: var(--text-muted); font-size: 0.75rem; }
+.noticia-tipo { font-size: 0.72rem; padding: 2px 8px; border-radius: 10px; }
+.noticia-tipo.info { background: rgba(56,189,248,0.12); color: var(--blue-light); }
+.noticia-tipo.update { background: rgba(34,197,94,0.12); color: #4ade80; }
+.noticia-tipo.aviso { background: rgba(251,191,36,0.12); color: #fbbf24; }
+.noticia-tipo.logro { background: rgba(168,85,247,0.12); color: #c084fc; }
+.noticia-delete { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1rem; padding: 4px; border-radius: 6px; }
+.noticia-delete:hover { color: #f87171; background: rgba(248,113,113,0.1); }
+
+.quick-actions { display: flex; flex-direction: column; gap: 10px; }
+.qa-btn {
+  display: block;
+  padding: 11px 16px;
+  background: rgba(56,189,248,0.07);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.qa-btn:hover { background: rgba(56,189,248,0.14); color: var(--blue-light); transform: translateX(4px); }
+
+.evento-mini {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(56,189,248,0.07);
+}
+.evento-mini:last-child { border-bottom: none; }
+.evento-mini-date {
+  background: rgba(56,189,248,0.12);
+  border-radius: 8px;
+  padding: 4px 8px;
+  text-align: center;
+  min-width: 48px;
+}
+.evento-mini-date .em-day { font-family: 'Rajdhani', sans-serif; font-size: 1.3rem; font-weight: 700; color: var(--blue-light); display: block; }
+.evento-mini-date .em-mon { font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; }
+.evento-mini-info { flex: 1; }
+.evento-mini-info h4 { font-size: 0.88rem; font-weight: 700; color: var(--text); }
+.evento-mini-info p { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+
+/* MODAL */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 5000;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.modal-box {
+  background: #0d1424;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 28px;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  animation: slideUp 0.3s ease;
+}
+.modal-box h3 {
+  font-family: 'Rajdhani', sans-serif;
+  color: var(--blue-light);
+  font-size: 1.2rem;
+  margin-bottom: 18px;
+  letter-spacing: 1px;
+}

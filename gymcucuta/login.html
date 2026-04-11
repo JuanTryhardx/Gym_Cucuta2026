@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>App Gym Cúcuta - Iniciar Sesión</title>
+  <link rel="stylesheet" href="css/login.css" />
+</head>
+<body>
+  <div class="bg-animated">
+    <div class="bg-circle c1"></div>
+    <div class="bg-circle c2"></div>
+    <div class="bg-circle c3"></div>
+  </div>
+
+  <div class="login-container">
+    <div class="login-card">
+      <div class="logo-section">
+        <div class="logo-icon">
+          <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+            <rect x="5" y="30" width="14" height="20" rx="4" fill="#38bdf8"/>
+            <rect x="19" y="34" width="6" height="12" rx="2" fill="#0ea5e9"/>
+            <rect x="25" y="20" width="30" height="40" rx="6" fill="#0284c7"/>
+            <rect x="29" y="28" width="22" height="24" rx="4" fill="#38bdf8" opacity="0.3"/>
+            <rect x="55" y="34" width="6" height="12" rx="2" fill="#0ea5e9"/>
+            <rect x="61" y="30" width="14" height="20" rx="4" fill="#38bdf8"/>
+            <rect x="33" y="35" width="14" height="5" rx="2" fill="#fff" opacity="0.9"/>
+            <rect x="33" y="43" width="10" height="3" rx="1.5" fill="#fff" opacity="0.5"/>
+          </svg>
+        </div>
+        <h1 class="app-title">APP GYM CÚCUTA</h1>
+        <p class="app-subtitle">Panel de Administración</p>
+      </div>
+
+      <form class="login-form" id="loginForm">
+        <div class="form-group">
+          <label for="usuario">Usuario</label>
+          <div class="input-wrapper">
+            <span class="input-icon">👤</span>
+            <input type="text" id="usuario" placeholder="Ingresa tu usuario" autocomplete="off"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="password" placeholder="Ingresa tu contraseña"/>
+            <button type="button" class="toggle-pass" onclick="togglePass()">👁</button>
+          </div>
+        </div>
+        <div id="errorMsg" class="error-msg" style="display:none">❌ Usuario o contraseña incorrectos</div>
+        <button type="submit" class="btn-login">INGRESAR AL SISTEMA</button>
+      </form>
+
+      <p class="login-hint">Usuario: <b>admin</b> &nbsp;|&nbsp; Contraseña: <b>1234</b></p>
+    </div>
+  </div>
+
+  <script src="js/login.js"></script>
+</body>
+</html>

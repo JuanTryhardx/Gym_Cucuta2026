@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registrar Persona - App Gym Cúcuta</title>
+  <link rel="stylesheet" href="css/main.css"/>
+  <link rel="stylesheet" href="css/registrar.css"/>
+</head>
+<body>
+  <div id="navbar-container"></div>
+  <div class="page-content">
+    <div class="section-header">
+      <h2><span>➕</span> Registrar <span>Persona</span></h2>
+    </div>
+
+    <div class="reg-layout">
+      <div class="card form-card">
+        <div class="card-title">📋 Datos del Nuevo Miembro</div>
+
+        <div class="form-section-title">Información Personal</div>
+        <div class="form-row">
+          <div class="form-group"><label>Nombre Completo *</label><input id="r_nombre" placeholder="Ej: Juan García"/></div>
+          <div class="form-group"><label>Documento de Identidad *</label><input id="r_documento" placeholder="Cédula o ID"/></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Fecha de Nacimiento</label><input id="r_nacimiento" type="date"/></div>
+          <div class="form-group"><label>Género</label>
+            <select id="r_genero"><option>Masculino</option><option>Femenino</option><option>Otro</option></select>
+          </div>
+          <div class="form-group"><label>Teléfono</label><input id="r_telefono" placeholder="+57 300 000 0000"/></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Correo Electrónico</label><input id="r_email" type="email" placeholder="correo@email.com"/></div>
+          <div class="form-group"><label>Dirección</label><input id="r_direccion" placeholder="Barrio, ciudad"/></div>
+        </div>
+
+        <div class="form-section-title">Información del Plan</div>
+        <div class="form-row">
+          <div class="form-group"><label>Plan / Membresía *</label>
+            <select id="r_plan">
+              <option>Mensual</option><option>Trimestral</option><option>Semestral</option><option>Anual</option><option>Clase suelta</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Mensualidad (COP) *</label><input id="r_mensualidad" type="number" placeholder="0"/></div>
+          <div class="form-group"><label>Fecha de Inicio</label><input id="r_inicio" type="date"/></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Entrenador Asignado</label><input id="r_entrenador" placeholder="Nombre del entrenador"/></div>
+          <div class="form-group"><label>Objetivo</label>
+            <select id="r_objetivo">
+              <option>Pérdida de peso</option><option>Ganancia muscular</option><option>Mantenimiento</option><option>Resistencia</option><option>Rehabilitación</option><option>General</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Estado</label>
+            <select id="r_estado"><option>Activo</option><option>Inactivo</option><option>Pendiente</option></select>
+          </div>
+        </div>
+
+        <div class="form-section-title">Información de Salud</div>
+        <div class="form-row">
+          <div class="form-group"><label>Peso (kg)</label><input id="r_peso" type="number" placeholder="70"/></div>
+          <div class="form-group"><label>Altura (cm)</label><input id="r_altura" type="number" placeholder="170"/></div>
+          <div class="form-group"><label>Contacto de Emergencia</label><input id="r_emergencia" placeholder="Nombre y teléfono"/></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="min-width:100%"><label>Condiciones Médicas / Observaciones</label>
+            <textarea id="r_obs" rows="2" placeholder="Alergias, lesiones, medicamentos..."></textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-secondary" onclick="limpiarForm()">🗑️ Limpiar</button>
+          <button class="btn-primary" onclick="registrarPersona()">✅ Registrar Miembro</button>
+        </div>
+      </div>
+
+      <!-- PANEL DERECHO -->
+      <div class="side-panel">
+        <div class="card">
+          <div class="card-title">📊 Estadísticas</div>
+          <div id="regStats"></div>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <div class="card-title">✅ Últimos Registrados</div>
+          <div id="ultimosReg"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script src="js/registrar.js"></script>
+</body>
+</html>

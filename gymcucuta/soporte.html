@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Soporte - App Gym Cúcuta</title>
+  <link rel="stylesheet" href="css/main.css"/>
+  <link rel="stylesheet" href="css/soporte.css"/>
+</head>
+<body>
+  <div id="navbar-container"></div>
+  <div class="page-content">
+    <div class="section-header">
+      <h2>🛟 Centro de <span>Soporte</span></h2>
+    </div>
+
+    <div class="soporte-layout">
+      <!-- FORMULARIO TICKET -->
+      <div class="card">
+        <div class="card-title">📨 Enviar Ticket de Soporte</div>
+        <div class="form-group"><label>Asunto</label><input id="s_asunto" placeholder="Describe el problema brevemente"/></div>
+        <div class="form-row" style="margin-top:14px">
+          <div class="form-group">
+            <label>Categoría</label>
+            <select id="s_categoria">
+              <option>Error del sistema</option>
+              <option>Problema con miembro</option>
+              <option>Facturación</option>
+              <option>Consulta general</option>
+              <option>Sugerencia</option>
+              <option>Otro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Prioridad</label>
+            <select id="s_prioridad">
+              <option value="alta">🔴 Alta</option>
+              <option value="media" selected>🟡 Media</option>
+              <option value="baja">🟢 Baja</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" style="margin-top:14px">
+          <label>Descripción Detallada</label>
+          <textarea id="s_descripcion" rows="4" placeholder="Explica el problema con el mayor detalle posible..."></textarea>
+        </div>
+        <div style="display:flex;justify-content:flex-end;margin-top:18px">
+          <button class="btn-primary" onclick="enviarTicket()">📤 Enviar Ticket</button>
+        </div>
+
+        <!-- TICKETS ENVIADOS -->
+        <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--border)">
+          <div class="card-title">📋 Mis Tickets</div>
+          <div id="listaTickets"></div>
+        </div>
+      </div>
+
+      <!-- PANEL DERECHO -->
+      <div class="soporte-side">
+        <!-- FAQ -->
+        <div class="card">
+          <div class="card-title">❓ Preguntas Frecuentes</div>
+          <div class="faq-list">
+            <div class="faq-item" onclick="toggleFaq(this)">
+              <div class="faq-q">¿Cómo registrar un nuevo miembro? <span class="faq-arrow">▼</span></div>
+              <div class="faq-a">Ve a la sección "Registrar Persona" desde el menú superior y completa todos los datos del formulario. Los campos obligatorios son nombre y documento.</div>
+            </div>
+            <div class="faq-item" onclick="toggleFaq(this)">
+              <div class="faq-q">¿Cómo editar un miembro? <span class="faq-arrow">▼</span></div>
+              <div class="faq-a">En "Personas Registradas" encuentra al miembro y haz clic en el botón ✏️ Editar. Podrás modificar todos sus datos.</div>
+            </div>
+            <div class="faq-item" onclick="toggleFaq(this)">
+              <div class="faq-q">¿Cómo ver los informes del gimnasio? <span class="faq-arrow">▼</span></div>
+              <div class="faq-a">Accede a "Informes" en el menú. Allí verás estadísticas, gráficas y tablas con el rendimiento del gimnasio. Puedes filtrar por mes o año.</div>
+            </div>
+            <div class="faq-item" onclick="toggleFaq(this)">
+              <div class="faq-q">¿Cómo crear un evento en el calendario? <span class="faq-arrow">▼</span></div>
+              <div class="faq-a">En la sección "Eventos", haz clic en el botón "➕ Nuevo Evento", completa el formulario con título, fecha, hora y tipo de evento.</div>
+            </div>
+            <div class="faq-item" onclick="toggleFaq(this)">
+              <div class="faq-q">¿Cómo publicar una noticia? <span class="faq-arrow">▼</span></div>
+              <div class="faq-a">En la página de Inicio, haz clic en el botón "+ Publicar" dentro del panel de noticias. Ingresa título, contenido y tipo de noticia.</div>
+            </div>
+            <div class="faq-item" onclick="toggleFaq(this)">
+              <div class="faq-q">¿Los datos se guardan automáticamente? <span class="faq-arrow">▼</span></div>
+              <div class="faq-a">Sí, todos los datos se guardan automáticamente en el navegador (localStorage). Sin embargo, borrar los datos del navegador eliminará la información.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTACTO -->
+        <div class="card" style="margin-top:16px">
+          <div class="card-title">📞 Contacto Directo</div>
+          <div class="contacto-item">
+            <div class="contacto-icon">📧</div>
+            <div><div class="contacto-label">Email Soporte</div><div class="contacto-val">soporte@gymcucuta.com</div></div>
+          </div>
+          <div class="contacto-item">
+            <div class="contacto-icon">📱</div>
+            <div><div class="contacto-label">WhatsApp</div><div class="contacto-val">+57 310 000 0000</div></div>
+          </div>
+          <div class="contacto-item">
+            <div class="contacto-icon">🕐</div>
+            <div><div class="contacto-label">Horario de atención</div><div class="contacto-val">Lun-Sáb · 6:00 AM – 8:00 PM</div></div>
+          </div>
+          <div class="contacto-item">
+            <div class="contacto-icon">📍</div>
+            <div><div class="contacto-label">Dirección</div><div class="contacto-val">Cúcuta, Norte de Santander</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script src="js/soporte.js"></script>
+</body>
+</html>

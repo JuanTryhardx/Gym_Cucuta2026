@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Personas - App Gym Cúcuta</title>
+  <link rel="stylesheet" href="css/main.css"/>
+  <link rel="stylesheet" href="css/personas.css"/>
+</head>
+<body>
+  <div id="navbar-container"></div>
+  <div class="page-content">
+    <div class="section-header">
+      <h2>👥 Personas <span>Registradas</span></h2>
+      <a href="registrar.html" class="btn-primary">➕ Nuevo Miembro</a>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="card filtros-bar">
+      <input id="buscar" class="buscar-input" placeholder="🔍 Buscar por nombre, documento..."/>
+      <select id="filtroEstado" class="filtro-select">
+        <option value="">Todos los estados</option>
+        <option>Activo</option><option>Inactivo</option><option>Pendiente</option>
+      </select>
+      <select id="filtroPlan" class="filtro-select">
+        <option value="">Todos los planes</option>
+        <option>Mensual</option><option>Trimestral</option><option>Semestral</option><option>Anual</option><option>Clase suelta</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <div id="countLabel" class="count-label"></div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Miembro</th><th>Documento</th><th>Teléfono</th><th>Plan</th>
+              <th>Mensualidad</th><th>Inicio</th><th>Estado</th><th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tablaPersonas"></tbody>
+        </table>
+      </div>
+      <div id="emptyMsg" class="empty-msg" style="display:none">😔 No se encontraron miembros.</div>
+    </div>
+  </div>
+
+  <!-- MODAL EDITAR -->
+  <div id="editModal" class="modal-overlay" style="display:none">
+    <div class="modal-box" style="max-width:640px">
+      <h3>✏️ Editar Miembro</h3>
+      <input type="hidden" id="e_id"/>
+      <div class="form-row">
+        <div class="form-group"><label>Nombre Completo</label><input id="e_nombre"/></div>
+        <div class="form-group"><label>Documento</label><input id="e_documento"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Teléfono</label><input id="e_telefono"/></div>
+        <div class="form-group"><label>Email</label><input id="e_email" type="email"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Plan</label>
+          <select id="e_plan"><option>Mensual</option><option>Trimestral</option><option>Semestral</option><option>Anual</option><option>Clase suelta</option></select>
+        </div>
+        <div class="form-group"><label>Mensualidad (COP)</label><input id="e_mensualidad" type="number"/></div>
+        <div class="form-group"><label>Estado</label>
+          <select id="e_estado"><option>Activo</option><option>Inactivo</option><option>Pendiente</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Objetivo</label>
+          <select id="e_objetivo"><option>Pérdida de peso</option><option>Ganancia muscular</option><option>Mantenimiento</option><option>Resistencia</option><option>Rehabilitación</option><option>General</option></select>
+        </div>
+        <div class="form-group"><label>Entrenador</label><input id="e_entrenador"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Peso (kg)</label><input id="e_peso" type="number"/></div>
+        <div class="form-group"><label>Altura (cm)</label><input id="e_altura" type="number"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group" style="min-width:100%"><label>Observaciones</label><textarea id="e_obs" rows="2"></textarea></div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px">
+        <button class="btn-secondary" onclick="closeEdit()">Cancelar</button>
+        <button class="btn-primary" onclick="guardarEdicion()">💾 Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script src="js/personas.js"></script>
+</body>
+</html>
