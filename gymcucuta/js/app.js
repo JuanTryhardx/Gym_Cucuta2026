@@ -112,3 +112,15 @@ function formatDate(iso) {
 function formatMoney(n) {
   return '$' + Number(n).toLocaleString('es-CO');
 }
+import { supabase } from './supabase.js'
+
+async function pruebaConexion() {
+  const { data, error } = await supabase
+    .from('personas')
+    .select('*')
+
+  console.log('DATA:', data)
+  console.log('ERROR:', error)
+}
+
+pruebaConexion()
