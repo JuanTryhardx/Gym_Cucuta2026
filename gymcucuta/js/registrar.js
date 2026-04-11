@@ -127,6 +127,7 @@ async function cargarStats() {
         <div class="stat-value" style="font-size:1.2rem">${formatMoney(ingresos)}</div>
       </div>
     </div>`
+    
 }
 
 
