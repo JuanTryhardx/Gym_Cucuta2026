@@ -3,12 +3,12 @@ export function checkAuth() {
   const path = window.location.pathname
 
   // No ejecutar en login
-  if (path.includes('login.html')) return
+  if (path.includes('index.html')) return
 
   const logged = sessionStorage.getItem('gymLoggedIn')
 
   if (!logged) {
-    window.location.href = 'login.html'
+    window.location.href = 'index.html'
   }
 }
 
@@ -42,5 +42,5 @@ export function buildNavbar(activePage) {
 // ===== LOGOUT =====
 window.logout = function () {
   sessionStorage.clear()
-  window.location.href = 'login.html'
+  window.location.href = 'index.html'
 }

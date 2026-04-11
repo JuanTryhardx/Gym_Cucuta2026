@@ -99,20 +99,3 @@ function eliminarNoticia(id) {
 renderStats();
 renderNoticias();
 renderEventos();
-import { supabase } from './supabase.js'
-
-async function cargarStats() {
-  const { data } = await supabase.from('personas').select('*')
-
-  const total = data.length
-  const activos = data.filter(p => p.estado === 'Activo').length
-  const ingresos = data.reduce((acc, p) => acc + (p.mensualidad || 0), 0)
-
-  document.getElementById('stats').innerHTML = `
-    <div class="card">👥 ${total} miembros</div>
-    <div class="card">✅ ${activos} activos</div>
-    <div class="card">💰 $${ingresos}</div>
-  `
-}
-
-cargarStats()
