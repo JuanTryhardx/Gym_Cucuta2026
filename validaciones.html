@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Validaciones</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <div id="navbar-container"></div>
+
+  <main class="container">
+    <h2>✅ Validaciones de entrenadores</h2>
+
+    <div id="lista-solicitudes"></div>
+  </main>
+
+  <script type="module">
+    import { checkAuth, buildNavbar } from './js/app.js'
+
+    checkAuth()
+    document.getElementById('navbar-container').innerHTML = buildNavbar('validaciones.html')
+  </script>
+
+  <script type="module" src="js/personas.js"></script>
+
+</body>
+</html>
