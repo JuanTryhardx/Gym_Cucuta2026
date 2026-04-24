@@ -147,32 +147,49 @@ window.guardarEdicion = async function() {
     cargarPersonas()
   }
 }
-// ===== VALIDACIÓN DE ENTRENADORES =====
+// ===== VALIDACIÓN DE ENTRENADORES (FIX PRO) =====
+
+// 🔐 Obtener usuario actual
+const currentUser = JSON.parse(sessionStorage.getItem('gymUser'))
+
+// 🚫 BLOQUEO: solo admin puede ver esto
+if (!currentUser || currentUser.rol !== 'admin') {
+  console.warn('Acceso denegado a validaciones')
+} else {
+  cargarSolicitudes()
+}
 
 async function cargarSolicitudes() {
+
   const { data, error } = await supabase
     .from('solicitudes_entrenador')
     .select('*')
-    .eq('estado', 'pendiente')
+    .ilike('estado', 'pendiente') // 🔥 FIX IMPORTANTE
     .order('fecha_solicitud', { ascending: false })
 
   if (error) {
     console.error('Error cargando solicitudes:', error)
+    showToast('❌ Error cargando solicitudes', '#f87171')
     return
   }
 
-  renderSolicitudes(data)
+  console.log('Solicitudes encontradas:', data) // 🔍 DEBUG
+
+  renderSolicitudes(data || [])
 }
 
 // ── Render UI ─────────────────────────────────────────
 function renderSolicitudes(lista) {
   const cont = document.getElementById('lista-solicitudes')
 
-  if (!cont) return
+  if (!cont) {
+    console.warn('No existe contenedor lista-solicitudes')
+    return
+  }
 
   cont.innerHTML = ''
 
-  if (lista.length === 0) {
+  if (!lista || lista.length === 0) {
     cont.innerHTML = '<p>No hay solicitudes pendientes</p>'
     return
   }
@@ -202,10 +219,8 @@ function renderSolicitudes(lista) {
 // ── APROBAR ──────────────────────────────────────────
 window.aprobarSolicitud = async function(id) {
 
-  const confirmar = confirm('¿Aprobar este entrenador?')
-  if (!confirmar) return
+  if (!confirm('¿Aprobar este entrenador?')) return
 
-  // 1. Obtener datos
   const { data, error } = await supabase
     .from('solicitudes_entrenador')
     .select('*')
@@ -214,11 +229,12 @@ window.aprobarSolicitud = async function(id) {
 
   if (error) {
     console.error(error)
+    showToast('❌ Error al obtener datos', '#f87171')
     return
   }
 
-  // 2. Insertar en personas (opcional si manejas entrenadores ahí)
-  await supabase.from('personas').insert([{
+  // 🔥 Insertar como entrenador
+  const { error: insertError } = await supabase.from('personas').insert([{
     nombre: data.nombre,
     documento: data.documento,
     email: data.email,
@@ -228,31 +244,32 @@ window.aprobarSolicitud = async function(id) {
     rol: 'entrenador'
   }])
 
-  // 3. Actualizar estado
+  if (insertError) {
+    console.error(insertError)
+    showToast('❌ Error al aprobar', '#f87171')
+    return
+  }
+
+  // 🔥 Actualizar solicitud
   await supabase
     .from('solicitudes_entrenador')
     .update({ estado: 'aprobado' })
     .eq('id', id)
 
+  showToast('✅ Entrenador aprobado')
   cargarSolicitudes()
 }
 
 // ── RECHAZAR ─────────────────────────────────────────
 window.rechazarSolicitud = async function(id) {
 
-  const confirmar = confirm('¿Rechazar esta solicitud?')
-  if (!confirmar) return
+  if (!confirm('¿Rechazar esta solicitud?')) return
 
   await supabase
     .from('solicitudes_entrenador')
     .update({ estado: 'rechazado' })
     .eq('id', id)
 
+  showToast('❌ Solicitud rechazada')
   cargarSolicitudes()
 }
-
-// ── INIT ─────────────────────────────────────────────
-cargarSolicitudes()
-
-// ===== INICIO =====
-cargarPersonas()
