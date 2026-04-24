@@ -147,6 +147,112 @@ window.guardarEdicion = async function() {
     cargarPersonas()
   }
 }
+// ===== VALIDACIÓN DE ENTRENADORES =====
+
+async function cargarSolicitudes() {
+  const { data, error } = await supabase
+    .from('solicitudes_entrenador')
+    .select('*')
+    .eq('estado', 'pendiente')
+    .order('fecha_solicitud', { ascending: false })
+
+  if (error) {
+    console.error('Error cargando solicitudes:', error)
+    return
+  }
+
+  renderSolicitudes(data)
+}
+
+// ── Render UI ─────────────────────────────────────────
+function renderSolicitudes(lista) {
+  const cont = document.getElementById('lista-solicitudes')
+
+  if (!cont) return
+
+  cont.innerHTML = ''
+
+  if (lista.length === 0) {
+    cont.innerHTML = '<p>No hay solicitudes pendientes</p>'
+    return
+  }
+
+  lista.forEach(sol => {
+    const div = document.createElement('div')
+    div.className = 'card-solicitud'
+
+    div.innerHTML = `
+      <h3>${sol.nombre}</h3>
+      <p><b>Documento:</b> ${sol.documento}</p>
+      <p><b>Email:</b> ${sol.email}</p>
+      <p><b>Teléfono:</b> ${sol.telefono || 'N/A'}</p>
+      <p><b>Especialidad:</b> ${sol.especialidad}</p>
+      <p><b>Motivación:</b> ${sol.motivacion || 'N/A'}</p>
+
+      <div class="acciones">
+        <button onclick="aprobarSolicitud(${sol.id})" class="btn-aprobar">Aceptar</button>
+        <button onclick="rechazarSolicitud(${sol.id})" class="btn-rechazar">Rechazar</button>
+      </div>
+    `
+
+    cont.appendChild(div)
+  })
+}
+
+// ── APROBAR ──────────────────────────────────────────
+window.aprobarSolicitud = async function(id) {
+
+  const confirmar = confirm('¿Aprobar este entrenador?')
+  if (!confirmar) return
+
+  // 1. Obtener datos
+  const { data, error } = await supabase
+    .from('solicitudes_entrenador')
+    .select('*')
+    .eq('id', id)
+    .single()
+
+  if (error) {
+    console.error(error)
+    return
+  }
+
+  // 2. Insertar en personas (opcional si manejas entrenadores ahí)
+  await supabase.from('personas').insert([{
+    nombre: data.nombre,
+    documento: data.documento,
+    email: data.email,
+    telefono: data.telefono,
+    genero: data.genero,
+    estado: 'Activo',
+    rol: 'entrenador'
+  }])
+
+  // 3. Actualizar estado
+  await supabase
+    .from('solicitudes_entrenador')
+    .update({ estado: 'aprobado' })
+    .eq('id', id)
+
+  cargarSolicitudes()
+}
+
+// ── RECHAZAR ─────────────────────────────────────────
+window.rechazarSolicitud = async function(id) {
+
+  const confirmar = confirm('¿Rechazar esta solicitud?')
+  if (!confirmar) return
+
+  await supabase
+    .from('solicitudes_entrenador')
+    .update({ estado: 'rechazado' })
+    .eq('id', id)
+
+  cargarSolicitudes()
+}
+
+// ── INIT ─────────────────────────────────────────────
+cargarSolicitudes()
 
 // ===== INICIO =====
 cargarPersonas()

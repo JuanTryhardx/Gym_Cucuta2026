@@ -92,3 +92,35 @@
   letter-spacing: 1px;
 }
 .form-row { margin-bottom: 14px; }
+
+.admin-section {
+  margin-top: 30px;
+}
+
+.card-solicitud {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.acciones {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-aprobar {
+  background: green;
+  color: white;
+  border: none;
+  padding: 10px;
+}
+
+.btn-rechazar {
+  background: red;
+  color: white;
+  border: none;
+  padding: 10px;
+}
