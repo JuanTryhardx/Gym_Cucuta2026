@@ -1,13 +1,10 @@
-// ===== REGISTRO.JS =====
-// Lógica de registro público (clientes y entrenadores)
-// NO modifica ninguna funcionalidad existente.
-
+// ===== REGISTRO.JS (FIX COMPLETO) =====
 import { supabase } from './supabase.js'
 
-// ── Estado del formulario ──────────────────────────────────────────────────
+// ── Estado del formulario ────────────────────────────────────────────────
 let rolActual = 'cliente'
 
-// ── Selector de rol ───────────────────────────────────────────────────────
+// ── Selector de rol ─────────────────────────────────────────────────────
 window.setRol = function (rol) {
   rolActual = rol
 
@@ -37,13 +34,23 @@ window.setRol = function (rol) {
   }
 }
 
-// ── Cargar planes desde Supabase ──────────────────────────────────────────
+// ── Cargar planes (FIX: UNA SOLA FUNCIÓN) ────────────────────────────────
 async function cargarPlanes () {
-  const { data, error } = await supabase.from('planes').select('id, nombre, precio').order('precio')
-  if (error || !data) return
+  const { data, error } = await supabase
+    .from('planes')
+    .select('id, nombre, precio')
+    .order('precio')
+
+  if (error) {
+    console.error('Error cargando planes:', error)
+    return
+  }
 
   const select = document.getElementById('reg_plan')
+  if (!select) return
+
   select.innerHTML = '<option value="">— Selecciona un plan —</option>'
+
   data.forEach(p => {
     const opt = document.createElement('option')
     opt.value = p.id
@@ -52,7 +59,7 @@ async function cargarPlanes () {
   })
 }
 
-// ── Mostrar error ─────────────────────────────────────────────────────────
+// ── Mostrar error ───────────────────────────────────────────────────────
 function mostrarError (msg) {
   const box = document.getElementById('errorMsgReg')
   document.getElementById('errorMsgText').textContent = msg
@@ -60,14 +67,13 @@ function mostrarError (msg) {
   setTimeout(() => { box.style.display = 'none' }, 5000)
 }
 
-// ── Registro principal ────────────────────────────────────────────────────
+// ── Registro principal ──────────────────────────────────────────────────
 window.registrarUsuario = async function () {
   const btn = document.getElementById('btnRegistrar')
   btn.disabled = true
   btn.textContent = rolActual === 'entrenador' ? 'Enviando...' : 'Registrando...'
 
   try {
-    // ── Campos comunes ────────────────────────────────────────────────────
     const nombre    = document.getElementById('reg_nombre').value.trim()
     const documento = document.getElementById('reg_documento').value.trim()
     const email     = document.getElementById('reg_email').value.trim()
@@ -75,12 +81,11 @@ window.registrarUsuario = async function () {
     const nacimiento = document.getElementById('reg_nacimiento').value || null
     const genero    = document.getElementById('reg_genero').value
 
-    // ── Validaciones básicas ──────────────────────────────────────────────
     if (!nombre) { mostrarError('El nombre es obligatorio'); return }
     if (!documento) { mostrarError('El documento es obligatorio'); return }
     if (!email) { mostrarError('El email es obligatorio'); return }
 
-    // ── Verificar duplicado por documento ─────────────────────────────────
+    // Validar duplicado
     const { data: dupPersona } = await supabase
       .from('personas')
       .select('id')
@@ -91,7 +96,6 @@ window.registrarUsuario = async function () {
       return
     }
 
-    // ── Flujo según rol ───────────────────────────────────────────────────
     if (rolActual === 'cliente') {
       await registrarCliente({ nombre, documento, email, telefono, nacimiento, genero })
     } else {
@@ -99,7 +103,7 @@ window.registrarUsuario = async function () {
     }
 
   } catch (err) {
-    console.error('Error en registro:', err)
+    console.error(err)
     mostrarError('Error inesperado. Intenta nuevamente.')
   } finally {
     btn.disabled = false
@@ -107,7 +111,7 @@ window.registrarUsuario = async function () {
   }
 }
 
-// ── Registrar CLIENTE → tabla personas ───────────────────────────────────
+// ── CLIENTE ─────────────────────────────────────────────────────────────
 async function registrarCliente (base) {
   const plan_id = parseInt(document.getElementById('reg_plan').value)
   const objetivo = document.getElementById('reg_objetivo').value
@@ -134,75 +138,66 @@ async function registrarCliente (base) {
   const { error } = await supabase.from('personas').insert([payload])
 
   if (error) {
-    console.error('Error insertando cliente:', error)
+    console.error(error)
     mostrarError('No se pudo registrar. Verifica tus datos.')
     return
   }
 
-  mostrarModalExito(
-    '✅',
-    '¡Registro exitoso!',
-    `Bienvenido/a ${base.nombre}. Tu cuenta está activa. Ya puedes iniciar sesión.`
-  )
+  mostrarModalExito('✅','¡Registro exitoso!',`Bienvenido/a ${base.nombre}. Tu cuenta está activa.`)
 }
 
-// ── Registrar solicitud ENTRENADOR → tabla solicitudes_entrenador ─────────
+// ── ENTRENADOR ──────────────────────────────────────────────────────────
 async function registrarSolicitudEntrenador (base) {
   const especialidad = document.getElementById('reg_especialidad').value.trim()
   const motivacion   = document.getElementById('reg_motivacion').value.trim()
 
   if (!especialidad) {
-    mostrarError('La especialidad es obligatoria para entrenadores')
+    mostrarError('La especialidad es obligatoria')
     return
   }
 
-  // Verificar que no exista ya una solicitud pendiente con ese documento
-  const { data: dupSolicitud } = await supabase
+  const { data: dup } = await supabase
     .from('solicitudes_entrenador')
     .select('id')
     .eq('documento', base.documento)
     .eq('estado', 'pendiente')
 
-  if (dupSolicitud && dupSolicitud.length > 0) {
-    mostrarError('Ya existe una solicitud pendiente con ese documento')
+  if (dup && dup.length > 0) {
+    mostrarError('Ya existe una solicitud pendiente')
     return
   }
 
   const payload = {
-    nombre:       base.nombre,
-    documento:    base.documento,
-    email:        base.email,
-    telefono:     base.telefono,
-    nacimiento:   base.nacimiento,
-    genero:       base.genero,
-    especialidad: especialidad,
-    motivacion:   motivacion || null,
-    estado:       'pendiente',        // pendiente | aprobado | rechazado
+    nombre: base.nombre,
+    documento: base.documento,
+    email: base.email,
+    telefono: base.telefono,
+    nacimiento: base.nacimiento,
+    genero: base.genero,
+    especialidad,
+    motivacion: motivacion || null,
+    estado: 'pendiente',
     fecha_solicitud: new Date().toISOString(),
   }
 
   const { error } = await supabase.from('solicitudes_entrenador').insert([payload])
 
   if (error) {
-    console.error('Error insertando solicitud:', error)
-    mostrarError('No se pudo enviar la solicitud. Intenta nuevamente.')
+    console.error(error)
+    mostrarError('No se pudo enviar la solicitud')
     return
   }
 
-  mostrarModalExito(
-    '⏳',
-    '¡Solicitud enviada!',
-    `Gracias ${base.nombre}. Tu solicitud como entrenador ha sido recibida y será revisada por el administrador. Te contactaremos pronto.`
-  )
+  mostrarModalExito('⏳','Solicitud enviada','Tu solicitud será revisada por el administrador')
 }
 
-// ── Modal de éxito ────────────────────────────────────────────────────────
+// ── Modal ───────────────────────────────────────────────────────────────
 function mostrarModalExito (icon, titulo, mensaje) {
-  document.getElementById('exitoIcon').textContent    = icon
-  document.getElementById('exitoTitulo').textContent  = titulo
+  document.getElementById('exitoIcon').textContent = icon
+  document.getElementById('exitoTitulo').textContent = titulo
   document.getElementById('exitoMensaje').textContent = mensaje
   document.getElementById('modalExito').style.display = 'flex'
 }
 
-// ── Init ──────────────────────────────────────────────────────────────────
+// ── INIT ────────────────────────────────────────────────────────────────
 cargarPlanes()

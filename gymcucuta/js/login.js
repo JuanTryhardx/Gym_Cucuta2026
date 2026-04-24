@@ -25,3 +25,12 @@ if (document.getElementById('loginForm')) {
   })
 
 }
+function abrirRegistro() {
+  document.body.classList.add("modal-open");
+  document.getElementById("modalRegistro").classList.add("active");
+}
+
+function cerrarRegistro() {
+  document.body.classList.remove("modal-open");
+  document.getElementById("modalRegistro").classList.remove("active");
+}
