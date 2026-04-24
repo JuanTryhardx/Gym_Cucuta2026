@@ -25,7 +25,7 @@ if (document.getElementById('loginForm')) {
       const { data, error } = await supabase
         .from('personas')
         .select('*')
-        .eq('correo_electronico', user)
+        .eq('email', user)
         .single()
 
       if (error || !data) {
