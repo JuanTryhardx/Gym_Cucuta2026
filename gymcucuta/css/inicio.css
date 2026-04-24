@@ -123,3 +123,98 @@
   margin-bottom: 18px;
   letter-spacing: 1px;
 }
+
+/* ===== SOLICITUDES ENTRENADORES ===== */
+.solicitudes-badge {
+  background: #f87171;
+  color: #fff;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  margin-left: auto;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  line-height: 1.6;
+}
+
+.solicitud-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(56,189,248,0.07);
+}
+.solicitud-item:last-child { border-bottom: none; }
+
+.solicitud-info { flex: 1; }
+
+.solicitud-nombre {
+  font-weight: 700;
+  color: var(--text);
+  font-size: 0.94rem;
+  margin-bottom: 4px;
+}
+
+.solicitud-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.solicitud-especialidad {
+  font-size: 0.82rem;
+  color: #38bdf8;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.solicitud-motivacion {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  font-style: italic;
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.solicitud-fecha {
+  font-size: 0.73rem;
+  color: #64748b;
+}
+
+.solicitud-acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.btn-aprobar, .btn-rechazar {
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.btn-aprobar {
+  background: rgba(74,222,128,0.12);
+  color: #4ade80;
+  border: 1px solid rgba(74,222,128,0.25);
+}
+.btn-aprobar:hover { background: rgba(74,222,128,0.22); }
+
+.btn-rechazar {
+  background: rgba(248,113,113,0.1);
+  color: #f87171;
+  border: 1px solid rgba(248,113,113,0.22);
+}
+.btn-rechazar:hover { background: rgba(248,113,113,0.2); }

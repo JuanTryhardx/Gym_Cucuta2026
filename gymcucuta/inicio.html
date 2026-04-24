@@ -37,11 +37,24 @@
           <div class="card-title">⚡ Acciones Rápidas</div>
           <div class="quick-actions">
             <a href="registrar.html" class="qa-btn">➕ Registrar Persona</a>
+            <a href="registro.html" class="qa-btn" target="_blank">🔗 Link Registro Público</a>
             <a href="personas.html" class="qa-btn">👥 Ver Miembros</a>
             <a href="informes.html" class="qa-btn">📊 Ver Informes</a>
             <a href="eventos.html" class="qa-btn">📅 Eventos</a>
           </div>
         </div>
+
+        <!-- PANEL SOLICITUDES ENTRENADORES -->
+        <div class="card" style="margin-top:16px">
+          <div class="card-title">
+            🎯 Solicitudes Entrenadores
+            <span id="solicitudesBadge" class="solicitudes-badge" style="display:none">0</span>
+          </div>
+          <div id="solicitudesPanel">
+            <p style="color:var(--text-muted);font-size:0.85rem">Cargando...</p>
+          </div>
+        </div>
+
         <div class="card" style="margin-top:16px">
           <div class="card-title">📅 Próximos Eventos</div>
           <div id="proximosEventos"></div>
@@ -75,6 +88,7 @@
   </div>
 
   <script type="module" src="js/inicio.js"></script>
-  
+  <script type="module" src="js/solicitudes.js"></script>
+
 </body>
 </html>
