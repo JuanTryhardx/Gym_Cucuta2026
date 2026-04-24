@@ -4,6 +4,9 @@ import { checkAuth, buildNavbar, showToast, formatMoney, formatDate, supabase } 
 checkAuth()
 document.getElementById('navbar-container').innerHTML = buildNavbar('personas.html')
 
+// ===== USUARIO ACTUAL =====
+const currentUser = JSON.parse(sessionStorage.getItem('gymUser'))
+
 // ===== CARGAR PERSONAS =====
 async function cargarPersonas() {
 
@@ -41,7 +44,7 @@ async function cargarPersonas() {
           </div>
           <div>
             <div style="font-weight:bold">${p.nombre}</div>
-            <div style="font-size:12px;color:#aaa">${p.email || '-'}</div>
+            <div style="font-size:12px;color:#aaa">${p.correo_electronico || '-'}</div>
           </div>
         </div>
       </td>
@@ -77,7 +80,7 @@ window.eliminar = async function(id) {
   }
 }
 
-// ===== ABRIR MODAL EDITAR =====
+// ===== EDITAR =====
 window.openEdit = async function(id) {
 
   const { data, error } = await supabase
@@ -86,16 +89,13 @@ window.openEdit = async function(id) {
     .eq('id', id)
     .single()
 
-  if (error) {
-    console.error(error)
-    return
-  }
+  if (error) return console.error(error)
 
   document.getElementById('e_id').value = data.id
   document.getElementById('e_nombre').value = data.nombre || ''
   document.getElementById('e_documento').value = data.documento || ''
   document.getElementById('e_telefono').value = data.telefono || ''
-  document.getElementById('e_email').value = data.email || ''
+  document.getElementById('e_email').value = data.correo_electronico || ''
   document.getElementById('e_plan').value = data.plan_id || 1
   document.getElementById('e_mensualidad').value = data.mensualidad || 0
   document.getElementById('e_estado').value = data.estado || 'Activo'
@@ -108,12 +108,9 @@ window.openEdit = async function(id) {
   document.getElementById('editModal').style.display = 'flex'
 }
 
-// ===== CERRAR MODAL =====
-window.closeEdit = function() {
-  document.getElementById('editModal').style.display = 'none'
-}
+window.closeEdit = () => document.getElementById('editModal').style.display = 'none'
 
-// ===== GUARDAR EDICIÓN (🔥 LO IMPORTANTE) =====
+// ===== GUARDAR =====
 window.guardarEdicion = async function() {
 
   const id = document.getElementById('e_id').value
@@ -122,7 +119,7 @@ window.guardarEdicion = async function() {
     nombre: document.getElementById('e_nombre').value,
     documento: document.getElementById('e_documento').value,
     telefono: document.getElementById('e_telefono').value,
-    email: document.getElementById('e_email').value,
+    correo_electronico: document.getElementById('e_email').value,
     plan_id: document.getElementById('e_plan').value,
     mensualidad: parseFloat(document.getElementById('e_mensualidad').value) || 0,
     estado: document.getElementById('e_estado').value,
@@ -142,20 +139,14 @@ window.guardarEdicion = async function() {
     console.error(error)
     showToast('❌ Error al guardar', '#f87171')
   } else {
-    showToast('✅ Cambios guardados correctamente')
+    showToast('✅ Cambios guardados')
     closeEdit()
     cargarPersonas()
   }
 }
-// ===== VALIDACIÓN DE ENTRENADORES (FIX PRO) =====
 
-// 🔐 Obtener usuario actual
-const currentUser = JSON.parse(sessionStorage.getItem('gymUser'))
-
-// 🚫 BLOQUEO: solo admin puede ver esto
-if (!currentUser || currentUser.rol !== 'admin') {
-  console.warn('Acceso denegado a validaciones')
-} else {
+// ===== VALIDACIONES (SOLO ADMIN) =====
+if (currentUser?.rol === 'admin') {
   cargarSolicitudes()
 }
 
@@ -164,112 +155,74 @@ async function cargarSolicitudes() {
   const { data, error } = await supabase
     .from('solicitudes_entrenador')
     .select('*')
-    .ilike('estado', 'pendiente') // 🔥 FIX IMPORTANTE
+    .ilike('estado', 'pendiente')
     .order('fecha_solicitud', { ascending: false })
 
-  if (error) {
-    console.error('Error cargando solicitudes:', error)
-    showToast('❌ Error cargando solicitudes', '#f87171')
-    return
-  }
-
-  console.log('Solicitudes encontradas:', data) // 🔍 DEBUG
+  if (error) return console.error(error)
 
   renderSolicitudes(data || [])
 }
 
-// ── Render UI ─────────────────────────────────────────
 function renderSolicitudes(lista) {
   const cont = document.getElementById('lista-solicitudes')
+  if (!cont) return
 
-  if (!cont) {
-    console.warn('No existe contenedor lista-solicitudes')
-    return
-  }
-
-  cont.innerHTML = ''
-
-  if (!lista || lista.length === 0) {
+  if (lista.length === 0) {
     cont.innerHTML = '<p>No hay solicitudes pendientes</p>'
     return
   }
 
-  lista.forEach(sol => {
-    const div = document.createElement('div')
-    div.className = 'card-solicitud'
-
-    div.innerHTML = `
+  cont.innerHTML = lista.map(sol => `
+    <div class="card-solicitud">
       <h3>${sol.nombre}</h3>
-      <p><b>Documento:</b> ${sol.documento}</p>
-      <p><b>Email:</b> ${sol.email}</p>
-      <p><b>Teléfono:</b> ${sol.telefono || 'N/A'}</p>
-      <p><b>Especialidad:</b> ${sol.especialidad}</p>
-      <p><b>Motivación:</b> ${sol.motivacion || 'N/A'}</p>
-
-      <div class="acciones">
-        <button onclick="aprobarSolicitud(${sol.id})" class="btn-aprobar">Aceptar</button>
-        <button onclick="rechazarSolicitud(${sol.id})" class="btn-rechazar">Rechazar</button>
-      </div>
-    `
-
-    cont.appendChild(div)
-  })
+      <p>${sol.correo_electronico || '-'}</p>
+      <p>${sol.especialidad}</p>
+      <button onclick="aprobarSolicitud(${sol.id})">Aceptar</button>
+      <button onclick="rechazarSolicitud(${sol.id})">Rechazar</button>
+    </div>
+  `).join('')
 }
 
-// ── APROBAR ──────────────────────────────────────────
+// ===== APROBAR =====
 window.aprobarSolicitud = async function(id) {
 
-  if (!confirm('¿Aprobar este entrenador?')) return
-
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from('solicitudes_entrenador')
     .select('*')
     .eq('id', id)
     .single()
 
-  if (error) {
-    console.error(error)
-    showToast('❌ Error al obtener datos', '#f87171')
-    return
-  }
+  if (!data) return
 
-  // 🔥 Insertar como entrenador
-  const { error: insertError } = await supabase.from('personas').insert([{
+  await supabase.from('personas').insert([{
     nombre: data.nombre,
     documento: data.documento,
-    email: data.email,
+    correo_electronico: data.correo_electronico,
     telefono: data.telefono,
-    genero: data.genero,
-    estado: 'Activo',
-    rol: 'entrenador'
+    rol: 'entrenador',
+    estado: 'Activo'
   }])
 
-  if (insertError) {
-    console.error(insertError)
-    showToast('❌ Error al aprobar', '#f87171')
-    return
-  }
-
-  // 🔥 Actualizar solicitud
   await supabase
     .from('solicitudes_entrenador')
     .update({ estado: 'aprobado' })
     .eq('id', id)
 
-  showToast('✅ Entrenador aprobado')
+  showToast('✅ Aprobado')
   cargarSolicitudes()
 }
 
-// ── RECHAZAR ─────────────────────────────────────────
+// ===== RECHAZAR =====
 window.rechazarSolicitud = async function(id) {
-
-  if (!confirm('¿Rechazar esta solicitud?')) return
 
   await supabase
     .from('solicitudes_entrenador')
     .update({ estado: 'rechazado' })
     .eq('id', id)
 
-  showToast('❌ Solicitud rechazada')
+  showToast('❌ Rechazado')
   cargarSolicitudes()
 }
+
+// ===== INIT =====
+cargarPersonas()
