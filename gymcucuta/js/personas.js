@@ -1,11 +1,10 @@
 import { checkAuth, buildNavbar, showToast, formatMoney, formatDate, supabase } from './app.js'
 
-// ===== SEGURIDAD Y NAVBAR =====
+// ===== SEGURIDAD =====
 checkAuth()
-document.getElementById('navbar-container').innerHTML = buildNavbar('personas.html')
 
-// ===== USUARIO ACTUAL =====
-const currentUser = JSON.parse(sessionStorage.getItem('gymUser'))
+// ===== NAVBAR =====
+document.getElementById('navbar-container').innerHTML = buildNavbar('personas.html')
 
 // ===== CARGAR PERSONAS =====
 async function cargarPersonas() {
@@ -64,6 +63,7 @@ async function cargarPersonas() {
 
 // ===== ELIMINAR =====
 window.eliminar = async function(id) {
+
   if (!confirm('¿Eliminar esta persona?')) return
 
   const { error } = await supabase
@@ -91,6 +91,7 @@ window.openEdit = async function(id) {
 
   if (error) {
     console.error(error)
+    showToast('❌ Error al cargar datos', '#f87171')
     return
   }
 
@@ -111,11 +112,6 @@ window.openEdit = async function(id) {
   document.getElementById('editModal').style.display = 'flex'
 }
 
-// ===== CERRAR MODAL =====
-window.closeEdit = function() {
-  document.getElementById('editModal').style.display = 'none'
-}
-
 // ===== GUARDAR =====
 window.guardarEdicion = async function() {
 
@@ -125,7 +121,7 @@ window.guardarEdicion = async function() {
     nombre: document.getElementById('e_nombre').value,
     documento: document.getElementById('e_documento').value,
     telefono: document.getElementById('e_telefono').value,
-    email: document.getElementById('e_email').value,
+    email: document.getElementById('e_email').value, // ✅ CORRECTO
     plan_id: document.getElementById('e_plan').value,
     mensualidad: parseFloat(document.getElementById('e_mensualidad').value) || 0,
     estado: document.getElementById('e_estado').value,
@@ -145,117 +141,15 @@ window.guardarEdicion = async function() {
     console.error(error)
     showToast('❌ Error al guardar', '#f87171')
   } else {
-    showToast('✅ Cambios guardados')
+    showToast('✅ Cambios guardados correctamente')
     closeEdit()
     cargarPersonas()
   }
 }
 
-// ===== VALIDACIONES (SOLO ADMIN) =====
-if (currentUser?.rol === 'admin') {
-  cargarSolicitudes()
-}
-
-// ===== CARGAR SOLICITUDES =====
-async function cargarSolicitudes() {
-
-  const { data, error } = await supabase
-    .from('solicitudes_entrenador')
-    .select('*')
-    .ilike('estado', 'pendiente')
-    .order('fecha_solicitud', { ascending: false })
-
-  if (error) {
-    console.error(error)
-    showToast('❌ Error cargando solicitudes', '#f87171')
-    return
-  }
-
-  renderSolicitudes(data || [])
-}
-
-// ===== RENDER SOLICITUDES =====
-function renderSolicitudes(lista) {
-
-  const cont = document.getElementById('lista-solicitudes')
-  if (!cont) return
-
-  if (lista.length === 0) {
-    cont.innerHTML = '<p>No hay solicitudes pendientes</p>'
-    return
-  }
-
-  cont.innerHTML = lista.map(sol => `
-    <div class="card-solicitud">
-      <h3>${sol.nombre}</h3>
-      <p><b>Email:</b> ${sol.email || '-'}</p>
-      <p><b>Especialidad:</b> ${sol.especialidad}</p>
-
-      <div class="acciones">
-        <button onclick="aprobarSolicitud(${sol.id})">Aceptar</button>
-        <button onclick="rechazarSolicitud(${sol.id})">Rechazar</button>
-      </div>
-    </div>
-  `).join('')
-}
-
-// ===== APROBAR =====
-window.aprobarSolicitud = async function(id) {
-
-  if (!confirm('¿Aprobar este entrenador?')) return
-
-  const { data, error } = await supabase
-    .from('solicitudes_entrenador')
-    .select('*')
-    .eq('id', id)
-    .single()
-
-  if (error || !data) {
-    console.error(error)
-    showToast('❌ Error obteniendo solicitud', '#f87171')
-    return
-  }
-
-  // Insertar como entrenador
-  const { error: insertError } = await supabase
-    .from('personas')
-    .insert([{
-      nombre: data.nombre,
-      documento: data.documento,
-      email: data.email,
-      telefono: data.telefono,
-      rol: 'entrenador',
-      estado: 'Activo'
-    }])
-
-  if (insertError) {
-    console.error(insertError)
-    showToast('❌ Error al aprobar', '#f87171')
-    return
-  }
-
-  // Actualizar estado
-  await supabase
-    .from('solicitudes_entrenador')
-    .update({ estado: 'aprobado' })
-    .eq('id', id)
-
-  showToast('✅ Entrenador aprobado')
-  cargarSolicitudes()
-}
-
-// ===== RECHAZAR =====
-window.rechazarSolicitud = async function(id) {
-
-  if (!confirm('¿Rechazar esta solicitud?')) return
-
-  await supabase
-    .from('solicitudes_entrenador')
-    .update({ estado: 'rechazado' })
-    .eq('id', id)
-
-  showToast('❌ Solicitud rechazada')
-  cargarSolicitudes()
+// ===== CERRAR MODAL =====
+window.closeEdit = function() {
+  document.getElementById('editModal').style.display = 'none'
 }
 
 // ===== INIT =====
