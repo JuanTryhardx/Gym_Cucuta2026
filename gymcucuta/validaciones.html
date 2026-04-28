@@ -2,16 +2,24 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Validaciones</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Validaciones – App Gym Cúcuta</title>
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
 
   <div id="navbar-container"></div>
 
-  <main class="container">
-    <h2>✅ Validaciones de entrenadores</h2>
-    <div id="lista-solicitudes"></div>
+  <main class="container" style="padding-top:30px">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:8px">
+      <h2 style="margin:0">✅ Validaciones de entrenadores</h2>
+      <span id="contador-badge" style="background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;padding:5px 14px;border-radius:20px;font-size:0.85rem"></span>
+    </div>
+    <p style="color:#94a3b8;margin-bottom:20px;font-size:0.9rem">
+      Solicitudes de registro con rol <b>entrenador</b> pendientes de aprobación.
+    </p>
+
+    <div id="lista-solicitudes" class="grid-solicitudes"></div>
   </main>
 
   <script type="module" src="js/validaciones.js"></script>

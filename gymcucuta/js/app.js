@@ -51,7 +51,7 @@ export function buildNavbar(activePage) {
       { href: 'soporte.html', label: 'Soporte', icon: '🛟' },
 
       // 🔥 NUEVO BOTÓN
-      { href: 'personas.html#validaciones', label: 'Validaciones', icon: '✅' }
+      { href: 'validaciones.html', label: 'Validaciones', icon: '✅' }
     )
   }
 
