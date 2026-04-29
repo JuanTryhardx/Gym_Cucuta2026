@@ -79,9 +79,16 @@ export function buildNavbar(activePage) {
         <span class="nav-logo-text">APP GYM CÚCUTA</span>
       </a>
 
-      <ul class="nav-links">${liItems}</ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menú" onclick="(function(){
+        document.getElementById('nav-links-list').classList.toggle('open');
+        document.getElementById('nav-right-bar').classList.toggle('open');
+      })()">
+        <span></span><span></span><span></span>
+      </button>
 
-      <div class="nav-right">
+      <ul class="nav-links" id="nav-links-list">${liItems}</ul>
+
+      <div class="nav-right" id="nav-right-bar">
         <span class="nav-user">👤 ${nombre} (${rol})</span>
         <button class="btn-logout" onclick="logout()">⏻ Salir</button>
       </div>

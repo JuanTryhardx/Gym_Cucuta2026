@@ -410,3 +410,124 @@ body {
   margin-top: 40px;
   font-size: 1rem;
 }
+
+/* ===== RESPONSIVE – MOBILE FIRST ===== */
+
+/* Tablet (≤ 900px): colapsa el navbar */
+@media (max-width: 900px) {
+  :root { --navbar-h: 56px; }
+
+  .navbar {
+    padding: 0 16px;
+    flex-wrap: wrap;
+    height: auto;
+    min-height: var(--navbar-h);
+    gap: 0;
+  }
+
+  .nav-logo-text { font-size: 0.95rem; letter-spacing: 1px; }
+
+  /* Botón hamburger */
+  .nav-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+    margin-left: auto;
+    padding: 8px;
+    background: none;
+    border: none;
+  }
+  .nav-toggle span {
+    display: block;
+    width: 22px; height: 2px;
+    background: var(--blue-light);
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+
+  /* Menú colapsable */
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    padding: 8px 0 12px;
+    gap: 2px;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links li { width: 100%; }
+  .nav-links a {
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 0.92rem;
+  }
+
+  /* User info + logout abajo */
+  .nav-right {
+    display: none;
+    width: 100%;
+    padding: 10px 16px 14px;
+    justify-content: space-between;
+    border-top: 1px solid var(--border);
+  }
+  .nav-right.open { display: flex; }
+  .nav-user { font-size: 0.8rem; }
+}
+
+/* Mobile (≤ 600px) */
+@media (max-width: 600px) {
+  .page-content {
+    padding: 16px;
+    padding-top: calc(var(--navbar-h) + 16px);
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .section-header h2 { font-size: 1.35rem; }
+
+  /* Tabla scrolleable en móvil */
+  .table-wrapper { border-radius: 8px; }
+  table { min-width: 560px; }
+  tbody td { font-size: 0.82rem; padding: 10px 10px; }
+  thead th { font-size: 0.78rem; padding: 10px 10px; }
+
+  /* Cards de solicitudes en columna */
+  .grid-solicitudes {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  /* Modal full-width */
+  .modal-box {
+    width: 96%;
+    padding: 20px 16px;
+    max-height: 92vh;
+  }
+
+  .form-row { flex-direction: column; gap: 12px; }
+  .form-group { min-width: 100%; }
+
+  /* Filtros */
+  .filtros-bar { padding: 12px; }
+  .buscar-input { min-width: 100%; }
+
+  /* Stats grid: 2 col en mobile */
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .stat-value { font-size: 1.6rem; }
+
+  /* Toast más pequeño */
+  .toast { right: 12px; bottom: 16px; left: 12px; text-align: center; }
+
+  /* Botones de acción en tabla */
+  tbody td button { padding: 4px 8px; font-size: 0.78rem; }
+}
+
+/* Hamburger oculto en desktop */
+.nav-toggle { display: none; }
