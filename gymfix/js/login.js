@@ -1,68 +1,57 @@
 import { supabase } from './supabase.js'
 
-// ─────────────────────────────────────────────
-// SOLO SI EXISTE EL FORM
-// ─────────────────────────────────────────────
 if (document.getElementById('loginForm')) {
 
-  window.togglePass = function () {
+  window.togglePass = function() {
     const inp = document.getElementById('password')
-    inp.type = inp.type === 'password' ? 'text' : 'password'
+    const btn = document.getElementById('togglePassBtn')
+    const isPass = inp.type === 'password'
+    inp.type = isPass ? 'text' : 'password'
+    btn.textContent = isPass ? '🙈' : '👁'
   }
 
-  const form = document.getElementById('loginForm')
-
-  form.addEventListener('submit', async function(e) {
+  document.getElementById('loginForm').addEventListener('submit', async function(e) {
     e.preventDefault()
+    const emailVal = document.getElementById('usuario').value.trim()
+    const passVal  = document.getElementById('password').value
+    const btn      = document.getElementById('btnLogin')
+    const err      = document.getElementById('errorMsg')
 
-    const user = document.getElementById('usuario').value.trim()
-    const pass = document.getElementById('password').value
-    const err = document.getElementById('errorMsg')
+    btn.disabled = true
+    btn.textContent = 'VERIFICANDO...'
+    err.style.display = 'none'
 
     try {
-
-      // 🔍 BUSCAR EN PERSONAS (CLIENTES Y ENTRENADORES)
+      // Buscar en personas por email
       const { data, error } = await supabase
         .from('personas')
         .select('*')
-        .eq('email', user)
+        .eq('email', emailVal)
         .single()
 
-      if (error || !data) {
-        throw new Error('Usuario no encontrado')
-      }
+      if (error || !data) throw new Error('Usuario no encontrado')
 
-      // ⚠️ VALIDACIÓN SIMPLE (porque no tienes auth aún)
-      // (Luego se mejora con hash)
-      if (pass !== '1234') {
-        throw new Error('Contraseña incorrecta')
-      }
+      // Verificar contraseña — soporta cuentas antiguas (password null → usa '1234')
+      const passwordGuardado = data.password
+      const passwordValido   = passwordGuardado
+        ? passVal === passwordGuardado
+        : passVal === '1234'
 
-      // 🔐 GUARDAR SESIÓN COMPLETA
+      if (!passwordValido) throw new Error('Contraseña incorrecta')
+      if (data.estado && data.estado.toLowerCase() === 'inactivo') throw new Error('Cuenta inactiva')
+
       sessionStorage.setItem('gymLoggedIn', 'true')
       sessionStorage.setItem('gymUser', JSON.stringify(data))
-
-      // 🚀 REDIRECCIÓN
       window.location.href = 'inicio.html'
 
     } catch (errCatch) {
       console.error(errCatch)
-      err.style.display = 'block'
-      setTimeout(() => err.style.display = 'none', 3000)
+      document.getElementById('errorMsgText').textContent = errCatch.message || 'Usuario o contraseña incorrectos'
+      err.style.display = 'flex'
+      setTimeout(() => { err.style.display = 'none' }, 4000)
+    } finally {
+      btn.disabled = false
+      btn.textContent = 'INGRESAR AL SISTEMA'
     }
-
   })
-}
-
-// ─────────────────────────────────────────────
-// MODAL REGISTRO (SCROLL FIX)
-// ─────────────────────────────────────────────
-function abrirRegistro() {
-  document.body.classList.add("modal-open");
-  document.getElementById("modalRegistro").classList.add("active");
-}
-
-function cerrarRegistro() {
-  document.body.classList.remove("modal-open");
-  document.getElementById("modalRegistro").classList.remove("active");
 }

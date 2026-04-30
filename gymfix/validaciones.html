@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Validaciones – App Gym Cúcuta</title>
   <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/validaciones.css">
 </head>
 <body>
 
@@ -12,20 +13,86 @@
 
   <div class="page-content">
 
+    <!-- HEADER -->
     <div class="section-header">
       <h2>✅ Validaciones <span>de Entrenadores</span></h2>
-      <span id="contador-badge" style="background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;padding:6px 16px;border-radius:20px;font-size:0.85rem;font-weight:700;"></span>
+      <span id="contador-badge" class="val-badge"></span>
     </div>
 
-    <p style="color:#94a3b8;margin-bottom:24px;font-size:0.9rem;">
-      Solicitudes de registro con rol <b style="color:#e2e8f0;">entrenador</b> pendientes de aprobación.
-    </p>
+    <!-- STATS ROW -->
+    <div class="val-stats">
+      <div class="val-stat-card">
+        <span class="val-stat-icon">⏳</span>
+        <div>
+          <div class="val-stat-num" id="stat-pendientes">—</div>
+          <div class="val-stat-label">Pendientes</div>
+        </div>
+      </div>
+      <div class="val-stat-card">
+        <span class="val-stat-icon val-green">✅</span>
+        <div>
+          <div class="val-stat-num val-green" id="stat-aprobados">—</div>
+          <div class="val-stat-label">Aprobados</div>
+        </div>
+      </div>
+      <div class="val-stat-card">
+        <span class="val-stat-icon val-red">❌</span>
+        <div>
+          <div class="val-stat-num val-red" id="stat-rechazados">—</div>
+          <div class="val-stat-label">Rechazados</div>
+        </div>
+      </div>
+    </div>
 
-    <div id="lista-solicitudes" class="grid-solicitudes"></div>
+    <!-- FILTRO TABS -->
+    <div class="val-tabs">
+      <button class="val-tab active" data-filter="pendiente" onclick="setFiltro('pendiente')">⏳ Pendientes</button>
+      <button class="val-tab" data-filter="aprobado" onclick="setFiltro('aprobado')">✅ Aprobados</button>
+      <button class="val-tab" data-filter="rechazado" onclick="setFiltro('rechazado')">❌ Rechazados</button>
+      <button class="val-tab" data-filter="todos" onclick="setFiltro('todos')">📋 Todos</button>
+    </div>
+
+    <!-- TABLA -->
+    <div class="card">
+      <div id="countLabel" class="count-label"></div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Solicitante</th>
+              <th>Documento</th>
+              <th>Teléfono</th>
+              <th>Especialidad</th>
+              <th>Fecha Solicitud</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-validaciones">
+            <tr><td colspan="7" class="val-loading">⏳ Cargando solicitudes...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="emptyMsg" class="empty-msg" style="display:none">
+        ✅ No hay solicitudes en esta categoría.
+      </div>
+    </div>
 
   </div>
 
-  <script type="module" src="js/validaciones.js"></script>
+  <!-- MODAL DETALLE -->
+  <div id="detalleModal" class="modal-overlay" style="display:none">
+    <div class="modal-box" style="max-width:480px">
+      <h3>📋 Detalle de Solicitud</h3>
+      <div id="detalle-content" class="detalle-grid"></div>
+      <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:24px">
+        <button class="btn-secondary" onclick="closeDetalle()">Cerrar</button>
+        <button class="btn-val-rechazar" id="btn-rechazar-modal">❌ Rechazar</button>
+        <button class="btn-val-aprobar" id="btn-aprobar-modal">✅ Aprobar</button>
+      </div>
+    </div>
+  </div>
 
+  <script type="module" src="js/validaciones.js"></script>
 </body>
 </html>

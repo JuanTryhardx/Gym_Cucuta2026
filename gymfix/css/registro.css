@@ -209,3 +209,57 @@
   .form-row-2 { grid-template-columns: 1fr; }
   .form-scroll { max-height: none; overflow-y: visible; }
 }
+
+/* ===== CAMPO CONTRASEÑA ===== */
+.pass-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.pass-wrapper .input-icon {
+  position: absolute;
+  left: 14px;
+  font-size: 1rem;
+  pointer-events: none;
+  z-index: 1;
+}
+.pass-wrapper input {
+  padding-left: 42px !important;
+  padding-right: 42px !important;
+}
+.pass-wrapper .toggle-pass {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  padding: 0;
+  line-height: 1;
+}
+.pass-wrapper .toggle-pass:hover { opacity: 1; }
+
+/* Barra de fortaleza */
+.pass-strength-bar-wrap {
+  height: 4px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 4px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+.pass-strength-bar {
+  height: 100%;
+  width: 0%;
+  border-radius: 4px;
+  transition: width 0.3s, background 0.3s;
+}
+.pass-strength-txt {
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-top: 3px;
+  display: block;
+  min-height: 14px;
+  letter-spacing: 0.3px;
+}

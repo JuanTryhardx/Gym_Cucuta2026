@@ -45,14 +45,14 @@
           <div class="input-wrapper">
             <span class="input-icon">🔒</span>
             <input type="password" id="password" placeholder="Ingresa tu contraseña"/>
-            <button type="button" class="toggle-pass" onclick="togglePass()">👁</button>
+            <button type="button" class="toggle-pass" id="togglePassBtn" onclick="togglePass()">👁</button>
           </div>
         </div>
-        <div id="errorMsg" class="error-msg" style="display:none">❌ Usuario o contraseña incorrectos</div>
-        <button type="submit" class="btn-login">INGRESAR AL SISTEMA</button>
+        <div id="errorMsg" class="error-msg" style="display:none">❌ <span id="errorMsgText">Usuario o contraseña incorrectos</span></div>
+        <button type="submit" class="btn-login" id="btnLogin">INGRESAR AL SISTEMA</button>
       </form>
 
-      <p class="login-hint">Usuario: <b>admin@gym.com</b> &nbsp;|&nbsp; Contraseña: <b>1234</b></p>
+      <p class="login-hint">Usuario: <b>admin</b> &nbsp;|&nbsp; Contraseña: <b>1234</b></p>
       <p class="login-hint" style="margin-top:10px;font-size:0.82rem">
         ¿Eres nuevo? <a href="registro.html" style="color:#38bdf8;text-decoration:none;font-weight:700">Crear cuenta →</a>
       </p>
