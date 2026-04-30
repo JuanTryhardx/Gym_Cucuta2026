@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Informes – App Gym Cúcuta</title>
+  <link rel="stylesheet" href="css/main.css"/>
+  <link rel="stylesheet" href="css/informes.css"/>
+</head>
+<body>
+  <div id="navbar-container"></div>
+
+  <div class="page-content">
+
+    <!-- HEADER -->
+    <div class="section-header">
+      <h2>📊 Informes <span>y Estadísticas</span></h2>
+      <select id="periodoSelect" class="filtro-select" onchange="renderAll()">
+        <option value="todo">Todo el tiempo</option>
+        <option value="mes">Último mes</option>
+        <option value="año">Último año</option>
+      </select>
+    </div>
+
+    <!-- KPI CARDS -->
+    <div id="kpiGrid" class="stats-grid"></div>
+
+    <!-- GRÁFICAS: fila 1 — dos donuts -->
+    <div class="charts-grid">
+
+      <div class="card">
+        <div class="card-title">Estado de miembros</div>
+        <div class="chart-wrap">
+          <canvas id="chartEstado"></canvas>
+        </div>
+        <div class="chart-legend" id="legendEstado"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Distribución por plan</div>
+        <div class="chart-wrap">
+          <canvas id="chartPlan"></canvas>
+        </div>
+        <div class="chart-legend" id="legendPlan"></div>
+      </div>
+
+      <!-- fila 2 — barra de crecimiento (ancho completo) -->
+      <div class="card chart-wide">
+        <div class="card-title">Nuevos registros últimos 6 meses</div>
+        <div class="chart-wrap-wide">
+          <canvas id="chartCrecimiento"></canvas>
+        </div>
+      </div>
+
+      <!-- fila 3 — donut objetivos + tabla planes -->
+      <div class="card">
+        <div class="card-title">Objetivos de miembros</div>
+        <div class="chart-wrap">
+          <canvas id="chartObjetivos"></canvas>
+        </div>
+        <div class="chart-legend" id="legendObjetivos"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Ingresos por plan</div>
+        <div class="table-wrapper" style="margin-top:8px">
+          <table>
+            <thead>
+              <tr>
+                <th>Plan</th>
+                <th>Miembros</th>
+                <th>Ingresos</th>
+                <th>% del total</th>
+              </tr>
+            </thead>
+            <tbody id="tablaPlanes">
+              <tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:24px">Cargando...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module" src="js/informes.js"></script>
+</body>
+</html>
