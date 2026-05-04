@@ -1,3 +1,12 @@
+// informes.js usa lógica interna compleja con Chart.js
+// Se mantiene como controller independiente pero importando los modelos MVC
+import { Auth }         from '../services/auth.js'
+import { buildNavbar }  from '../services/ui.js'
+import { PersonaModel } from '../models/PersonaModel.js'
+import { PlanModel }    from '../models/PlanModel.js'
+
+Auth.requireAuth()
+document.getElementById('navbar-container').innerHTML = buildNavbar('informes.html')
 import { checkAuth, buildNavbar, formatMoney, supabase } from './app.js'
 
 checkAuth()

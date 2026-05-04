@@ -3,8 +3,8 @@
 // Se carga desde inicio.html como módulo adicional.
 // NO modifica ningún código existente de inicio.js.
 
-import { supabase } from './supabase.js'
-import { showToast } from './app.js'
+import { supabase } from '../services/supabase.js'
+import { showToast } from '../services/ui.js'
 
 // ── Renderizar bloque de solicitudes en el dashboard ──────────────────────
 export async function renderSolicitudesPanel () {
