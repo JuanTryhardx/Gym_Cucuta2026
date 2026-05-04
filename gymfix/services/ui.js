@@ -30,9 +30,9 @@ window.formatDate = formatDate
 export function buildNavbar(activePage) {
     const user = Auth.getUser()
     
-    // CORRECCIÓN: Si no hay usuario, redirigir al index.html que está afuera de /views
+    // AJUSTE: Como index.html está en la raíz según tu FileZilla, quitamos el "../"
     if (!user) {
-        window.location.href = '../index.html'; 
+        window.location.href = 'index.html'; 
         return ''
     }
 
@@ -94,8 +94,8 @@ export function buildNavbar(activePage) {
     </nav>`
 }
 
-// CORRECCIÓN: Definimos la función de logout para que salga de /views al cerrar sesión
+// AJUSTE: Quitamos el "../" porque index.html está al mismo nivel que las otras páginas en FileZilla
 window.logout = () => {
     Auth.logout();
-    window.location.href = '../index.html';
+    window.location.href = 'index.html';
 }
