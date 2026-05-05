@@ -37,3 +37,134 @@
   font-size: 0.78rem; color: var(--text-muted);
 }
 .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+/* ============================================================
+   ESTILOS PROFESIONALES - DASHBOARD GYM CÚCUTA
+   ============================================================ */
+
+:root {
+    --bg-dark: #0f172a;        /* Fondo principal */
+    --card-bg: #1e293b;        /* Fondo de tarjetas */
+    --accent: #38bdf8;         /* Azul neón */
+    --accent-glow: rgba(56, 189, 248, 0.15);
+    --text-main: #f1f5f9;      /* Blanco suave */
+    --text-muted: #94a3b8;     /* Gris elegante */
+    --border: rgba(255, 255, 255, 0.05);
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+/* --- Contenedor de Gráficos --- */
+.chart-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+/* --- Tarjetas (Cards) Pro --- */
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px -10px var(--accent-glow);
+    border-color: rgba(56, 189, 248, 0.3);
+}
+
+.card-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent);
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* --- Estadísticas Rápidas (KPIs) --- */
+.stat-card {
+    background: linear-gradient(145deg, #1e293b, #111a2e);
+    padding: 20px;
+    border-radius: 16px;
+    border-left: 4px solid var(--accent);
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-top: 5px;
+    color: #fff;
+    text-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* --- Leyendas de los gráficos --- */
+.chart-legend {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    box-shadow: 0 0 5px currentColor;
+}
+
+/* --- Tabla de Planes --- */
+.pro-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.pro-table th {
+    text-align: left;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    padding: 12px;
+    background: rgba(0,0,0,0.1);
+}
+
+.pro-table td {
+    padding: 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.page-content {
+    animation: fadeIn 0.5s ease-out;
+}
