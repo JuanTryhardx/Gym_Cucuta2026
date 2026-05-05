@@ -23,28 +23,32 @@
     </div>
 
     <!-- KPI CARDS -->
-    <div id="kpiGrid" class="stats-grid"></div>
+    <div class="stats-grid" id="kpiGrid">
+        <p style="color:var(--text-muted); padding:20px;">Cargando estadísticas...</p>
+    </div>
 
-    <!-- GRÁFICAS: fila 1 — dos donuts -->
+    <!-- GRÁFICAS -->
     <div class="charts-grid">
 
+      <!-- Fila 1: Estado de miembros -->
       <div class="card">
         <div class="card-title">Estado de miembros</div>
         <div class="chart-wrap">
           <canvas id="chartEstado"></canvas>
         </div>
-        <div class="chart-legend" id="legendEstado"></div>
+        <div class="chart-legend" id="legendEstado">Cargando datos...</div>
       </div>
 
+      <!-- Fila 1: Distribución por plan -->
       <div class="card">
         <div class="card-title">Distribución por plan</div>
         <div class="chart-wrap">
           <canvas id="chartPlan"></canvas>
         </div>
-        <div class="chart-legend" id="legendPlan"></div>
+        <div class="chart-legend" id="legendPlan">Cargando datos...</div>
       </div>
 
-      <!-- fila 2 — barra de crecimiento (ancho completo) -->
+      <!-- Fila 2: Barra de crecimiento -->
       <div class="card chart-wide">
         <div class="card-title">Nuevos registros últimos 6 meses</div>
         <div class="chart-wrap-wide">
@@ -52,15 +56,16 @@
         </div>
       </div>
 
-      <!-- fila 3 — donut objetivos + tabla planes -->
+      <!-- Fila 3: Donut objetivos -->
       <div class="card">
         <div class="card-title">Objetivos de miembros</div>
         <div class="chart-wrap">
           <canvas id="chartObjetivos"></canvas>
         </div>
-        <div class="chart-legend" id="legendObjetivos"></div>
+        <div class="chart-legend" id="legendObjetivos">Cargando datos...</div>
       </div>
 
+      <!-- Fila 3: Tabla ingresos -->
       <div class="card">
         <div class="card-title">Ingresos por plan</div>
         <div class="table-wrapper" style="margin-top:8px">

@@ -1,10 +1,11 @@
 // ============================================================
 // services/ui.js
 // Helpers de UI reutilizables: toast, formato, navbar.
+// Sistema de Roles optimizado para Gym Cúcuta
 // ============================================================
 import { Auth } from './auth.js'
 
-// ── Toast ────────────────────────────────────────────────────
+// ── Toast (Notificaciones) ──────────────────────────────────
 export function showToast(msg, color = '#38bdf8') {
     const t = document.createElement('div')
     t.className = 'toast'
@@ -15,34 +16,43 @@ export function showToast(msg, color = '#38bdf8') {
 }
 window.showToast = showToast
 
-// ── Formato ──────────────────────────────────────────────────
+// ── Formato Profesional (Cúcuta/Colombia) ───────────────────
 export function formatMoney(n) {
-    return '$' + Number(n || 0).toLocaleString('es-CO')
+    // Formato con signo de pesos y separadores de miles ($280.000)
+    return '$' + Number(n || 0).toLocaleString('es-CO', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+    });
 }
 export function formatDate(iso) {
     if (!iso) return '-'
-    return new Date(iso).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' })
+    return new Date(iso).toLocaleDateString('es-CO', { 
+        day: '2-digit', 
+        month: 'short', 
+        year: 'numeric' 
+    })
 }
 window.formatMoney = formatMoney
 window.formatDate = formatDate
 
-// ── Navbar ───────────────────────────────────────────────────
+// ── Navbar Dinámico por Roles ────────────────────────────────
 export function buildNavbar(activePage) {
     const user = Auth.getUser()
     
-    // Si no hay usuario, redirigir al login (index.html)
-    // Como ahora inicio.html e index.html están en la MISMA carpeta (/views), la ruta es directa.
+    // 1. Protección de ruta: si no hay sesión, al login
     if (!user) {
         window.location.href = 'index.html'; 
         return ''
     }
 
     const nombre = user.nombre || user.email || 'Usuario'
-    const rol = user.rol || 'cliente'
+    // Convertimos a minúsculas para evitar errores (Admin vs admin)
+    const rol = (user.rol || 'cliente').toLowerCase()
 
+    // 2. Definición de Menús según Rol
     const base = [{ href: 'inicio.html', label: 'Inicio', icon: '🏠' }]
 
-    const byRol = {
+    const menus = {
         cliente: [
             { href: 'eventos.html', label: 'Eventos', icon: '📅' },
             { href: 'soporte.html', label: 'Soporte', icon: '🛟' }
@@ -56,14 +66,19 @@ export function buildNavbar(activePage) {
             { href: 'personas.html', label: 'Personas', icon: '👥' },
             { href: 'informes.html', label: 'Informes', icon: '📊' },
             { href: 'eventos.html', label: 'Eventos', icon: '📅' },
-            { href: 'soporte.html', label: 'Soporte', icon: '🛟' },
-            { href: 'validaciones.html', label: 'Validaciones',icon: '✅' }
+            { href: 'validaciones.html', label: 'Validaciones', icon: '✅' },
+            { href: 'soporte.html', label: 'Soporte', icon: '🛟' }
         ]
     }
 
-    const links = [...base, ...(byRol[rol] || [])]
+    // 3. Construcción de los enlaces permitidos
+    const links = [...base, ...(menus[rol] || [])]
     const liItems = links.map(l => `
-        <li><a href="${l.href}" class="${l.href === activePage ? 'active' : ''}">${l.icon} ${l.label}</a></li>
+        <li>
+            <a href="${l.href}" class="${l.href === activePage ? 'active' : ''}">
+                ${l.icon} ${l.label}
+            </a>
+        </li>
     `).join('')
 
     return `
@@ -89,14 +104,16 @@ export function buildNavbar(activePage) {
         </button>
         <ul class="nav-links" id="nav-links-list">${liItems}</ul>
         <div class="nav-right" id="nav-right-bar">
-            <span class="nav-user">👤 ${nombre} (${rol})</span>
+            <span class="nav-user">👤 ${nombre} <small style="opacity:0.7">(${rol})</small></span>
             <button class="btn-logout" onclick="logout()">⏻ Salir</button>
         </div>
     </nav>`
 }
 
-// Al salir, redirigimos al index.html que está en la misma carpeta views
+// ── Cierre de Sesión ────────────────────────────────────────
 window.logout = () => {
-    Auth.logout();
-    window.location.href = 'index.html';
+    if(confirm('¿Estás seguro que deseas salir?')) {
+        Auth.logout();
+        window.location.href = 'index.html';
+    }
 }

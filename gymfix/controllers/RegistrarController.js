@@ -1,5 +1,5 @@
 // ============================================================
-// controllers/RegistrarController.js  (admin registra miembros)
+// controllers/RegistrarController.js  (Versión Optimizada)
 // ============================================================
 import { Auth }         from '../services/auth.js'
 import { showToast, buildNavbar, formatMoney, formatDate } from '../services/ui.js'
@@ -16,49 +16,62 @@ export const RegistrarController = {
   },
 
   async registrar() {
-    const nombre    = document.getElementById('r_nombre').value.trim()
-    const documento = document.getElementById('r_documento').value.trim()
-    const plan_id   = parseInt(document.getElementById('r_plan').value)
-    if (!nombre || !documento) { showToast('⚠️ Nombre y documento son obligatorios', '#fbbf24'); return }
-    if (!plan_id)               { showToast('⚠️ Debes seleccionar un plan', '#fbbf24'); return }
+    // 1. Captura de datos (Ajustado a los IDs del nuevo HTML)
+    const nombre    = document.getElementById('reg_nombre')?.value.trim()
+    const documento = document.getElementById('reg_documento')?.value.trim()
+    const email     = document.getElementById('reg_email')?.value.trim()
+
+    // 2. Validaciones básicas
+    if (!nombre || !documento || !email) { 
+        showToast('⚠️ Nombre, documento y email son obligatorios', '#fbbf24'); 
+        return; 
+    }
 
     try {
+      // 3. Verificar duplicados
       const dup = await PersonaModel.getByDocumento(documento)
-      if (dup.length > 0) { showToast('⚠️ Este documento ya está registrado', '#f87171'); return }
+      if (dup.length > 0) { 
+          showToast('⚠️ Este documento ya está registrado', '#f87171'); 
+          return; 
+      }
 
+      // 4. Inserción en Base de Datos con VALORES POR DEFECTO
       await PersonaModel.insert({
-        nombre, documento, plan_id,
-        nacimiento:    document.getElementById('r_nacimiento').value || null,
-        genero:        document.getElementById('r_genero').value,
-        telefono:      document.getElementById('r_telefono').value.trim(),
-        email:         document.getElementById('r_email').value.trim(),
-        direccion:     document.getElementById('r_direccion').value.trim(),
-        mensualidad:   parseFloat(document.getElementById('r_mensualidad').value) || 0,
-        fecha_inicio:  document.getElementById('r_inicio').value || null,
-        entrenador:    document.getElementById('r_entrenador').value.trim(),
-        objetivo:      document.getElementById('r_objetivo').value,
-        estado:        document.getElementById('r_estado').value,
-        peso:          parseFloat(document.getElementById('r_peso').value) || null,
-        altura:        parseFloat(document.getElementById('r_altura').value) || null,
-        emergencia:    document.getElementById('r_emergencia').value.trim(),
-        observaciones: document.getElementById('r_obs').value.trim(),
+        nombre, 
+        documento,
+        email,
+        telefono:      document.getElementById('reg_telefono')?.value.trim() || '',
+        nacimiento:    document.getElementById('reg_nacimiento')?.value || null,
+        genero:        document.getElementById('reg_genero')?.value || 'Otro',
+        
+        // ASIGNACIÓN AUTOMÁTICA (Ya que quitamos los campos del HTML)
+        plan_id:       null,        // Se asignará cuando el Admin lo apruebe
+        objetivo:      'General',   // Valor inicial neutro
+        estado:        'Pendiente', // Aparecerá en "Validaciones" para el Admin
+        
+        // Otros campos (opcionales con valores base)
+        mensualidad:   0,
         fecha_registro: new Date().toISOString(),
       })
 
-      showToast('✅ ¡Miembro registrado correctamente! 🔥')
+      showToast('✅ ¡Registro enviado! Espera la aprobación del Admin 🔥')
       this.limpiarForm()
+      
+      // Actualizar vista
       await Promise.all([this.cargarStats(), this.cargarUltimos()])
-      setTimeout(() => { window.location.href = 'personas.html' }, 1200)
+      
+      // Redirección suave
+      setTimeout(() => { window.location.href = 'index.html' }, 2000)
+
     } catch(e) {
-      console.error(e)
+      console.error("Error en registro:", e)
       showToast('❌ Error: ' + e.message, '#f87171')
     }
   },
 
   limpiarForm() {
-    ['r_nombre','r_documento','r_nacimiento','r_telefono','r_email',
-     'r_direccion','r_mensualidad','r_inicio','r_entrenador',
-     'r_peso','r_altura','r_emergencia','r_obs'].forEach(id => {
+    const ids = ['reg_nombre','reg_documento','reg_email','reg_telefono','reg_nacimiento','reg_password','reg_password_confirm'];
+    ids.forEach(id => {
       const el = document.getElementById(id)
       if (el) el.value = ''
     })
@@ -66,23 +79,30 @@ export const RegistrarController = {
 
   async cargarStats() {
     try {
-      const data     = await PersonaModel.getStats()
-      const total    = data.length
-      const activos  = data.filter(p => p.estado === 'Activo').length
+      const data = await PersonaModel.getStats()
+      const total = data.length
+      const activos = data.filter(p => p.estado === 'Activo').length
       const ingresos = data.reduce((s, p) => s + (parseFloat(p.mensualidad)||0), 0)
-      document.getElementById('regStats').innerHTML = `
-        <div style="display:flex;flex-direction:column;gap:12px">
-          <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-label">Total Miembros</div><div class="stat-value">${total}</div></div>
-          <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-label">Activos</div><div class="stat-value" style="color:#4ade80">${activos}</div></div>
-          <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-label">Ingresos Proyectados</div><div class="stat-value" style="font-size:1.2rem">${formatMoney(ingresos)}</div></div>
-        </div>`
+      
+      const statsEl = document.getElementById('regStats');
+      if (statsEl) {
+          statsEl.innerHTML = `
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-label">Total</div><div class="stat-value">${total}</div></div>
+              <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-label">Activos</div><div class="stat-value" style="color:#4ade80">${activos}</div></div>
+              <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-label">Ingresos</div><div class="stat-value">${formatMoney(ingresos)}</div></div>
+            </div>`
+      }
     } catch(e) { console.error(e) }
   },
 
   async cargarUltimos() {
+    const listEl = document.getElementById('ultimosReg');
+    if (!listEl) return;
+
     try {
       const data = await PersonaModel.getUltimos(5)
-      document.getElementById('ultimosReg').innerHTML = data.length
+      listEl.innerHTML = data.length
         ? data.map(p => `
           <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(56,189,248,0.07)">
             <div>

@@ -1,12 +1,10 @@
 // ============================================================
-// controllers/AuthController.js
-// Controla login y registro de usuarios.
+// controllers/AuthController.js - VERSIÓN OPTIMIZADA GYM CÚCUTA
 // ============================================================
 import { Auth }         from '../services/auth.js'
 import { showToast }    from '../services/ui.js'
 import { PersonaModel } from '../models/PersonaModel.js'
 import { SolicitudModel } from '../models/SolicitudModel.js'
-import { PlanModel }    from '../models/PlanModel.js'
 
 export const AuthController = {
 
@@ -49,8 +47,7 @@ export const AuthController = {
 
   // ── REGISTRO ─────────────────────────────────────────────
   async initRegistro() {
-    await this._cargarPlanes()
-
+    // Ya no cargamos planes aquí porque los quitamos del HTML
     window.setRol = (rol) => this._setRol(rol)
     window.registrarUsuario = () => this._registrar()
     window.togglePassReg = (id, btn) => {
@@ -66,48 +63,38 @@ export const AuthController = {
     this._rolActual = rol
     document.getElementById('btnCliente').classList.toggle('active', rol === 'cliente')
     document.getElementById('btnEntrenador').classList.toggle('active', rol === 'entrenador')
-    const secCliente    = document.getElementById('seccionCliente')
+    
     const secEntrenador = document.getElementById('seccionEntrenador')
     const info     = document.getElementById('rolInfo')
     const infoIcon = document.getElementById('rolInfoIcon')
     const infoText = document.getElementById('rolInfoText')
+    const btnReg   = document.getElementById('btnRegistrar')
+
     if (rol === 'entrenador') {
-      secCliente.style.display    = 'none'
       secEntrenador.style.display = 'block'
       info.className = 'rol-info warning'
       infoIcon.textContent = '⏳'
       infoText.textContent = 'Tu solicitud quedará pendiente hasta que el administrador la apruebe.'
-      document.getElementById('btnRegistrar').textContent = 'ENVIAR SOLICITUD'
+      btnReg.textContent = 'ENVIAR SOLICITUD'
     } else {
-      secCliente.style.display    = 'block'
       secEntrenador.style.display = 'none'
       info.className = 'rol-info'
       infoIcon.textContent = '✅'
       infoText.textContent = 'Tu cuenta se activará de inmediato al registrarte.'
-      document.getElementById('btnRegistrar').textContent = 'CREAR CUENTA'
+      btnReg.textContent = 'CREAR CUENTA'
     }
-  },
-
-  async _cargarPlanes() {
-    try {
-      const planes = await PlanModel.getAll()
-      const select = document.getElementById('reg_plan')
-      if (!select) return
-      select.innerHTML = '<option value="">— Selecciona un plan —</option>'
-      planes.forEach(p => {
-        const opt = document.createElement('option')
-        opt.value = p.id
-        opt.textContent = `${p.nombre}${p.precio ? ' — $' + Number(p.precio).toLocaleString('es-CO') : ''}`
-        select.appendChild(opt)
-      })
-    } catch(e) { console.error(e) }
   },
 
   _mostrarError(msg) {
     const box = document.getElementById('errorMsgReg')
-    document.getElementById('errorMsgText').textContent = msg
-    box.style.display = 'flex'
-    setTimeout(() => { box.style.display = 'none' }, 5000)
+    const txt = document.getElementById('errorMsgText')
+    if(txt) txt.textContent = msg
+    if(box) {
+        box.style.display = 'flex'
+        // Auto scroll al error para que el usuario lo vea
+        box.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        setTimeout(() => { box.style.display = 'none' }, 5000)
+    }
   },
 
   _mostrarExito(icon, titulo, mensaje) {
@@ -145,17 +132,18 @@ export const AuthController = {
   async _registrar() {
     const rol = this._rolActual || 'cliente'
     const btn = document.getElementById('btnRegistrar')
-    btn.disabled = true
-    btn.textContent = rol === 'entrenador' ? 'Enviando...' : 'Registrando...'
+    
     try {
       const nombre     = document.getElementById('reg_nombre').value.trim()
       const documento  = document.getElementById('reg_documento').value.trim()
       const email      = document.getElementById('reg_email').value.trim()
+      const password   = document.getElementById('reg_password').value
+      const passConf   = document.getElementById('reg_password_confirm').value
+      
+      // Datos opcionales
       const telefono   = document.getElementById('reg_telefono').value.trim()
       const nacimiento = document.getElementById('reg_nacimiento').value || null
       const genero     = document.getElementById('reg_genero').value
-      const password   = document.getElementById('reg_password').value
-      const passConf   = document.getElementById('reg_password_confirm').value
 
       if (!nombre)    { this._mostrarError('El nombre es obligatorio'); return }
       if (!documento) { this._mostrarError('El documento es obligatorio'); return }
@@ -164,43 +152,49 @@ export const AuthController = {
       if (password.length < 6) { this._mostrarError('Mínimo 6 caracteres'); return }
       if (password !== passConf) { this._mostrarError('Las contraseñas no coinciden'); return }
 
-      const dupDoc   = await PersonaModel.getByDocumento(documento)
-      if (dupDoc.length > 0) { this._mostrarError('Ya existe una cuenta con ese documento'); return }
-      const dupEmail = await PersonaModel.getByEmail(email)
-      if (dupEmail.length > 0) { this._mostrarError('Ya existe una cuenta con ese email'); return }
+      btn.disabled = true
+      btn.textContent = 'PROCESANDO...'
 
-      const base = { nombre, documento, email, telefono, nacimiento, genero, password }
+      const dupDoc   = await PersonaModel.getByDocumento(documento)
+      if (dupDoc.length > 0) { throw new Error('Ya existe una cuenta con ese documento') }
+      
+      const dupEmail = await PersonaModel.getByEmail(email)
+      if (dupEmail.length > 0) { throw new Error('Ya existe una cuenta con ese email') }
+
+      const base = { 
+        nombre, documento, email, telefono, nacimiento, genero, password,
+        rol: rol,
+        fecha_registro: new Date().toISOString()
+      }
 
       if (rol === 'cliente') {
-        const plan_id  = parseInt(document.getElementById('reg_plan').value)
-        const objetivo = document.getElementById('reg_objetivo').value
-        if (!plan_id) { this._mostrarError('Debes seleccionar un plan'); return }
+        // Registro directo como Cliente (sin plan obligatorio por ahora)
         await PersonaModel.insert({
-          ...base, plan_id, objetivo, estado: 'Activo',
-          fecha_registro: new Date().toISOString(),
-          fecha_inicio:   new Date().toISOString().split('T')[0],
+          ...base, 
+          plan_id: null, 
+          objetivo: 'General', 
+          estado: 'Activo',
+          fecha_inicio: new Date().toISOString().split('T')[0]
         })
         this._mostrarExito('✅', '¡Registro exitoso!', `Bienvenido/a ${nombre}. Ya puedes iniciar sesión.`)
       } else {
+        // Registro como solicitud de Entrenador
         const especialidad = document.getElementById('reg_especialidad').value.trim()
-        const motivacion   = document.getElementById('reg_motivacion').value.trim()
-        if (!especialidad) { this._mostrarError('La especialidad es obligatoria'); return }
-        const existe = await SolicitudModel.existePendiente(documento)
-        if (existe) { this._mostrarError('Ya tienes una solicitud pendiente'); return }
+        if (!especialidad) { throw new Error('La especialidad es obligatoria para entrenadores') }
+        
         await SolicitudModel.insert({
-          ...base, especialidad, motivacion: motivacion || null,
-          estado: 'pendiente', fecha_solicitud: new Date().toISOString(),
+          ...base,
+          especialidad,
+          estado: 'Pendiente'
         })
-        this._mostrarExito('⏳', 'Solicitud enviada', 'Tu solicitud será revisada por el administrador.')
+        this._mostrarExito('⏳', 'Solicitud enviada', `Hola ${nombre}, tu perfil de entrenador será revisado por el administrador.`)
       }
+
     } catch(ex) {
-      console.error(ex)
-      this._mostrarError('Error inesperado: ' + ex.message)
+      this._mostrarError(ex.message)
     } finally {
       btn.disabled = false
-      btn.textContent = (this._rolActual || 'cliente') === 'entrenador' ? 'ENVIAR SOLICITUD' : 'CREAR CUENTA'
+      btn.textContent = rol === 'entrenador' ? 'ENVIAR SOLICITUD' : 'CREAR CUENTA'
     }
-  },
-
-  _rolActual: 'cliente'
+  }
 }
