@@ -531,3 +531,12 @@ body {
 
 /* Hamburger oculto en desktop */
 .nav-toggle { display: none; }
+
+body {
+  background-color: #060814; /* Azul oscuro profundo militar, destaca el neón */
+  color: #f8fafc;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+

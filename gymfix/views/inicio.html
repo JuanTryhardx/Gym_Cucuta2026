@@ -4,45 +4,98 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Inicio - App Gym Cúcuta</title>
+  <!-- Hojas de estilos del proyecto -->
   <link rel="stylesheet" href="../assets/css/main.css"/>
   <link rel="stylesheet" href="../assets/css/inicio.css"/>
+  <!-- Iconos profesionales para tableros administrativos -->
+  <link rel="stylesheet" href="https://cloudflare.com"/>
 </head>
 <body>
+
+  <!-- Contenedor de la barra de navegación dinámica -->
   <div id="navbar-container"></div>
-  <div class="page-content">
-    <div class="hero-banner">
+
+  <!-- Contenido principal del panel -->
+  <main class="page-content">
+    
+    <!-- Banner de Bienvenida -->
+    <section class="hero-banner">
       <div class="hero-text">
         <h1>¡Bienvenido al Panel<br><span>App Gym Cúcuta</span>!</h1>
         <p>Gestiona tu gimnasio de manera fácil, rápida y profesional.</p>
       </div>
-      <div class="hero-img">💪</div>
-    </div>
-    <div class="stats-grid" id="statsGrid"></div>
+      <!-- Reemplazamos el emoji suelto por un icono administrativo estilizado -->
+      <div class="hero-img">
+        <i class="fas fa-dumbbell" style="font-size: 3.5rem; color: var(--primary-color, #00ff66); opacity: 0.8;"></i>
+      </div>
+    </section>
+
+    <!-- Rejilla de Estadísticas Dinámicas (Cargadas desde Supabase) -->
+    <section class="stats-grid" id="statsGrid"></section>
+
+    <!-- Cuerpo del Dashboard -->
     <div class="home-grid">
-      <div class="card noticias-card">
-        <div class="card-title">📢 Noticias y Actualizaciones
-          <button class="btn-secondary" style="margin-left:auto;font-size:0.78rem" onclick="openNoticiaModal()">+ Publicar</button>
+      
+      <!-- Columna Izquierda: Contenido Principal -->
+      <section class="card noticias-card">
+        <div class="card-title">
+          <span><i class="fas fa-bullhorn" style="margin-right: 8px;"></i> Noticias y Actualizaciones</span>
+          <button class="btn-secondary" style="margin-left:auto; font-size:0.78rem; display: flex; align-items: center; gap: 5px;" onclick="openNoticiaModal()">
+            <i class="fas fa-plus"></i> Publicar
+          </button>
         </div>
+        <!-- Listado dinámico de noticias -->
         <div id="noticiasLista"></div>
-      </div>
-      <div class="side-col">
-        <div class="card">
-          <div class="card-title">⚡ Acciones Rápidas</div>
+      </section>
+
+      <!-- Columna Derecha: Herramientas y Agenda -->
+      <aside class="side-col">
+        
+        <!-- Tarjeta de Acciones Rápidas -->
+        <article class="card">
+          <div class="card-title"><i class="fas fa-bolt" style="margin-right: 8px;"></i> Acciones Rápidas</div>
           <div class="quick-actions">
-            <a href="registrar.html" class="qa-btn">➕ Registrar Persona</a>
-            <a href="personas.html" class="qa-btn">👥 Ver Miembros</a>
-            <a href="informes.html" class="qa-btn">📊 Ver Informes</a>
-            <a href="eventos.html" class="qa-btn">📅 Eventos</a>
+            <a href="registrar.html" class="qa-btn"><i class="fas fa-user-plus"></i> Registrar Persona</a>
+            <a href="personas.html" class="qa-btn"><i class="fas fa-users"></i> Ver Miembros</a>
+            <a href="informes.html" class="qa-btn"><i class="fas fa-chart-bar"></i> Ver Informes</a>
+            <a href="eventos.html" class="qa-btn"><i class="fas fa-calendar-alt"></i> Eventos</a>
           </div>
-        </div>
-        <div class="card" style="margin-top:16px">
-          <div class="card-title">📅 Próximos Eventos</div>
+        </article>
+
+        <!-- Tarjeta de Próximos Eventos -->
+        <article class="card" style="margin-top:16px">
+          <div class="card-title"><i class="fas fa-calendar-check" style="margin-right: 8px;"></i> Próximos Eventos</div>
+          <!-- Listado dinámico de eventos -->
           <div id="proximosEventos"></div>
+        </article>
+
+      </aside>
+    </div>
+  </main>
+
+  <!-- MODAL PARA PUBLICAR NOTICIAS (Estructura oculta por defecto para que funcione tu JS) -->
+  <div id="noticiaModal" class="modal-backup" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); align-items: center; justify-content: center;">
+    <div class="card" style="width: 90%; max-width: 500px; padding: 20px; position: relative;">
+      <div class="card-title" style="margin-bottom: 15px;">Nueva Publicación</div>
+      <form id="formNuevaNoticia">
+        <div style="margin-bottom: 12px;">
+          <label style="display:block; margin-bottom:5px; font-size:0.9rem;">Título de la Noticia</label>
+          <input type="text" id="noticiaTitulo" required style="width:100%; padding:8px; background:#222; border:1px solid #444; color:#fff; border-radius:4px;">
         </div>
-      </div>
+        <div style="margin-bottom: 15px;">
+          <label style="display:block; margin-bottom:5px; font-size:0.9rem;">Contenido / Mensaje</label>
+          <textarea id="noticiaContenido" rows="4" required style="width:100%; padding:8px; background:#222; border:1px solid #444; color:#fff; border-radius:4px; resize:none;"></textarea>
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+          <button type="button" class="btn-secondary" onclick="closeNoticiaModal()" style="background:#444;">Cancelar</button>
+          <button type="submit" class="btn-primary" style="background:#3b82f6; color:#fff; font-weight:bold; border:none; padding:8px 15px; border-radius:4px; cursor:pointer;">Guardar</button>
+
+        </div>
+      </form>
     </div>
   </div>
 
+  <!-- Lógica de control del Dashboard -->
   <script type="module" src="../controllers/InicioController.js"></script>
 </body>
 </html>
