@@ -73,27 +73,48 @@
     </div>
   </main>
 
-  <!-- MODAL PARA PUBLICAR NOTICIAS (Estructura oculta por defecto para que funcione tu JS) -->
-  <div id="noticiaModal" class="modal-backup" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); align-items: center; justify-content: center;">
-    <div class="card" style="width: 90%; max-width: 500px; padding: 20px; position: relative;">
-      <div class="card-title" style="margin-bottom: 15px;">Nueva Publicación</div>
-      <form id="formNuevaNoticia">
+  <!-- MODAL DE PUBLICACIÓN-->
+  <div id="noticiaModal" style="display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.75); align-items: center; justify-content: center;">
+    <div class="card" style="width: 90%; max-width: 550px; padding: 25px; background: #141b2d; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+      <div class="card-title" style="font-size: 1.15rem; font-weight: 600; color: #fff; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;">Nueva Publicación Administrativa</div>
+      
+      <form id="formNuevaNoticia" onsubmit="event.preventDefault();">
         <div style="margin-bottom: 12px;">
-          <label style="display:block; margin-bottom:5px; font-size:0.9rem;">Título de la Noticia</label>
-          <input type="text" id="noticiaTitulo" required style="width:100%; padding:8px; background:#222; border:1px solid #444; color:#fff; border-radius:4px;">
+          <label style="display:block; margin-bottom:5px; font-size:0.85rem; color:#9ca3af;">Título de la Publicación *</label>
+          <input type="text" id="noticiaTitulo" required style="width:100%; padding:10px; background:#1f2937; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; box-sizing: border-box;">
         </div>
-        <div style="margin-bottom: 15px;">
-          <label style="display:block; margin-bottom:5px; font-size:0.9rem;">Contenido / Mensaje</label>
-          <textarea id="noticiaContenido" rows="4" required style="width:100%; padding:8px; background:#222; border:1px solid #444; color:#fff; border-radius:4px; resize:none;"></textarea>
+        
+        <div style="margin-bottom: 12px; display: flex; gap: 12px;">
+          <div style="flex: 1;">
+            <label style="display:block; margin-bottom:5px; font-size:0.85rem; color:#9ca3af;">Categoría / Tipo *</label>
+            <select id="noticiaTipo" style="width:100%; padding:10px; background:#1f2937; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; box-sizing: border-box;">
+              <option value="Novedad">Novedad</option>
+              <option value="Actualización">Actualización</option>
+              <option value="Importante">Importante</option>
+              <option value="Motivación">Motivación (Video)</option>
+              <option value="Salud">Comida Saludable</option>
+            </select>
+          </div>
+          <div style="flex: 1;">
+            <label style="display:block; margin-bottom:5px; font-size:0.85rem; color:#9ca3af;">Enlace de Imagen / Miniatura</label>
+            <input type="url" id="noticiaUrlMedia" placeholder="https://ejemplo.com" style="width:100%; padding:10px; background:#1f2937; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; box-sizing: border-box;">
+          </div>
         </div>
+        
+        <div style="margin-bottom: 18px;">
+          <label style="display:block; margin-bottom:5px; font-size:0.85rem; color:#9ca3af;">Contenido / Descripción *</label>
+          <textarea id="noticiaContenido" rows="3" required style="width:100%; padding:10px; background:#1f2937; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; resize:none; box-sizing: border-box;"></textarea>
+        </div>
+        
         <div style="display:flex; justify-content:flex-end; gap:10px;">
-          <button type="button" class="btn-secondary" onclick="closeNoticiaModal()" style="background:#444;">Cancelar</button>
-          <button type="submit" class="btn-primary" style="background:#3b82f6; color:#fff; font-weight:bold; border:none; padding:8px 15px; border-radius:4px; cursor:pointer;">Guardar</button>
-
+          <button type="button" class="btn-secondary" onclick="closeNoticiaModal()" style="background:rgba(255,255,255,0.05); color:#fff; padding:8px 16px; border:1px solid rgba(255,255,255,0.1); border-radius:6px; cursor:pointer;">Cancelar</button>
+          <button type="button" onclick="publicarNoticia()" style="background:#3b82f6; color:#fff; font-weight:bold; border:none; padding:8px 20px; border-radius:6px; cursor:pointer;">Guardar Publicación</button>
         </div>
       </form>
     </div>
   </div>
+
+
 
   <!-- Lógica de control del Dashboard -->
   <script type="module" src="../controllers/InicioController.js"></script>

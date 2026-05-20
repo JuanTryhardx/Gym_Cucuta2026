@@ -125,28 +125,122 @@
   border-color: var(--blue-accent);
 }
 
-/* LISTADO DE NOTICIAS */
-.noticia-item {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
-  padding: 16px 0 !important;
+/* Contenedor general del listado de noticias */
+#noticiasLista {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 15px;
 }
 
-.noticia-item:last-child {
-  border-bottom: none !important;
+/* Contenedor general de la tarjeta horizontal */
+.noticia-item-premium {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 20px; /* Ampliamos el espaciado interno */
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+  position: relative; /* Obligatorio para fijar el botón de borrar */
 }
 
-.noticia-title {
-  color: #ffffff !important;
-  font-size: 1.05rem !important;
-  font-weight: 600 !important;
-  margin-bottom: 4px;
+.noticia-item-premium:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(59, 130, 246, 0.3);
 }
 
-.noticia-content {
-  color: #9ca3af !important;
-  font-size: 0.95rem;
-  line-height: 1.4;
+/* Imagen sustancialmente más grande y alargada (Formato Panorámico) */
+.noticia-media-wrapper {
+  width: 160px;   /* Incrementado de 100px a 160px a lo largo */
+  height: 90px;   /* Relación de aspecto cinemática perfecta */
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
+
+.noticia-media-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Recorta la imagen sin deformarla */
+}
+
+.noticia-media-wrapper i {
+  color: #3b82f6;
+  font-size: 1.8rem;
+}
+
+/* Contenido de textos centrales */
+.noticia-body-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* 🔥 FIX DEFECTO DE BOTÓN: Ubicación Absoluta e independiente para evitar colapsos */
+.btn-delete-noticia {
+  position: absolute;
+  top: 15px;
+  right: 15px; /* Fijado firmemente en la esquina superior derecha */
+  background: rgba(239, 68, 68, 0.1); /* Fondo rojizo suave ultra profesional */
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.btn-delete-noticia:hover {
+  background: #ef4444;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+}
+
+/* Ajuste del bloque de etiquetas para que no choque con el botón */
+.noticia-pill-tag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 4px;
+  text-transform: capitalize;
+  white-space: nowrap;
+  margin-top: 25px; /* Lo baja sutilmente para dar espacio al basurero de arriba */
+}
+
+
+/* Colores dinámicos de las etiquetas de tu Figma */
+.tag-novedad { background: rgba(59, 130, 246, 0.1); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.2); }
+.tag-actualizacion { background: rgba(156, 163, 175, 0.1); color: #e5e7eb; border: 1px solid rgba(156, 163, 175, 0.2); }
+.tag-importante { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); }
+.tag-motivacion { background: rgba(139, 92, 246, 0.1); color: #a78bfa; border: 1px solid rgba(139, 92, 246, 0.2); }
+.tag-salud { background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); }
+
+/* Botón flotante para eliminar dentro de la tarjeta */
+.btn-delete-noticia {
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 6px;
+  transition: color 0.2s;
+}
+.btn-delete-noticia:hover {
+  color: #ef4444;
+}
+
 
 /* SECCIÓN DE ACCIONES RÁPIDAS EXCLUSIVAMENTE CON DETALLES AZULES */
 .quick-actions {
@@ -186,3 +280,87 @@
   .stats-grid { grid-template-columns: 1fr; }
   .home-grid { grid-template-columns: 1fr; }
 }
+/* ============================================================
+   SISTEMA DE ANIMACIONES Y MICROINTERACCIONES PREMIUM
+   ============================================================ */
+
+/* 1. DECLARACIÓN DE EFECTOS DE ENTRADA SUAVE (FADE IN UP) */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Aplicamos la animación de entrada a los bloques principales */
+.stats-grid {
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.home-grid {
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* 2. EFECTOS AVANZADOS DE INTERACCIÓN EN LAS TARJETAS (HOVER) */
+.noticia-item-premium {
+  /* Transición suave para todos los cambios de estado */
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              background-color 0.3s ease, 
+              border-color 0.3s ease, 
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.noticia-item-premium:hover {
+  transform: translateY(-4px) scale(1.01); /* Micro elevación */
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: rgba(59, 130, 246, 0.4) !important; /* Brillo azul suave */
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(59, 130, 246, 0.05);
+}
+
+/* 3. ZOOM CINEMÁTICO EN LA MINIATURA PANORÁMICA */
+.noticia-media-wrapper img {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.noticia-item-premium:hover .noticia-media-wrapper img {
+  transform: scale(1.1); /* Efecto de acercamiento lento de la foto */
+}
+
+/* 4. ANIMACIÓN DE ENTRADA INDIVIDUAL PARA CADA NOTICIA */
+@keyframes popIn {
+  0% { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.noticia-item-premium {
+  animation: popIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* 5. INTERACCIÓN DE ACCIONES RÁPIDAS (EFECTO BOTÓN LÍQUIDO) */
+.qa-btn {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+              background-color 0.2s ease, 
+              border-color 0.2s ease, 
+              padding-left 0.3s ease !important;
+}
+
+.qa-btn:hover {
+  background-color: rgba(59, 130, 246, 0.06) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+  color: #ffffff !important;
+  padding-left: 22px; /* Se desplaza sutilmente a la derecha al posarse */
+  transform: translateY(-2px);
+}
+
+/* 6. ROTACIÓN DE ICONO EN BOTÓN ELIMINAR */
+.btn-delete-noticia i {
+  transition: transform 0.3s ease;
+}
+.btn-delete-noticia:hover i {
+  transform: rotate(15deg) scale(1.1); /* Hace que el bote de basura se incline un poco */
+}
+
