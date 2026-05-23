@@ -2,7 +2,7 @@
 // controllers/EventosController.js
 // ============================================================
 import { Auth }        from '../services/auth.js'
-import { showToast, buildNavbar } from '../services/ui.js'
+import { showToast, buildNavbar, showLoader, hideLoader, swalConfirm, swalError } from '../services/ui.js'
 import { EventoModel } from '../models/EventoModel.js'
 
 const TIPO_COLORS = { clase:'#38bdf8', evento:'#c084fc', evaluacion:'#4ade80', mantenimiento:'#fbbf24', otro:'#f87171' }
@@ -19,7 +19,9 @@ export const EventosController = {
     window.closeEvento    = ()    => this.closeEvento()
     window.guardarEvento  = ()    => this.guardar()
     window.eliminarEvento = (id)  => this.eliminar(id)
+    showLoader('Cargando eventos...')
     await this.cargar()
+    hideLoader()
   },
 
   async cargar() {
@@ -124,7 +126,9 @@ export const EventosController = {
       })
       this.closeEvento()
       showToast('✅ Evento guardado')
-      await this.cargar()
+      showLoader('Cargando eventos...')
+    await this.cargar()
+    hideLoader()
       if (this._selectedDay === fecha) this._renderDayEvents(fecha)
     } catch(e) { console.error(e); showToast('❌ Error al guardar', '#f87171') }
   },
@@ -134,7 +138,9 @@ export const EventosController = {
     try {
       await EventoModel.delete(id)
       showToast('🗑️ Evento eliminado', '#f87171')
-      await this.cargar()
+      showLoader('Cargando eventos...')
+    await this.cargar()
+    hideLoader()
       if (this._selectedDay) this._renderDayEvents(this._selectedDay)
     } catch(e) { showToast('❌ Error al eliminar', '#f87171') }
   },

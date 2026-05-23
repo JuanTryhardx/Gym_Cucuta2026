@@ -2,7 +2,7 @@
 // controllers/SoporteController.js
 // ============================================================
 import { Auth }        from '../services/auth.js'
-import { showToast, buildNavbar, formatDate } from '../services/ui.js'
+import { showToast, buildNavbar, formatDate, showLoader, hideLoader } from '../services/ui.js'
 import { TicketModel } from '../models/TicketModel.js'
 
 const PRIORIDAD_COLORS = { alta:'#f87171', media:'#fbbf24', baja:'#4ade80' }

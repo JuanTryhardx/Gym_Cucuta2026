@@ -1,366 +1,223 @@
 /* ============================================================
-   ASSETS/CSS/INICIO.CSS - IDENTIDAD UNIFICADA EN AZUL
+   inicio.css - Dashboard Visual Mejorado
    ============================================================ */
 
-/* VARIABLES DE DISEÑO CORPORATIVO AZUL */
 :root {
-  --blue-accent: #3b82f6;    /* Azul brillante corporativo del panel */
-  --blue-glow: rgba(59, 130, 246, 0.4);
-  --bg-banner: #111827;      /* Gris oscuro neutro */
-  --bg-card-dark: #1f2937;  /* Color sólido de las tarjetas */
-  --border-light: rgba(255, 255, 255, 0.08);
-  --text-gray: #9ca3af;
+  --blue-accent: #38bdf8;
+  --blue-glow: rgba(56,189,248,0.35);
+  --bg-card-dark: rgba(17,24,39,0.95);
+  --border-light: rgba(56,189,248,0.12);
 }
 
-/* BANNER DE BIENVENIDA MANTENIENDO EL ALINEADO ORIGINAL */
+/* ── Hero Banner ─────────────────────────────────────────── */
 .hero-banner {
-  background-color: var(--bg-banner);
-  border: 1px solid var(--border-light);
-  border-radius: 12px;
-  padding: 32px;
+  background: linear-gradient(135deg, #0d1f35 0%, #0a0f1a 60%, #0d2440 100%);
+  border: 1px solid rgba(56,189,248,0.2);
+  border-radius: 16px;
+  padding: 36px 36px;
   display: flex;
-  justify-content: space-between; /* Texto izquierda, icono derecha */
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
 }
-
+.hero-banner::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 80% 50%, rgba(56,189,248,0.08) 0%, transparent 65%);
+  pointer-events: none;
+}
 .hero-text h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  line-height: 1.2;
-  color: #ffffff;
-  margin: 0 0 8px 0;
+  font-size: 2.1rem; font-weight: 800; line-height: 1.2;
+  color: #fff; margin: 0 0 10px 0;
+}
+.hero-text h1 span { color: var(--blue-accent); }
+.hero-text p { color: #94a3b8; font-size: 1rem; margin: 0; }
+.hero-img {
+  font-size: 4rem; opacity: 0.7;
+  animation: floatIcon 3s ease-in-out infinite;
+}
+@keyframes floatIcon {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
 }
 
-/* El texto destacado ahora es azul */
-.hero-text h1 span {
-  color: var(--blue-accent);
-}
-
-.hero-text p {
-  color: var(--text-gray);
-  font-size: 1rem;
-  margin: 0;
-}
-
-
+/* ── Stats Grid ───────────────────────────────────────────── */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* Cambio a 4 columnas simétricas */
-  gap: 20px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
   margin-bottom: 24px;
 }
-
-
 .stat-card {
-  background-color: var(--bg-card-dark);
+  background: var(--bg-card-dark);
   border: 1px solid var(--border-light);
-  border-radius: 10px;
-  padding: 20px;
+  border-radius: 14px;
+  padding: 20px 20px 16px;
   position: relative;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: fadeInCard 0.5s ease both;
 }
-
-.stat-icon {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  font-size: 1.4rem;
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
 }
+@keyframes fadeInCard {
+  from { opacity:0; transform:translateY(12px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.stat-total    { border-top: 3px solid #38bdf8; }
+.stat-activos  { border-top: 3px solid #4ade80; }
+.stat-inactivos{ border-top: 3px solid #f87171; }
+.stat-ingresos { border-top: 3px solid #3b82f6; }
 
+.stat-icon-wrap {
+  font-size: 1.5rem; margin-bottom: 8px;
+}
 .stat-label {
-  color: var(--text-gray);
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 6px;
+  color: #94a3b8; font-size: 0.75rem;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px;
+  margin-bottom: 4px;
 }
-
 .stat-value {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #ffffff;
+  font-size: 2.2rem; font-weight: 800; color: #fff;
+  line-height: 1; margin-bottom: 10px;
 }
+.stat-bar-wrap {
+  background: rgba(255,255,255,0.06);
+  border-radius: 4px;
+  height: 5px;
+  margin-bottom: 6px;
+  overflow: hidden;
+}
+.stat-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s ease;
+}
+.stat-sub { font-size: 0.73rem; color: #6b7280; }
 
-/* CONTENEDOR EN DOS COLUMNAS DE LA PARTE INFERIOR (Mantiene tu home-grid original) */
+/* ── Home Grid ────────────────────────────────────────────── */
 .home-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr; /* Columna izquierda doble de ancha */
+  grid-template-columns: 2fr 1fr;
   gap: 24px;
   align-items: start;
 }
 
-/* TARJETAS DEL DASHBOARD */
+/* ── Card base ────────────────────────────────────────────── */
 .card {
-  background-color: var(--bg-card-dark);
+  background: var(--bg-card-dark);
   border: 1px solid var(--border-light);
-  border-radius: 10px;
+  border-radius: 14px;
   padding: 24px;
 }
-
 .card-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #ffffff;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: flex; align-items: center;
+  font-weight: 700; font-size: 0.95rem;
+  color: #e2e8f0;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-light);
 }
 
-/* BOTÓN DE PUBLICAR SUTÍL CON LÍNEA AZUL SUTÍL EN HOVER */
-.btn-secondary {
-  background: rgba(255, 255, 255, 0.05);
-  color: #ffffff;
+/* ── Noticias Feed ────────────────────────────────────────── */
+.noticia-item {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  position: relative;
+  animation: fadeInCard 0.4s ease both;
+}
+.noticia-item:last-child { border-bottom: none; }
+.noticia-icon-placeholder {
+  width: 64px; height: 64px;
+  background: rgba(56,189,248,0.08);
   border: 1px solid var(--border-light);
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem; flex-shrink: 0;
 }
-
-.btn-secondary:hover {
-  background: rgba(59, 130, 246, 0.1);
-  border-color: var(--blue-accent);
-}
-
-/* Contenedor general del listado de noticias */
-#noticiasLista {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-top: 15px;
-}
-
-/* Contenedor general de la tarjeta horizontal */
-.noticia-item-premium {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 20px; /* Ampliamos el espaciado interno */
-  display: flex;
-  gap: 24px;
-  align-items: center;
-  justify-content: space-between;
-  transition: all 0.2s ease;
-  position: relative; /* Obligatorio para fijar el botón de borrar */
-}
-
-.noticia-item-premium:hover {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(59, 130, 246, 0.3);
-}
-
-/* Imagen sustancialmente más grande y alargada (Formato Panorámico) */
-.noticia-media-wrapper {
-  width: 160px;   /* Incrementado de 100px a 160px a lo largo */
-  height: 90px;   /* Relación de aspecto cinemática perfecta */
-  border-radius: 8px;
-  overflow: hidden;
-  flex-shrink: 0;
-  background: #111827;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.noticia-media-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Recorta la imagen sin deformarla */
-}
-
-.noticia-media-wrapper i {
-  color: #3b82f6;
-  font-size: 1.8rem;
-}
-
-/* Contenido de textos centrales */
-.noticia-body-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-/* 🔥 FIX DEFECTO DE BOTÓN: Ubicación Absoluta e independiente para evitar colapsos */
-.btn-delete-noticia {
-  position: absolute;
-  top: 15px;
-  right: 15px; /* Fijado firmemente en la esquina superior derecha */
-  background: rgba(239, 68, 68, 0.1); /* Fondo rojizo suave ultra profesional */
-  border: 1px solid rgba(239, 68, 68, 0.2);
-  color: #ef4444;
-  cursor: pointer;
-  padding: 6px 10px;
-  border-radius: 6px;
-  transition: all 0.2s;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-}
-
-.btn-delete-noticia:hover {
-  background: #ef4444;
-  color: #ffffff;
-  box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
-}
-
-/* Ajuste del bloque de etiquetas para que no choque con el botón */
-.noticia-pill-tag {
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 5px 12px;
-  border-radius: 4px;
-  text-transform: capitalize;
+.noticia-body { flex: 1; min-width: 0; }
+.noticia-header-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.noticia-titulo { font-weight: 700; font-size: 0.92rem; color: #fff; margin: 0 0 4px 0; }
+.noticia-texto  { font-size: 0.82rem; color: #9ca3af; margin: 0; line-height: 1.5;
+  overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.noticia-date   { font-size: 0.72rem; color: #6b7280; margin-left: auto; white-space: nowrap; }
+.noticia-pill {
+  font-size: 0.68rem; font-weight: 800; letter-spacing: 0.5px;
+  text-transform: uppercase; padding: 3px 10px; border-radius: 20px;
   white-space: nowrap;
-  margin-top: 25px; /* Lo baja sutilmente para dar espacio al basurero de arriba */
+}
+.tag-novedad      { background: rgba(56,189,248,0.15); color: #38bdf8; }
+.tag-actualizacion{ background: rgba(59,130,246,0.15); color: #60a5fa; }
+.tag-importante   { background: rgba(239,68,68,0.15);  color: #f87171; }
+.tag-motivacion   { background: rgba(168,85,247,0.15); color: #c084fc; }
+.tag-salud        { background: rgba(34,197,94,0.15);  color: #4ade80; }
+
+.btn-del-noticia {
+  background: none; border: none; color: #6b7280;
+  cursor: pointer; font-size: 0.8rem; padding: 4px 6px;
+  border-radius: 6px; transition: all 0.15s; flex-shrink: 0;
+}
+.btn-del-noticia:hover { background: rgba(239,68,68,0.15); color: #f87171; }
+.empty-feed {
+  text-align: center; color: #6b7280;
+  padding: 32px; font-size: 0.9rem;
 }
 
-
-/* Colores dinámicos de las etiquetas de tu Figma */
-.tag-novedad { background: rgba(59, 130, 246, 0.1); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.2); }
-.tag-actualizacion { background: rgba(156, 163, 175, 0.1); color: #e5e7eb; border: 1px solid rgba(156, 163, 175, 0.2); }
-.tag-importante { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); }
-.tag-motivacion { background: rgba(139, 92, 246, 0.1); color: #a78bfa; border: 1px solid rgba(139, 92, 246, 0.2); }
-.tag-salud { background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); }
-
-/* Botón flotante para eliminar dentro de la tarjeta */
-.btn-delete-noticia {
-  background: none;
-  border: none;
-  color: #6b7280;
-  cursor: pointer;
-  padding: 6px;
-  transition: color 0.2s;
-}
-.btn-delete-noticia:hover {
-  color: #ef4444;
-}
-
-
-/* SECCIÓN DE ACCIONES RÁPIDAS EXCLUSIVAMENTE CON DETALLES AZULES */
+/* ── Quick Actions ────────────────────────────────────────── */
 .quick-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
 }
-
 .qa-btn {
-  background-color: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--border-light);
-  color: #e5e7eb;
-  padding: 12px 16px;
-  border-radius: 6px;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 6px; padding: 16px 10px;
+  background: rgba(56,189,248,0.06);
+  border: 1px solid rgba(56,189,248,0.15);
+  border-radius: 12px;
+  color: #94a3b8;
   text-decoration: none;
-  font-weight: 500;
-  font-size: 0.95rem;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  font-size: 0.8rem; font-weight: 600;
+  text-align: center;
   transition: all 0.2s;
 }
-
-/* Cambiamos el icono de las acciones rápidas a azul */
-.qa-btn i {
+.qa-btn:hover {
+  background: rgba(56,189,248,0.14);
   color: var(--blue-accent);
-}
-
-.qa-btn:hover {
-  background-color: rgba(59, 130, 246, 0.05);
-  border-color: rgba(59, 130, 246, 0.3);
-  color: #ffffff;
-}
-
-/* RESPONSIVE AUTOMÁTICO PARA PANTALLAS CHICAS */
-@media (max-width: 1024px) {
-  .stats-grid { grid-template-columns: 1fr; }
-  .home-grid { grid-template-columns: 1fr; }
-}
-/* ============================================================
-   SISTEMA DE ANIMACIONES Y MICROINTERACCIONES PREMIUM
-   ============================================================ */
-
-/* 1. DECLARACIÓN DE EFECTOS DE ENTRADA SUAVE (FADE IN UP) */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Aplicamos la animación de entrada a los bloques principales */
-.stats-grid {
-  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.home-grid {
-  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-/* 2. EFECTOS AVANZADOS DE INTERACCIÓN EN LAS TARJETAS (HOVER) */
-.noticia-item-premium {
-  /* Transición suave para todos los cambios de estado */
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
-              background-color 0.3s ease, 
-              border-color 0.3s ease, 
-              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
-}
-
-.noticia-item-premium:hover {
-  transform: translateY(-4px) scale(1.01); /* Micro elevación */
-  background: rgba(255, 255, 255, 0.04) !important;
-  border-color: rgba(59, 130, 246, 0.4) !important; /* Brillo azul suave */
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(59, 130, 246, 0.05);
-}
-
-/* 3. ZOOM CINEMÁTICO EN LA MINIATURA PANORÁMICA */
-.noticia-media-wrapper img {
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
-}
-
-.noticia-item-premium:hover .noticia-media-wrapper img {
-  transform: scale(1.1); /* Efecto de acercamiento lento de la foto */
-}
-
-/* 4. ANIMACIÓN DE ENTRADA INDIVIDUAL PARA CADA NOTICIA */
-@keyframes popIn {
-  0% { transform: scale(0.95); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-.noticia-item-premium {
-  animation: popIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-/* 5. INTERACCIÓN DE ACCIONES RÁPIDAS (EFECTO BOTÓN LÍQUIDO) */
-.qa-btn {
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
-              background-color 0.2s ease, 
-              border-color 0.2s ease, 
-              padding-left 0.3s ease !important;
-}
-
-.qa-btn:hover {
-  background-color: rgba(59, 130, 246, 0.06) !important;
-  border-color: rgba(59, 130, 246, 0.3) !important;
-  color: #ffffff !important;
-  padding-left: 22px; /* Se desplaza sutilmente a la derecha al posarse */
   transform: translateY(-2px);
+  border-color: rgba(56,189,248,0.3);
 }
+.qa-btn i { font-size: 1.3rem; }
 
-/* 6. ROTACIÓN DE ICONO EN BOTÓN ELIMINAR */
-.btn-delete-noticia i {
-  transition: transform 0.3s ease;
+/* ── Eventos mini ─────────────────────────────────────────── */
+.evento-mini {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
-.btn-delete-noticia:hover i {
-  transform: rotate(15deg) scale(1.1); /* Hace que el bote de basura se incline un poco */
+.evento-mini:last-child { border-bottom: none; }
+.evento-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #38bdf8; flex-shrink: 0; margin-top: 5px;
+  box-shadow: 0 0 6px rgba(56,189,248,0.6);
 }
+.evento-titulo { font-size: 0.88rem; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.evento-fecha  { font-size: 0.75rem; color: #9ca3af; }
 
+/* ── Responsive Dashboard ─────────────────────────────────── */
+@media (max-width: 1100px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 850px) {
+  .home-grid { grid-template-columns: 1fr; }
+  .hero-text h1 { font-size: 1.6rem; }
+}
+@media (max-width: 600px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .stat-value { font-size: 1.7rem; }
+  .hero-banner { padding: 24px 20px; flex-direction: column; gap: 12px; text-align: center; }
+  .quick-actions { grid-template-columns: repeat(2, 1fr); }
+}

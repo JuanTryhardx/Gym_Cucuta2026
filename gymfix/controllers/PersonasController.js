@@ -1,8 +1,9 @@
 // ============================================================
 // controllers/PersonasController.js
+// Exportar PDF/Excel + SweetAlert + Loader + Tablas mejoradas
 // ============================================================
 import { Auth }         from '../services/auth.js'
-import { showToast, buildNavbar, formatMoney, formatDate } from '../services/ui.js'
+import { showToast, showLoader, hideLoader, swalConfirm, swalSuccess, swalError, buildNavbar, formatMoney, formatDate } from '../services/ui.js'
 import { PersonaModel } from '../models/PersonaModel.js'
 
 export const PersonasController = {
@@ -10,16 +11,27 @@ export const PersonasController = {
   async init() {
     Auth.requireAuth()
     document.getElementById('navbar-container').innerHTML = buildNavbar('personas.html')
-    await this.cargarPersonas()
 
-    document.getElementById('buscarInput')?.addEventListener('input', e => {
+    showLoader('Cargando miembros...')
+    await this.cargarPersonas()
+    hideLoader()
+
+    document.getElementById('buscar')?.addEventListener('input', e => {
       this._filtrar(e.target.value)
     })
 
-    window.openEdit   = (id) => this.openEdit(id)
-    window.eliminar   = (id) => this.eliminar(id)
-    window.closeEdit  = ()   => this.closeEdit()
-    window.guardarEdicion = () => this.guardarEdicion()
+    document.getElementById('filtroEstado')?.addEventListener('change', e => {
+      this._filtrarEstado(e.target.value)
+    })
+
+    // Botones de exportación
+    document.getElementById('btnExportPDF')?.addEventListener('click', () => this.exportarPDF())
+    document.getElementById('btnExportExcel')?.addEventListener('click', () => this.exportarExcel())
+
+    window.openEdit         = (id) => this.openEdit(id)
+    window.eliminar         = (id) => this.eliminar(id)
+    window.closeEdit        = ()   => this.closeEdit()
+    window.guardarEdicion   = ()   => this.guardarEdicion()
   },
 
   async cargarPersonas() {
@@ -29,7 +41,7 @@ export const PersonasController = {
       this._renderTabla(data)
     } catch(e) {
       console.error(e)
-      showToast('❌ Error al cargar datos', '#f87171')
+      await swalError('Error al cargar datos', 'No se pudieron obtener los miembros.')
     }
   },
 
@@ -41,6 +53,26 @@ export const PersonasController = {
       (p.email     || '').toLowerCase().includes(q)
     )
     this._renderTabla(filtrado)
+  },
+
+  _filtrarEstado(estado) {
+    if (!estado) { this._renderTabla(this._data); return }
+    this._renderTabla(this._data.filter(p => (p.estado || 'Activo') === estado))
+  },
+
+  _estadoBadge(estado) {
+    const map = {
+      'Activo':    { cls: 'badge-activo',    label: 'Activo'    },
+      'Inactivo':  { cls: 'badge-inactivo',  label: 'Inactivo'  },
+      'Pendiente': { cls: 'badge-pendiente', label: 'Pendiente' },
+    }
+    const s = map[estado] || map['Activo']
+    return `<span class="status-badge ${s.cls}">${s.label}</span>`
+  },
+
+  _planLabel(plan_id) {
+    const planes = { 1: 'Mensual', 2: 'Trimestral', 3: 'Semestral', 4: 'Anual' }
+    return planes[plan_id] || plan_id || '-'
   },
 
   _renderTabla(data) {
@@ -56,48 +88,48 @@ export const PersonasController = {
     }
 
     emptyMsg.style.display = 'none'
-    count.textContent = `${data.length} miembros`
+    count.textContent = `${data.length} miembro${data.length !== 1 ? 's' : ''} encontrado${data.length !== 1 ? 's' : ''}`
 
-    tbody.innerHTML = data.map(p => `
-      <tr>
+    tbody.innerHTML = data.map((p, i) => `
+      <tr style="animation-delay:${i * 0.04}s">
         <td>
-          <div style="display:flex;gap:10px;align-items:center">
-            <div style="background:#38bdf8;color:#000;border-radius:50%;width:35px;height:35px;
-                        display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">
-              ${p.nombre ? p.nombre.charAt(0).toUpperCase() : '?'}
-            </div>
-            <div>
-              <div style="font-weight:bold">${p.nombre || '-'}</div>
-              <div style="font-size:12px;color:#aaa">${p.email || '-'}</div>
+          <div class="member-cell">
+            <div class="mem-avatar">${p.nombre ? p.nombre.charAt(0).toUpperCase() : '?'}</div>
+            <div class="mem-info">
+              <div class="mem-name">${p.nombre || '-'}</div>
+              <div class="mem-email">${p.email || '-'}</div>
             </div>
           </div>
         </td>
-        <td>${p.documento || '-'}</td>
-        <td>${p.telefono  || '-'}</td>
-        <td>${p.plan_id   || '-'}</td>
-        <td>${formatMoney(p.mensualidad || 0)}</td>
-        <td>${formatDate(p.fecha_inicio)}</td>
-        <td>${p.estado    || 'Activo'}</td>
-        <td>
-          <button onclick="openEdit(${p.id})">✏️</button>
-          <button onclick="eliminar(${p.id})">🗑️</button>
+        <td class="td-doc"><span class="doc-chip">${p.documento || '-'}</span></td>
+        <td>${p.telefono || '-'}</td>
+        <td><span class="plan-chip">${this._planLabel(p.plan_id)}</span></td>
+        <td class="td-money">${formatMoney(p.mensualidad || 0)}</td>
+        <td class="td-date">${formatDate(p.fecha_inicio)}</td>
+        <td>${this._estadoBadge(p.estado)}</td>
+        <td class="td-actions">
+          <button class="btn-edit" onclick="openEdit(${p.id})" title="Editar">✏️ Editar</button>
+          <button class="btn-del"  onclick="eliminar(${p.id})" title="Eliminar">🗑️</button>
         </td>
       </tr>`).join('')
   },
 
   async eliminar(id) {
-    if (!confirm('¿Eliminar esta persona?')) return
+    const ok = await swalConfirm('¿Eliminar miembro?', 'Esta acción no se puede deshacer.', '🗑️ Sí, eliminar')
+    if (!ok) return
+    showLoader('Eliminando...')
     try {
       await PersonaModel.delete(id)
-      showToast('🗑️ Eliminado correctamente')
       await this.cargarPersonas()
+      await swalSuccess('¡Eliminado!', 'El miembro fue eliminado correctamente.')
     } catch(e) {
       console.error(e)
-      showToast('❌ Error al eliminar', '#f87171')
-    }
+      await swalError('Error al eliminar', 'No se pudo eliminar el registro.')
+    } finally { hideLoader() }
   },
 
   async openEdit(id) {
+    showLoader('Cargando datos...')
     try {
       const p = await PersonaModel.getById(id)
       const fields = {
@@ -114,39 +146,119 @@ export const PersonasController = {
       document.getElementById('editModal').style.display = 'flex'
     } catch(e) {
       console.error(e)
-      showToast('❌ Error al cargar datos', '#f87171')
-    }
+      await swalError('Error', 'No se pudieron cargar los datos del miembro.')
+    } finally { hideLoader() }
   },
 
   async guardarEdicion() {
     const id = document.getElementById('e_id').value
     const payload = {
-      nombre: document.getElementById('e_nombre').value,
-      documento: document.getElementById('e_documento').value,
-      telefono: document.getElementById('e_telefono').value,
-      email: document.getElementById('e_email').value,
-      plan_id: document.getElementById('e_plan').value,
-      mensualidad: parseFloat(document.getElementById('e_mensualidad').value) || 0,
-      estado: document.getElementById('e_estado').value,
-      objetivo: document.getElementById('e_objetivo').value,
-      entrenador: document.getElementById('e_entrenador').value,
-      peso: parseFloat(document.getElementById('e_peso').value) || null,
-      altura: parseFloat(document.getElementById('e_altura').value) || null,
+      nombre:        document.getElementById('e_nombre').value,
+      documento:     document.getElementById('e_documento').value,
+      telefono:      document.getElementById('e_telefono').value,
+      email:         document.getElementById('e_email').value,
+      plan_id:       document.getElementById('e_plan').value,
+      mensualidad:   parseFloat(document.getElementById('e_mensualidad').value) || 0,
+      estado:        document.getElementById('e_estado').value,
+      objetivo:      document.getElementById('e_objetivo').value,
+      entrenador:    document.getElementById('e_entrenador').value,
+      peso:          parseFloat(document.getElementById('e_peso').value) || null,
+      altura:        parseFloat(document.getElementById('e_altura').value) || null,
       observaciones: document.getElementById('e_obs').value
     }
+    showLoader('Guardando cambios...')
     try {
       await PersonaModel.update(id, payload)
-      showToast('✅ Cambios guardados correctamente')
       this.closeEdit()
       await this.cargarPersonas()
+      await swalSuccess('¡Guardado!', 'Los cambios fueron aplicados correctamente.')
     } catch(e) {
       console.error(e)
-      showToast('❌ Error al guardar', '#f87171')
-    }
+      await swalError('Error al guardar', 'No se pudieron guardar los cambios.')
+    } finally { hideLoader() }
   },
 
   closeEdit() {
     document.getElementById('editModal').style.display = 'none'
+  },
+
+  // ── Exportar PDF ────────────────────────────────────────────
+  exportarPDF() {
+    if (!this._data || this._data.length === 0) {
+      swalError('Sin datos', 'No hay miembros para exportar.')
+      return
+    }
+    const { jsPDF } = window.jspdf
+    const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' })
+
+    // Header
+    doc.setFillColor(10, 15, 26)
+    doc.rect(0, 0, 297, 297, 'F')
+    doc.setFillColor(13, 31, 53)
+    doc.rect(0, 0, 297, 28, 'F')
+    doc.setFontSize(18)
+    doc.setTextColor(56, 189, 248)
+    doc.setFont('helvetica', 'bold')
+    doc.text('APP GYM CÚCUTA — Listado de Miembros', 14, 17)
+    doc.setFontSize(9)
+    doc.setTextColor(148, 163, 184)
+    doc.text(`Generado: ${new Date().toLocaleDateString('es-CO')} | Total: ${this._data.length} miembros`, 14, 24)
+
+    const cols = ['Nombre', 'Documento', 'Teléfono', 'Plan', 'Mensualidad', 'Inicio', 'Estado']
+    const rows = this._data.map(p => [
+      p.nombre || '-',
+      p.documento || '-',
+      p.telefono || '-',
+      this._planLabel(p.plan_id),
+      formatMoney(p.mensualidad || 0),
+      formatDate(p.fecha_inicio),
+      p.estado || 'Activo'
+    ])
+
+    doc.autoTable({
+      head: [cols], body: rows, startY: 34,
+      styles: { fillColor: [17, 24, 39], textColor: [226, 232, 240], fontSize: 9, cellPadding: 5 },
+      headStyles: { fillColor: [2, 132, 199], textColor: 255, fontStyle: 'bold', fontSize: 9 },
+      alternateRowStyles: { fillColor: [31, 41, 55] },
+      margin: { left: 14, right: 14 }
+    })
+
+    doc.save(`gymfix_miembros_${Date.now()}.pdf`)
+    swalSuccess('PDF exportado', 'El archivo se descargó correctamente.')
+  },
+
+  // ── Exportar Excel ──────────────────────────────────────────
+  exportarExcel() {
+    if (!this._data || this._data.length === 0) {
+      swalError('Sin datos', 'No hay miembros para exportar.')
+      return
+    }
+    const XLSX = window.XLSX
+    const rows = this._data.map(p => ({
+      'Nombre':      p.nombre || '',
+      'Documento':   p.documento || '',
+      'Teléfono':    p.telefono || '',
+      'Email':       p.email || '',
+      'Plan':        this._planLabel(p.plan_id),
+      'Mensualidad': p.mensualidad || 0,
+      'Inicio':      formatDate(p.fecha_inicio),
+      'Estado':      p.estado || 'Activo',
+      'Objetivo':    p.objetivo || '',
+      'Entrenador':  p.entrenador || '',
+      'Peso (kg)':   p.peso || '',
+      'Altura (cm)': p.altura || '',
+      'Observaciones': p.observaciones || ''
+    }))
+
+    const ws = XLSX.utils.json_to_sheet(rows)
+    const wb = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(wb, ws, 'Miembros')
+
+    // Ajustar anchos de columna
+    ws['!cols'] = Object.keys(rows[0]).map(k => ({ wch: Math.max(k.length, 14) }))
+
+    XLSX.writeFile(wb, `gymfix_miembros_${Date.now()}.xlsx`)
+    swalSuccess('Excel exportado', 'El archivo se descargó correctamente.')
   },
 
   _data: []

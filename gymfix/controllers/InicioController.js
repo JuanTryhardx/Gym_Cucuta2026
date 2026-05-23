@@ -1,244 +1,155 @@
+// ============================================================
+// controllers/InicioController.js - Dashboard Visual Mejorado
+// ============================================================
 import { Auth } from '../services/auth.js'
-import { buildNavbar, formatMoney, formatDate } from '../services/ui.js'
+import { buildNavbar, formatMoney, formatDate, showLoader, hideLoader, swalConfirm, swalError } from '../services/ui.js'
 import { PersonaModel } from '../models/PersonaModel.js'
-import { EventoModel } from '../models/EventoModel.js'
+import { EventoModel }  from '../models/EventoModel.js'
 import { NoticiaModel } from '../models/NoticiaModel.js'
 
 export const InicioController = {
-    async init() {
+  async init() {
     Auth.requireAuth()
     document.getElementById('navbar-container').innerHTML = buildNavbar('inicio.html')
-    
-    // Forzamos a que las ventanas de modales se abran y cierren mapeando los IDs correctos
-    window.openNoticiaModal = () => {
-      const modal = document.getElementById('noticiaModal')
-      if (modal) modal.style.display = 'flex'
-    }
-    window.closeNoticiaModal = () => {
-      const modal = document.getElementById('noticiaModal')
-      if (modal) {
-        modal.style.display = 'none'
-        document.getElementById('formNuevaNoticia')?.reset()
-      }
-    }
-    
-    // Mapeamos los disparadores globales de forma explícita
-    window.publicarNoticia = () => this.publicarNoticia()
-    window.eliminarNoticia = (id) => this.eliminarNoticia(id)
 
+    window.openNoticiaModal  = () => { const m = document.getElementById('noticiaModal'); if (m) m.style.display = 'flex' }
+    window.closeNoticiaModal = () => {
+      const m = document.getElementById('noticiaModal')
+      if (m) { m.style.display = 'none'; document.getElementById('formNuevaNoticia')?.reset() }
+    }
+    window.publicarNoticia  = () => this.publicarNoticia()
+    window.eliminarNoticia  = (id) => this.eliminarNoticia(id)
+
+    showLoader('Cargando dashboard...')
     await Promise.all([this.renderStats(), this.renderNoticias(), this.renderEventos()])
+    hideLoader()
   },
 
   async publicarNoticia() {
-    const titulo = document.getElementById('noticiaTitulo')?.value.trim()
+    const titulo    = document.getElementById('noticiaTitulo')?.value.trim()
     const contenido = document.getElementById('noticiaContenido')?.value.trim()
-    const tipo = document.getElementById('noticiaTipo')?.value || 'Novedad'
+    const tipo      = document.getElementById('noticiaTipo')?.value || 'Novedad'
     const url_media = document.getElementById('noticiaUrlMedia')?.value.trim() || null
-    
+
     if (!titulo || !contenido) {
-      alert("Por favor, llena los campos obligatorios.")
+      await swalError('Campos requeridos', 'Por favor llena el título y el contenido.')
       return
     }
-
+    showLoader('Publicando...')
     try {
-      // Intentamos la inserción mandando los datos limpios
-      await NoticiaModel.insert({ 
-        titulo, 
-        contenido,
-        tipo,
-        url_media,
-        autor: 'Admin'
-      })
-      
+      await NoticiaModel.insert({ titulo, contenido, tipo, url_media, autor: 'Admin' })
       window.closeNoticiaModal()
-      await this.renderNoticias() // Refrescamos el feed estilo Figma de inmediato
+      await this.renderNoticias()
     } catch (e) {
-      alert("Error al guardar la publicación en Supabase. Revisa las columnas de tu tabla.")
-      console.error("Detalle del fallo:", e)
-    }
+      await swalError('Error al publicar', 'No se pudo guardar la publicación.')
+      console.error(e)
+    } finally { hideLoader() }
   },
 
   async eliminarNoticia(id) {
-    if (!confirm("¿Estás seguro de que deseas eliminar esta publicación?")) return
+    const ok = await swalConfirm('¿Eliminar publicación?', 'Esta acción no se puede deshacer.', '🗑️ Eliminar')
+    if (!ok) return
+    showLoader('Eliminando...')
     try {
       await NoticiaModel.delete(id)
       await this.renderNoticias()
     } catch (e) {
-      alert("No se pudo eliminar la noticia.")
-      console.error(e)
-    }
-  
-
-
-    // 4. Escuchar el envío del formulario de nueva noticia
-    const formNoticia = document.getElementById('formNuevaNoticia')
-    if (formNoticia) {
-      formNoticia.addEventListener('submit', async (e) => {
-        e.preventDefault()
-        await this.publicarNoticia()
-      })
-    }
-    
-    // 5. Cargar módulos iniciales
-    await Promise.all([this.renderStats(), this.renderNoticias(), this.renderEventos()])
+      await swalError('Error', 'No se pudo eliminar la publicación.')
+    } finally { hideLoader() }
   },
 
-
-    async renderStats() {
+  async renderStats() {
     try {
       const data = await PersonaModel.getStats()
-      const total = data.length
-      const activos = data.filter(p => p.estado === 'Activo').length
-      // Calculamos automáticamente los miembros que no están activos
-      const inactivos = total - activos 
-      const ingresos = data.reduce((s, p) => s + (parseFloat(p.mensualidad) || 0), 0)
-      
+      const total    = data.length
+      const activos  = data.filter(p => p.estado === 'Activo').length
+      const inactivos = total - activos
+      const ingresos  = data.reduce((s, p) => s + (parseFloat(p.mensualidad) || 0), 0)
+      const pct       = total > 0 ? Math.round((activos / total) * 100) : 0
+
       document.getElementById('statsGrid').innerHTML = `
-        <div class="stat-card">
+        <div class="stat-card stat-total">
+          <div class="stat-icon-wrap">👥</div>
           <div class="stat-label">Miembros Totales</div>
           <div class="stat-value">${total}</div>
+          <div class="stat-bar-wrap"><div class="stat-bar" style="width:100%;background:rgba(56,189,248,0.5)"></div></div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Miembros Activos</div>
+        <div class="stat-card stat-activos">
+          <div class="stat-icon-wrap">✅</div>
+          <div class="stat-label">Activos</div>
           <div class="stat-value" style="color:#4ade80">${activos}</div>
+          <div class="stat-bar-wrap"><div class="stat-bar" style="width:${pct}%;background:#4ade80"></div></div>
+          <div class="stat-sub">${pct}% del total</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Miembros Inactivos</div>
-          <div class="stat-value" style="color:#ef4444">${inactivos}</div>
+        <div class="stat-card stat-inactivos">
+          <div class="stat-icon-wrap">⚠️</div>
+          <div class="stat-label">Inactivos</div>
+          <div class="stat-value" style="color:#f87171">${inactivos}</div>
+          <div class="stat-bar-wrap"><div class="stat-bar" style="width:${100-pct}%;background:#f87171"></div></div>
+          <div class="stat-sub">${100-pct}% del total</div>
         </div>
-        <div class="stat-card">
+        <div class="stat-card stat-ingresos">
+          <div class="stat-icon-wrap">💰</div>
           <div class="stat-label">Ingresos Mensuales</div>
           <div class="stat-value" style="color:#3b82f6">${formatMoney(ingresos)}</div>
+          <div class="stat-sub">Suma de mensualidades</div>
         </div>`
-    } catch(e) { 
-      console.error(e) 
-    }
+    } catch(e) { console.error(e) }
   },
 
-      async renderNoticias() {
+  async renderNoticias() {
     const el = document.getElementById('noticiasLista')
     if (!el) return
     try {
       const data = await NoticiaModel.getAll()
       if (!data || data.length === 0) {
-        el.innerHTML = `<p style="color: #9ca3af; padding: 20px; text-align: center;">No hay publicaciones disponibles.</p>`
+        el.innerHTML = `<div class="empty-feed">📢 No hay publicaciones aún</div>`
         return
       }
-      
-      el.innerHTML = data.map((n, index) => {
-        // 1. Validar el tipo de categoría para asignar la clase CSS de la etiqueta
-        const tipoOriginal = (n.tipo || 'novedad').toLowerCase()
-        let tagClass = 'tag-novedad'
-        if (tipoOriginal === 'actualizacion') tagClass = 'tag-actualizacion'
-        if (tipoOriginal === 'importante') tagClass = 'tag-importante'
-        if (tipoOriginal === 'motivacion') tagClass = 'tag-motivacion'
-        if (tipoOriginal === 'salud' || tipoOriginal === 'comida') tagClass = 'tag-salud'
-
-        // 2. Gestionar la miniatura multimedia de la izquierda
-        // Si tiene un enlace de imagen en la base de datos lo pinta, sino pone un icono por defecto
-        const mediaHtml = n.url_media 
-          ? `<img src="${n.url_media}" alt="noticia">`
-          : `<i class="${tipoOriginal === 'motivacion' ? 'fas fa-play-circle' : 'fas fa-dumbbell'}"></i>`
-
-        // 3. Formatear la fecha de creación de forma limpia
-        const fechaFormateada = n.fecha 
-          ? new Date(n.fecha).toLocaleDateString('es-CO', { day: '2-digit', month: 'long', year: 'numeric' })
-          : 'Reciente'
-        const delay = index * 0.1;
-        
-        // 4. Retornar la tarjeta horizontal idéntica al Figma
-    return `
-    <div class="noticia-item-premium" style="animation-delay: ${delay}s;">
-    <!-- Bloque Izquierdo: Imagen Panorámica -->
-    <div class="noticia-media-wrapper">
-      ${mediaHtml}
-    </div>
-
-    <!-- Bloque Central: Textos -->
-    <div class="noticia-body-content">
-      <h4 class="noticia-premium-title">${n.titulo}</h4>
-      <p class="noticia-premium-text">${n.contenido}</p>
-      <span class="noticia-premium-date">${fechaFormateada}</span>
-    </div>
-
-    <!-- Bloque Derecho: Etiqueta de Categoría -->
-    <div style="display: flex; flex-direction: column; align-items: flex-end;">
-      <span class="noticia-pill-tag ${tagClass}">${n.tipo || 'Novedad'}</span>
-    </div>
-
-    <!-- Botón de Borrado Absoluto en Esquina -->
-    <button onclick="eliminarNoticia('${n.id}')" class="btn-delete-noticia" title="Eliminar Publicación">
-      🗑️
-    </button>
-
-  </div>`
-
+      el.innerHTML = data.map((n, i) => {
+        const tipo = (n.tipo || 'novedad').toLowerCase()
+        const tagMap = { novedad:'tag-novedad', actualización:'tag-actualizacion', importante:'tag-importante', motivacion:'tag-motivacion', salud:'tag-salud' }
+        const tagClass = tagMap[tipo] || 'tag-novedad'
+        const mediaHtml = n.url_media
+          ? `<img src="${n.url_media}" alt="noticia" style="width:64px;height:64px;object-fit:cover;border-radius:10px;flex-shrink:0">`
+          : `<div class="noticia-icon-placeholder">📰</div>`
+        const fecha = n.fecha ? new Date(n.fecha).toLocaleDateString('es-CO', { day:'2-digit', month:'long', year:'numeric' }) : 'Reciente'
+        return `
+          <div class="noticia-item" style="animation-delay:${i*0.08}s">
+            ${mediaHtml}
+            <div class="noticia-body">
+              <div class="noticia-header-row">
+                <span class="noticia-pill ${tagClass}">${n.tipo || 'Novedad'}</span>
+                <span class="noticia-date">${fecha}</span>
+              </div>
+              <h4 class="noticia-titulo">${n.titulo}</h4>
+              <p class="noticia-texto">${n.contenido}</p>
+            </div>
+            <button onclick="eliminarNoticia('${n.id}')" class="btn-del-noticia" title="Eliminar">✕</button>
+          </div>`
       }).join('')
-    } catch(e) { 
-      console.error("Error renderizando feed estilo Figma:", e) 
-    }
+    } catch(e) { console.error(e) }
   },
-
-
 
   async renderEventos() {
     const el = document.getElementById('proximosEventos')
+    if (!el) return
     try {
       const data = await EventoModel.getProximos(3)
       if (!data || data.length === 0) {
-        el.innerHTML = `<p style="color: #aaa; font-size: 0.9rem;">No hay eventos programados.</p>`
+        el.innerHTML = `<p style="color:#94a3b8;font-size:0.88rem;padding:10px 0">Sin eventos programados.</p>`
         return
       }
       el.innerHTML = data.map(e => `
-        <div class="evento-mini" style="background: #222; padding: 10px; border-radius: 4px; margin-bottom: 8px; border-left: 4px solid var(--primary-color, #00ff66);">
-          <h4 style="margin: 0; font-size: 0.95rem; color: #fff;">${e.titulo}</h4>
-          ${e.fecha ? `<small style="color: #aaa; font-size: 0.8rem;"><i class="fas fa-calendar-day" style="margin-right: 4px;"></i>${formatDate(e.fecha)}</small>` : ''}
-        </div>
-      `).join('')
-    } catch(e) { 
-      console.error("Error cargando eventos:", e) 
-    }
-  },
-    async publicarNoticia() {
-    const titulo = document.getElementById('noticiaTitulo').value.trim()
-    const contenido = document.getElementById('noticiaContenido').value.trim()
-    const tipo = document.getElementById('noticiaTipo').value
-    const url_media = document.getElementById('noticiaUrlMedia').value.trim()
-    
-    if(!titulo || !contenido) return
-
-    try {
-      // Enviamos el objeto completo mapeando la nueva columna de Supabase
-      await NoticiaModel.insert({ 
-        titulo, 
-        contenido,
-        tipo,
-        url_media: url_media || null,
-        autor: 'Admin'
-      })
-      window.closeNoticiaModal()
-      await this.renderNoticias() 
-    } catch (e) {
-      alert("Error al guardar la publicación en Supabase.")
-      console.error(e)
-    }
-  },
-
-
-
-
-  // NUEVO MÉTODO: Permite purgar registros obsoletos directamente de la interfaz
-  async eliminarNoticia(id) {
-    if (!confirm("¿Estás seguro de que deseas eliminar esta publicación?")) return
-    try {
-      await NoticiaModel.delete(id)
-      await this.renderNoticias()
-    } catch (e) {
-      alert("No se pudo eliminar la noticia.")
-      console.error(e)
-    }
+        <div class="evento-mini">
+          <div class="evento-dot"></div>
+          <div>
+            <div class="evento-titulo">${e.titulo}</div>
+            ${e.fecha ? `<div class="evento-fecha">📅 ${formatDate(e.fecha)}</div>` : ''}
+          </div>
+        </div>`).join('')
+    } catch(e) { console.error(e) }
   }
 }
 
-// DISPARADOR AUTOMÁTICO PARA QUE FUNCIONE YA
-InicioController.init();
+InicioController.init()
