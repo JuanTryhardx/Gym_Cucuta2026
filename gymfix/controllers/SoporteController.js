@@ -2,7 +2,7 @@
 // controllers/SoporteController.js
 // ============================================================
 import { Auth }        from '../services/auth.js'
-import { showToast, buildNavbar, formatDate, showLoader, hideLoader } from '../services/ui.js'
+import { showToast, buildNavbar, formatDate, showLoader, hideLoader, swalSuccess, swalError } from '../services/ui.js'
 import { TicketModel } from '../models/TicketModel.js'
 
 const PRIORIDAD_COLORS = { alta:'#f87171', media:'#fbbf24', baja:'#4ade80' }
@@ -14,7 +14,9 @@ export const SoporteController = {
     document.getElementById('navbar-container').innerHTML = buildNavbar('soporte.html')
     window.enviarTicket = () => this.enviar()
     window.toggleFaq    = (el) => el.classList.toggle('open')
+    showLoader('Cargando tickets...')
     await this.renderTickets()
+    hideLoader()
   },
 
   async renderTickets() {
@@ -64,7 +66,9 @@ export const SoporteController = {
     }
     try {
       await TicketModel.insert(ticket)
-      await this.renderTickets()
+      showLoader('Cargando tickets...')
+    await this.renderTickets()
+    hideLoader()
     } catch(e) {
       const tickets = JSON.parse(localStorage.getItem('gym_tickets')||'[]')
       tickets.push({ id: Date.now(), ...ticket })

@@ -1,8 +1,9 @@
 // ============================================================
-// controllers/EventosController.js
+// controllers/EventosController.js — Roles coherentes
 // ============================================================
 import { Auth }        from '../services/auth.js'
-import { showToast, buildNavbar, showLoader, hideLoader, swalConfirm, swalError } from '../services/ui.js'
+import { showToast, buildNavbar, showLoader, hideLoader,
+         swalConfirm, swalError, swalSuccess, isCliente, getUserRol } from '../services/ui.js'
 import { EventoModel } from '../models/EventoModel.js'
 
 const TIPO_COLORS = { clase:'#38bdf8', evento:'#c084fc', evaluacion:'#4ade80', mantenimiento:'#fbbf24', otro:'#f87171' }
@@ -13,12 +14,26 @@ export const EventosController = {
   async init() {
     Auth.requireAuth()
     document.getElementById('navbar-container').innerHTML = buildNavbar('eventos.html')
+
+    const canEdit = !isCliente()
+
+    // Botón nuevo evento solo para admin/entrenador
+    const btnNuevo = document.getElementById('btnNuevoEvento')
+    if (btnNuevo) btnNuevo.style.display = canEdit ? 'inline-flex' : 'none'
+
+    // Subtítulo según rol
+    const sub = document.getElementById('eventosSubtitle')
+    if (sub) sub.textContent = canEdit
+      ? 'Crea y gestiona el calendario del gimnasio'
+      : 'Consulta los eventos y clases programadas'
+
     window.changeMonth    = (dir) => this.changeMonth(dir)
     window.selectDay      = (d)   => this.selectDay(d)
-    window.openEvento     = ()    => this.openEvento()
+    window.openEvento     = ()    => canEdit ? this.openEvento()  : null
     window.closeEvento    = ()    => this.closeEvento()
-    window.guardarEvento  = ()    => this.guardar()
-    window.eliminarEvento = (id)  => this.eliminar(id)
+    window.guardarEvento  = ()    => canEdit ? this.guardar()     : null
+    window.eliminarEvento = (id)  => canEdit ? this.eliminar(id)  : null
+
     showLoader('Cargando eventos...')
     await this.cargar()
     hideLoader()
@@ -66,34 +81,48 @@ export const EventosController = {
   },
 
   _renderDayEvents(ds) {
+    const canEdit = !isCliente()
     const evs   = this._eventos.filter(e => e.fecha === ds)
     const d     = new Date(ds + 'T00:00:00')
     const label = d.toLocaleDateString('es-CO',{weekday:'long',day:'numeric',month:'long'})
     const el    = document.getElementById('diaEventos')
     el.innerHTML = `<div class="card-title">📌 ${label}</div>`
-    if (!evs.length) { el.innerHTML += '<p style="color:var(--text-muted);font-size:0.85rem">No hay eventos este día.</p>'; return }
+    if (!evs.length) {
+      el.innerHTML += '<p style="color:var(--text-muted);font-size:0.85rem;margin-top:10px">No hay eventos este día.</p>'
+      return
+    }
     el.innerHTML += evs.map(e => `
       <div class="ev-item">
         <div class="ev-tipo-dot" style="background:${TIPO_COLORS[e.tipo]||'#94a3b8'}"></div>
-        <div><div class="ev-info-title">${TIPO_ICONS[e.tipo]||'📌'} ${e.titulo}</div>
-          <div class="ev-info-meta">⏰ ${e.hora||''} · ${e.descripcion||''}</div></div>
-        <button class="ev-del-btn" onclick="eliminarEvento(${e.id})">🗑️</button>
+        <div class="ev-item-body">
+          <div class="ev-info-title">${TIPO_ICONS[e.tipo]||'📌'} ${e.titulo}</div>
+          <div class="ev-info-meta">⏰ ${e.hora||'—'} ${e.descripcion ? '· '+e.descripcion : ''}</div>
+        </div>
+        ${canEdit ? `<button class="ev-del-btn" onclick="eliminarEvento(${e.id})" title="Eliminar">🗑️</button>` : ''}
       </div>`).join('')
   },
 
   _renderLista() {
+    const canEdit = !isCliente()
     const el  = document.getElementById('listaEventos')
     const hoy = new Date().toISOString().split('T')[0]
-    if (!this._eventos.length) { el.innerHTML = '<p style="color:var(--text-muted);font-size:0.85rem">No hay eventos creados.</p>'; return }
+    if (!this._eventos.length) {
+      el.innerHTML = '<p style="color:var(--text-muted);font-size:0.85rem">No hay eventos creados.</p>'
+      return
+    }
     el.innerHTML = [...this._eventos]
       .sort((a,b) => new Date(a.fecha)-new Date(b.fecha))
       .map(e => {
         const d = new Date(e.fecha+'T00:00:00')
-        return `<div class="ev-item" style="${e.fecha<hoy?'opacity:0.5':''}">
+        const pasado = e.fecha < hoy
+        return `
+        <div class="ev-item" style="${pasado?'opacity:0.45':''}">
           <div class="ev-tipo-dot" style="background:${TIPO_COLORS[e.tipo]||'#94a3b8'}"></div>
-          <div style="flex:1"><div class="ev-info-title">${e.titulo}</div>
-            <div class="ev-info-meta">📅 ${d.toLocaleDateString('es-CO',{day:'2-digit',month:'short'})} · ⏰ ${e.hora||''}</div></div>
-          <button class="ev-del-btn" onclick="eliminarEvento(${e.id})">🗑️</button>
+          <div class="ev-item-body" style="flex:1">
+            <div class="ev-info-title">${TIPO_ICONS[e.tipo]||'📌'} ${e.titulo}</div>
+            <div class="ev-info-meta">📅 ${d.toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'})} ⏰ ${e.hora||'—'}</div>
+          </div>
+          ${canEdit ? `<button class="ev-del-btn" onclick="eliminarEvento(${e.id})" title="Eliminar">🗑️</button>` : ''}
         </div>`
       }).join('')
   },
@@ -117,6 +146,7 @@ export const EventosController = {
     const titulo = document.getElementById('ev_titulo').value.trim()
     const fecha  = document.getElementById('ev_fecha').value
     if (!titulo || !fecha) { showToast('⚠️ Completa título y fecha', '#fbbf24'); return }
+    showLoader('Guardando evento...')
     try {
       await EventoModel.insert({
         titulo, fecha,
@@ -125,27 +155,32 @@ export const EventosController = {
         descripcion: document.getElementById('ev_desc').value.trim(),
       })
       this.closeEvento()
-      showToast('✅ Evento guardado')
-      showLoader('Cargando eventos...')
-    await this.cargar()
-    hideLoader()
+      await this.cargar()
       if (this._selectedDay === fecha) this._renderDayEvents(fecha)
-    } catch(e) { console.error(e); showToast('❌ Error al guardar', '#f87171') }
+      await swalSuccess('¡Evento guardado!', 'El evento fue agregado al calendario.')
+    } catch(e) {
+      console.error(e)
+      await swalError('Error al guardar', 'No se pudo crear el evento.')
+    } finally { hideLoader() }
   },
 
   async eliminar(id) {
-    if (!confirm('¿Eliminar este evento?')) return
+    const ok = await swalConfirm('¿Eliminar evento?', 'Esta acción no se puede deshacer.', '🗑️ Eliminar')
+    if (!ok) return
+    showLoader('Eliminando...')
     try {
       await EventoModel.delete(id)
-      showToast('🗑️ Evento eliminado', '#f87171')
-      showLoader('Cargando eventos...')
-    await this.cargar()
-    hideLoader()
+      await this.cargar()
       if (this._selectedDay) this._renderDayEvents(this._selectedDay)
-    } catch(e) { showToast('❌ Error al eliminar', '#f87171') }
+      await swalSuccess('Eliminado', 'El evento fue removido.')
+    } catch(e) {
+      await swalError('Error', 'No se pudo eliminar el evento.')
+    } finally { hideLoader() }
   },
 
   _eventos: [],
   _fecha: new Date(),
   _selectedDay: null
 }
+
+EventosController.init()

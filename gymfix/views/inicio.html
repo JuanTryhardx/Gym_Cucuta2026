@@ -4,121 +4,100 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Inicio - App Gym Cúcuta</title>
-  <!-- Hojas de estilos del proyecto -->
-  <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="../assets/css/main.css"/>
   <link rel="stylesheet" href="../assets/css/inicio.css"/>
-  <!-- Iconos profesionales para tableros administrativos -->
-  
 </head>
 <body>
-
-  <!-- Contenedor de la barra de navegación dinámica -->
   <div id="navbar-container"></div>
 
-  <!-- Contenido principal del panel -->
   <main class="page-content">
-    
-    <!-- Banner de Bienvenida -->
-    <section class="hero-banner">
+
+    <!-- HERO BANNER -->
+    <section class="hero-banner" id="heroBanner">
       <div class="hero-text">
-        <h1>¡Bienvenido al Panel<br><span>App Gym Cúcuta</span>!</h1>
-        <p>Gestiona tu gimnasio de manera fácil, rápida y profesional.</p>
+        <h1>¡Bienvenido a<br><span>App Gym Cúcuta</span>!</h1>
+        <p>Tu espacio para alcanzar tus metas físicas con ayuda profesional.</p>
       </div>
-      <!-- Reemplazamos el emoji suelto por un icono administrativo estilizado -->
-      <div class="hero-img">
-        <i class="fas fa-dumbbell" style="font-size: 3.5rem; color: var(--primary-color, #00ff66); opacity: 0.8;"></i>
-      </div>
+      <div class="hero-img">🏋️</div>
     </section>
 
-    <!-- Rejilla de Estadísticas Dinámicas (Cargadas desde Supabase) -->
-    <section class="stats-grid" id="statsGrid"></section>
+    <!-- STATS — solo admin/entrenador (controlados por JS) -->
+    <section id="statsSection" style="display:none">
+      <div class="stats-grid" id="statsGrid"></div>
+    </section>
 
-    <!-- Cuerpo del Dashboard -->
+    <!-- HOME GRID -->
     <div class="home-grid">
-      
-      <!-- Columna Izquierda: Contenido Principal -->
+
+      <!-- Columna Izquierda -->
       <section class="card noticias-card">
         <div class="card-title">
-          <span><i class="fas fa-bullhorn" style="margin-right: 8px;"></i> Noticias y Actualizaciones</span>
-          <button class="btn-secondary" style="margin-left:auto; font-size:0.78rem; display: flex; align-items: center; gap: 5px;" onclick="openNoticiaModal()">
-            <i class="fas fa-plus"></i> Publicar
+          <span>📢 Noticias y Actualizaciones</span>
+          <!-- Botón solo visible para admin/entrenador — controlado por JS -->
+          <button id="btnPublicar" class="btn-secondary btn-publicar" style="margin-left:auto;display:none" onclick="openNoticiaModal()">
+            ➕ Publicar
           </button>
         </div>
-        <!-- Listado dinámico de noticias -->
         <div id="noticiasLista"></div>
       </section>
 
-      <!-- Columna Derecha: Herramientas y Agenda -->
+      <!-- Columna Derecha -->
       <aside class="side-col">
-        
-        <!-- Tarjeta de Acciones Rápidas -->
         <article class="card">
-          <div class="card-title"><i class="fas fa-bolt" style="margin-right: 8px;"></i> Acciones Rápidas</div>
-          <div class="quick-actions">
-            <a href="registrar.html" class="qa-btn"><i class="fas fa-user-plus"></i> Registrar Persona</a>
-            <a href="personas.html" class="qa-btn"><i class="fas fa-users"></i> Ver Miembros</a>
-            <a href="informes.html" class="qa-btn"><i class="fas fa-chart-bar"></i> Ver Informes</a>
-            <a href="eventos.html" class="qa-btn"><i class="fas fa-calendar-alt"></i> Eventos</a>
-          </div>
+          <div class="card-title">⚡ Acciones Rápidas</div>
+          <div class="quick-actions" id="quickActionsContainer"></div>
         </article>
 
-        <!-- Tarjeta de Próximos Eventos -->
         <article class="card" style="margin-top:16px">
-          <div class="card-title"><i class="fas fa-calendar-check" style="margin-right: 8px;"></i> Próximos Eventos</div>
-          <!-- Listado dinámico de eventos -->
+          <div class="card-title">📅 Próximos Eventos</div>
           <div id="proximosEventos"></div>
         </article>
-
       </aside>
     </div>
+
+    <!-- SECCIÓN MOTIVACIONAL (solo clientes — controlada por JS) -->
+    <div id="clienteMotivacional" style="display:none;margin-top:24px"></div>
+
   </main>
 
-  <!-- MODAL DE PUBLICACIÓN-->
-  <div id="noticiaModal" style="display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.75); align-items: center; justify-content: center;">
-    <div class="card" style="width: 90%; max-width: 550px; padding: 25px; background: #141b2d; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-      <div class="card-title" style="font-size: 1.15rem; font-weight: 600; color: #fff; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;">Nueva Publicación Administrativa</div>
-      
-      <form id="formNuevaNoticia" onsubmit="event.preventDefault();">
-        <div style="margin-bottom: 12px;">
-          <label style="display:block; margin-bottom:5px; font-size:0.85rem; color:#9ca3af;">Título de la Publicación *</label>
-          <input type="text" id="noticiaTitulo" required style="width:100%; padding:10px; background:#1f2937; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; box-sizing: border-box;">
+  <!-- MODAL PUBLICAR (solo admin/entrenador) -->
+  <div id="noticiaModal" style="display:none;position:fixed;z-index:3000;inset:0;background:rgba(0,0,0,0.78);align-items:center;justify-content:center;backdrop-filter:blur(5px)">
+    <div class="modal-box" style="max-width:560px">
+      <h3>📣 Nueva Publicación</h3>
+      <form id="formNuevaNoticia" onsubmit="event.preventDefault()">
+        <div class="form-group" style="margin-bottom:12px">
+          <label>Título *</label>
+          <input type="text" id="noticiaTitulo" placeholder="Título de la publicación" required/>
         </div>
-        
-        <div style="margin-bottom: 12px; display: flex; gap: 12px;">
-          <div style="flex: 1;">
-            <label style="display:block; margin-bottom:5px; font-size:0.85rem; color:#9ca3af;">Categoría / Tipo *</label>
-            <select id="noticiaTipo" style="width:100%; padding:10px; background:#1f2937; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; box-sizing: border-box;">
+        <div class="form-row" style="margin-bottom:12px">
+          <div class="form-group">
+            <label>Categoría</label>
+            <select id="noticiaTipo">
               <option value="Novedad">Novedad</option>
               <option value="Actualización">Actualización</option>
               <option value="Importante">Importante</option>
-              <option value="Motivación">Motivación (Video)</option>
-              <option value="Salud">Comida Saludable</option>
+              <option value="Motivación">Motivación</option>
+              <option value="Salud">Salud</option>
             </select>
           </div>
-          <div style="flex: 1;">
-            <label style="display:block; margin-bottom:5px; font-size:0.85rem; color:#9ca3af;">Enlace de Imagen / Miniatura</label>
-            <input type="url" id="noticiaUrlMedia" placeholder="https://ejemplo.com" style="width:100%; padding:10px; background:#1f2937; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; box-sizing: border-box;">
+          <div class="form-group">
+            <label>URL Imagen (opcional)</label>
+            <input type="url" id="noticiaUrlMedia" placeholder="https://..."/>
           </div>
         </div>
-        
-        <div style="margin-bottom: 18px;">
-          <label style="display:block; margin-bottom:5px; font-size:0.85rem; color:#9ca3af;">Contenido / Descripción *</label>
-          <textarea id="noticiaContenido" rows="3" required style="width:100%; padding:10px; background:#1f2937; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; resize:none; box-sizing: border-box;"></textarea>
+        <div class="form-group" style="margin-bottom:18px">
+          <label>Contenido *</label>
+          <textarea id="noticiaContenido" rows="3" placeholder="Descripción..." required></textarea>
         </div>
-        
-        <div style="display:flex; justify-content:flex-end; gap:10px;">
-          <button type="button" class="btn-secondary" onclick="closeNoticiaModal()" style="background:rgba(255,255,255,0.05); color:#fff; padding:8px 16px; border:1px solid rgba(255,255,255,0.1); border-radius:6px; cursor:pointer;">Cancelar</button>
-          <button type="button" onclick="publicarNoticia()" style="background:#3b82f6; color:#fff; font-weight:bold; border:none; padding:8px 20px; border-radius:6px; cursor:pointer;">Guardar Publicación</button>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="closeNoticiaModal()">Cancelar</button>
+          <button type="button" class="btn-primary" onclick="publicarNoticia()">💾 Guardar</button>
         </div>
       </form>
     </div>
   </div>
 
-
-
-  <!-- Lógica de control del Dashboard -->
   <script type="module" src="../controllers/InicioController.js"></script>
 </body>
 </html>

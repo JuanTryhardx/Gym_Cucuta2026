@@ -1,10 +1,9 @@
 // ============================================================
-// services/ui.js
-// Helpers de UI: SweetAlert2, Loader, Toast, Navbar, Formato
+// services/ui.js — Helpers UI: roles, loader, SweetAlert, navbar
 // ============================================================
 import { Auth } from './auth.js'
 
-// ── Loader de Carga Global ────────────────────────────────────
+// ── Loader Global ────────────────────────────────────────────
 export function showLoader(msg = 'Cargando...') {
   let el = document.getElementById('global-loader')
   if (!el) {
@@ -32,35 +31,30 @@ export function showLoader(msg = 'Cargando...') {
     el.style.display = 'flex'
   }
 }
-
 export function hideLoader() {
   const el = document.getElementById('global-loader')
   if (el) el.style.display = 'none'
 }
+window.showLoader = showLoader
+window.hideLoader = hideLoader
 
-// ── SweetAlert2 helpers ─────────────────────────────────────
-function _swalLoaded() { return typeof window.Swal !== 'undefined' }
+// ── SweetAlert2 helpers ──────────────────────────────────────
+function _swal() { return typeof window.Swal !== 'undefined' }
 
-export async function swalConfirm(titulo, texto, confirmTxt = 'Sí, confirmar') {
-  if (!_swalLoaded()) return confirm(`${titulo}\n${texto}`)
-  const result = await window.Swal.fire({
-    title: titulo,
-    text: texto,
-    icon: 'warning',
+export async function swalConfirm(titulo, texto, confirmTxt = 'Confirmar') {
+  if (!_swal()) return confirm(`${titulo}\n${texto}`)
+  const r = await window.Swal.fire({
+    title: titulo, text: texto, icon: 'warning',
     showCancelButton: true,
-    confirmButtonColor: '#38bdf8',
-    cancelButtonColor: '#ef4444',
-    confirmButtonText: confirmTxt,
-    cancelButtonText: 'Cancelar',
-    background: '#0d1424',
-    color: '#e2e8f0',
+    confirmButtonColor: '#38bdf8', cancelButtonColor: '#ef4444',
+    confirmButtonText: confirmTxt, cancelButtonText: 'Cancelar',
+    background: '#0d1424', color: '#e2e8f0',
     customClass: { popup: 'swal-gym' }
   })
-  return result.isConfirmed
+  return r.isConfirmed
 }
-
 export async function swalSuccess(titulo, texto = '') {
-  if (!_swalLoaded()) { showToast('✅ ' + titulo); return }
+  if (!_swal()) { showToast('✅ ' + titulo); return }
   await window.Swal.fire({
     title: titulo, text: texto, icon: 'success',
     confirmButtonColor: '#38bdf8', background: '#0d1424', color: '#e2e8f0',
@@ -68,24 +62,19 @@ export async function swalSuccess(titulo, texto = '') {
     customClass: { popup: 'swal-gym' }
   })
 }
-
 export async function swalError(titulo, texto = '') {
-  if (!_swalLoaded()) { showToast('❌ ' + titulo, '#f87171'); return }
+  if (!_swal()) { showToast('❌ ' + titulo, '#f87171'); return }
   await window.Swal.fire({
     title: titulo, text: texto, icon: 'error',
     confirmButtonColor: '#38bdf8', background: '#0d1424', color: '#e2e8f0',
     customClass: { popup: 'swal-gym' }
   })
 }
-
-// Exponer globalmente
 window.swalConfirm = swalConfirm
 window.swalSuccess = swalSuccess
 window.swalError   = swalError
-window.showLoader  = showLoader
-window.hideLoader  = hideLoader
 
-// ── Toast (Notificaciones fallback) ─────────────────────────
+// ── Toast fallback ───────────────────────────────────────────
 export function showToast(msg, color = '#38bdf8') {
   const t = document.createElement('div')
   t.className = 'toast'
@@ -96,22 +85,27 @@ export function showToast(msg, color = '#38bdf8') {
 }
 window.showToast = showToast
 
-// ── Formato (Colombia) ───────────────────────────────────────
+// ── Helpers de formato ───────────────────────────────────────
 export function formatMoney(n) {
-  return '$' + Number(n || 0).toLocaleString('es-CO', {
-    minimumFractionDigits: 0, maximumFractionDigits: 0
-  })
+  return '$' + Number(n || 0).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
 }
 export function formatDate(iso) {
   if (!iso) return '-'
-  return new Date(iso).toLocaleDateString('es-CO', {
-    day: '2-digit', month: 'short', year: 'numeric'
-  })
+  return new Date(iso).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' })
 }
 window.formatMoney = formatMoney
 window.formatDate  = formatDate
 
-// ── Navbar Dinámico ─────────────────────────────────────────
+// ── Rol del usuario actual ───────────────────────────────────
+export function getUserRol() {
+  const user = Auth.getUser()
+  return user ? (user.rol || 'cliente').toLowerCase() : 'cliente'
+}
+export function isAdmin()      { return getUserRol() === 'admin' }
+export function isEntrenador() { return getUserRol() === 'entrenador' }
+export function isCliente()    { return getUserRol() === 'cliente' }
+
+// ── Navbar por Roles ─────────────────────────────────────────
 export function buildNavbar(activePage) {
   const user = Auth.getUser()
   if (!user) { window.location.href = 'index.html'; return '' }
@@ -119,21 +113,30 @@ export function buildNavbar(activePage) {
   const nombre = user.nombre || user.email || 'Usuario'
   const rol = (user.rol || 'cliente').toLowerCase()
 
-  const base = [{ href: 'inicio.html', label: 'Inicio', icon: '🏠' }]
   const menus = {
-    cliente:    [{ href: 'eventos.html', label: 'Eventos', icon: '📅' }, { href: 'soporte.html', label: 'Soporte', icon: '🛟' }],
-    entrenador: [{ href: 'personas.html', label: 'Clientes', icon: '👥' }, { href: 'eventos.html', label: 'Eventos', icon: '📅' }],
+    cliente: [
+      { href: 'inicio.html',   label: 'Inicio',   icon: '🏠' },
+      { href: 'eventos.html',  label: 'Eventos',  icon: '📅' },
+      { href: 'soporte.html',  label: 'Soporte',  icon: '🛟' }
+    ],
+    entrenador: [
+      { href: 'inicio.html',    label: 'Inicio',    icon: '🏠' },
+      { href: 'personas.html',  label: 'Clientes',  icon: '👥' },
+      { href: 'registrar.html', label: 'Registrar', icon: '➕' },
+      { href: 'eventos.html',   label: 'Eventos',   icon: '📅' }
+    ],
     admin: [
-      { href: 'registrar.html',    label: 'Registrar',   icon: '➕' },
-      { href: 'personas.html',     label: 'Personas',    icon: '👥' },
-      { href: 'informes.html',     label: 'Informes',    icon: '📊' },
-      { href: 'eventos.html',      label: 'Eventos',     icon: '📅' },
-      { href: 'validaciones.html', label: 'Validaciones',icon: '✅' },
-      { href: 'soporte.html',      label: 'Soporte',     icon: '🛟' }
+      { href: 'inicio.html',       label: 'Inicio',       icon: '🏠' },
+      { href: 'registrar.html',    label: 'Registrar',    icon: '➕' },
+      { href: 'personas.html',     label: 'Personas',     icon: '👥' },
+      { href: 'informes.html',     label: 'Informes',     icon: '📊' },
+      { href: 'eventos.html',      label: 'Eventos',      icon: '📅' },
+      { href: 'validaciones.html', label: 'Validaciones', icon: '✅' },
+      { href: 'soporte.html',      label: 'Soporte',      icon: '🛟' }
     ]
   }
 
-  const links   = [...base, ...(menus[rol] || [])]
+  const links   = menus[rol] || menus['cliente']
   const liItems = links.map(l => `
     <li>
       <a href="${l.href}" class="${l.href === activePage ? 'active' : ''}">
@@ -141,20 +144,22 @@ export function buildNavbar(activePage) {
       </a>
     </li>`).join('')
 
+  const rolLabel = { admin: 'Admin', entrenador: 'Entrenador', cliente: 'Cliente' }[rol] || rol
+
   return `
   <nav class="navbar">
     <a href="inicio.html" class="nav-logo">
       <div class="nav-logo-icon">
         <svg viewBox="0 0 40 40" width="24" height="24">
-          <rect x="2" y="14" width="6" height="12" rx="2" fill="#38bdf8"/>
-          <rect x="8" y="16" width="3" height="8" rx="1" fill="#0ea5e9"/>
-          <rect x="11" y="8" width="18" height="24" rx="3" fill="#0284c7"/>
-          <rect x="29" y="16" width="3" height="8" rx="1" fill="#0ea5e9"/>
-          <rect x="32" y="14" width="6" height="12" rx="2" fill="#38bdf8"/>
-          <rect x="14" y="17" width="12" height="4" rx="2" fill="#fff" opacity="0.9"/>
+          <rect x="2"  y="14" width="6"  height="12" rx="2" fill="#38bdf8"/>
+          <rect x="8"  y="16" width="3"  height="8"  rx="1" fill="#0ea5e9"/>
+          <rect x="11" y="8"  width="18" height="24" rx="3" fill="#0284c7"/>
+          <rect x="29" y="16" width="3"  height="8"  rx="1" fill="#0ea5e9"/>
+          <rect x="32" y="14" width="6"  height="12" rx="2" fill="#38bdf8"/>
+          <rect x="14" y="17" width="12" height="4"  rx="2" fill="#fff" opacity="0.9"/>
         </svg>
       </div>
-      <span class="nav-logo-text">APP GYM CÚCUTA</span>
+      <span class="nav-logo-text">GYM CÚCUTA</span>
     </a>
     <button class="nav-toggle" id="nav-toggle" aria-label="Menú" onclick="(function(){
       document.getElementById('nav-links-list').classList.toggle('open');
@@ -164,7 +169,10 @@ export function buildNavbar(activePage) {
     </button>
     <ul class="nav-links" id="nav-links-list">${liItems}</ul>
     <div class="nav-right" id="nav-right-bar">
-      <span class="nav-user">👤 ${nombre} <small style="opacity:0.7">(${rol})</small></span>
+      <div class="nav-user-info">
+        <span class="nav-user-name">👤 ${nombre}</span>
+        <span class="nav-role-badge rol-${rol}">${rolLabel}</span>
+      </div>
       <button class="btn-logout" onclick="logout()">⏻ Salir</button>
     </div>
   </nav>`
