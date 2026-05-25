@@ -78,17 +78,17 @@ export const InicioController = {
         { href: 'informes.html',     icon: '📊', label: 'Ver Informes'      },
         { href: 'eventos.html',      icon: '📅', label: 'Eventos'           },
         { href: 'validaciones.html', icon: '✅', label: 'Validaciones'      },
-        { href: 'soporte.html',      icon: '🛟', label: 'Soporte'           },
+        { href: 'soporte.html', icon:  '💬' ,     label: 'Soporte'           },
       ],
       entrenador: [
         { href: 'registrar.html', icon: '➕', label: 'Registrar Cliente' },
         { href: 'personas.html',  icon: '👥', label: 'Mis Clientes'     },
         { href: 'eventos.html',   icon: '📅', label: 'Eventos'          },
-        { href: 'soporte.html',   icon: '🛟', label: 'Soporte'          },
+        { href: 'soporte.html',  icon: '💬', label: 'Soporte'          },
       ],
       cliente: [
         { href: 'eventos.html', icon: '📅', label: 'Ver Eventos' },
-        { href: 'soporte.html', icon: '🛟', label: 'Soporte'     },
+        { href: 'soporte.html', icon: '💬' , label: 'Soporte'     },
       ]
     }
     const items = acciones[rol] || acciones['cliente']
@@ -215,7 +215,7 @@ export const InicioController = {
   },
 
   async eliminarNoticia(id) {
-    const ok = await swalConfirm('¿Eliminar publicación?', 'Esta acción no se puede deshacer.', '🗑️ Eliminar')
+    const ok = await swalConfirm('¿Eliminar publicación?', 'Esta acción no se puede deshacer.', ' Eliminar')
     if (!ok) return
     showLoader('Eliminando...')
     try { await NoticiaModel.delete(id); await this.renderNoticias() }
@@ -356,7 +356,7 @@ export const InicioController = {
           <div class="video-tag">${v.tag}</div>
           <div class="video-title">${v.titulo}</div>
           <div class="video-desc">${v.desc}</div>
-          ${canEdit ? `<button class="btn-del-content" onclick="eliminarVideo(${i})" title="Eliminar video">🗑️ Eliminar</button>` : ''}
+          ${canEdit ? `<button class="btn-del-content" onclick="eliminarVideo(${i})" title="Eliminar video"> Eliminar</button>` : ''}
         </div>
       </div>`).join('')
   },
@@ -367,7 +367,7 @@ export const InicioController = {
         <div class="bene-icon">${b.icon}</div>
         <div class="bene-titulo">${b.titulo}</div>
         <div class="bene-desc">${b.desc}</div>
-        ${canEdit ? `<button class="btn-del-content" onclick="eliminarBeneficio(${i})" title="Eliminar">🗑️</button>` : ''}
+        ${canEdit ? `<button class="btn-del-content" onclick="eliminarBeneficio(${i})" title="Eliminar">Eliminar</button>` : ''}
       </div>`).join('')
   },
 
