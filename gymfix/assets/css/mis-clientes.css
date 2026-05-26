@@ -1,0 +1,173 @@
+/* ============================================================
+   mis-clientes.css — Dashboard entrenador
+   ============================================================ */
+
+/* ── Stats row ───────────────────────────────────────────── */
+.mc-stats-row {
+  display: flex; gap: 14px; margin-bottom: 18px; flex-wrap: wrap;
+}
+.mc-stat {
+  background: rgba(17,24,39,0.95);
+  border: 1px solid rgba(56,189,248,0.1);
+  border-radius: 12px; padding: 16px 22px;
+  display: flex; flex-direction: column; gap: 4px;
+  flex: 1; min-width: 120px;
+  transition: transform 0.2s;
+}
+.mc-stat:hover { transform: translateY(-2px); }
+.mc-stat-val   { font-size: 1.9rem; font-weight: 800; color: #fff; line-height: 1; }
+.mc-stat-label { font-size: 0.73rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* ── Fila clickeable ─────────────────────────────────────── */
+.fila-cliente { cursor: pointer; }
+.fila-cliente:hover td { background: rgba(56,189,248,0.06) !important; }
+
+/* ── Chips físicos ───────────────────────────────────────── */
+.salud-chip {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 0.75rem; font-weight: 700;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(56,189,248,0.15);
+  color: #94a3b8; border-radius: 6px; padding: 2px 8px;
+  margin-right: 4px;
+}
+.salud-chip.imc { font-weight: 800; }
+.td-salud { white-space: nowrap; }
+
+/* ── Objetivo badges ─────────────────────────────────────── */
+.obj-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 0.74rem; font-weight: 800; padding: 3px 10px;
+  border-radius: 20px; letter-spacing: 0.2px; white-space: nowrap;
+}
+.obj-perdida { background: rgba(239,68,68,0.12);   border: 1px solid rgba(239,68,68,0.3);   color: #f87171; }
+.obj-musculo { background: rgba(56,189,248,0.12);  border: 1px solid rgba(56,189,248,0.3);  color: #38bdf8; }
+.obj-mant    { background: rgba(251,191,36,0.12);  border: 1px solid rgba(251,191,36,0.3);  color: #fbbf24; }
+.obj-resist  { background: rgba(168,85,247,0.12);  border: 1px solid rgba(168,85,247,0.3);  color: #c084fc; }
+.obj-rehab   { background: rgba(34,197,94,0.12);   border: 1px solid rgba(34,197,94,0.3);   color: #4ade80; }
+.obj-general { background: rgba(148,163,184,0.1);  border: 1px solid rgba(148,163,184,0.2); color: #94a3b8; }
+
+/* ── Empty state ─────────────────────────────────────────── */
+.mc-empty {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 60px 20px; color: #6b7280;
+}
+.mc-empty-icon { font-size: 3rem; margin-bottom: 14px; }
+.mc-empty p    { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
+.mc-empty small { font-size: 0.82rem; text-align: center; max-width: 340px; }
+
+/* ══════════════════════════════════════════════════════
+   MODAL FICHA DE CLIENTE
+   ══════════════════════════════════════════════════════ */
+.ficha-box { max-width: 860px; padding: 0; overflow: hidden; }
+
+/* Cabecera ficha */
+.ficha-header {
+  display: flex; align-items: center; gap: 18px;
+  padding: 24px 28px;
+  background: linear-gradient(135deg, #0d1f35 0%, #0a0f1a 100%);
+  border-bottom: 1px solid rgba(56,189,248,0.12);
+  flex-wrap: wrap;
+}
+.ficha-avatar {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: linear-gradient(135deg, #0284c7, #38bdf8);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; font-weight: 900; color: #fff;
+  box-shadow: 0 0 20px rgba(56,189,248,0.35); flex-shrink: 0;
+}
+.ficha-header-info { flex: 1; min-width: 0; }
+.ficha-nombre { font-size: 1.3rem; font-weight: 800; color: #fff; margin-bottom: 6px; }
+.ficha-meta   { font-size: 0.82rem; color: #94a3b8; display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
+.ficha-chips  { display: flex; flex-direction: column; gap: 6px; }
+.ficha-chip   { background: rgba(56,189,248,0.06); border: 1px solid rgba(56,189,248,0.12); border-radius: 8px; padding: 6px 12px; font-size: 0.78rem; color: #cbd5e1; min-width: 140px; }
+.ficha-chip-label { display: block; font-size: 0.68rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; margin-bottom: 2px; letter-spacing: 0.4px; }
+
+/* Cuerpo ficha: 2 columnas */
+.ficha-body {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+}
+.ficha-seccion {
+  padding: 24px 28px;
+  border-right: 1px solid rgba(56,189,248,0.08);
+}
+.ficha-seccion:last-child { border-right: none; }
+.ficha-sec-titulo {
+  font-weight: 800; font-size: 0.9rem; color: #38bdf8;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 16px; padding-bottom: 10px;
+  border-bottom: 1px solid rgba(56,189,248,0.1);
+}
+.ficha-sec-desc { font-size: 0.82rem; color: #94a3b8; margin: 0 0 16px; line-height: 1.5; }
+
+/* IMC display */
+.imc-display {
+  font-size: 0.88rem; font-weight: 700;
+  padding: 8px 14px; border-radius: 8px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(56,189,248,0.12);
+  margin-bottom: 14px; color: #94a3b8;
+  text-align: center;
+}
+
+.ficha-static {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(56,189,248,0.1);
+  border-radius: 8px; padding: 9px 12px;
+  color: #e2e8f0; font-size: 0.88rem;
+}
+
+.ficha-btn-salud, .ficha-btn-obj {
+  width: 100%; margin-top: 16px; justify-content: center;
+}
+.ficha-select-obj {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(56,189,248,0.2);
+  border-radius: 9px; padding: 10px 12px;
+  color: #e2e8f0; font-size: 0.9rem;
+  font-family: 'Nunito', sans-serif; outline: none; cursor: pointer;
+}
+.ficha-select-obj option { background: #111827; }
+
+/* Guía de objetivos */
+.obj-guide {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(56,189,248,0.08);
+  border-radius: 10px; padding: 14px;
+  margin: 14px 0;
+}
+.obj-guide-titulo {
+  font-size: 0.72rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.5px; color: #38bdf8; margin-bottom: 10px;
+}
+.obj-guide-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 0.8rem; color: #cbd5e1;
+}
+.obj-guide-item:last-child { border-bottom: none; }
+.og-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+.obj-guide-item strong { color: #fff; }
+.obj-guide-item small  { color: #94a3b8; }
+
+/* Footer del modal */
+.ficha-box .modal-footer {
+  padding: 16px 28px;
+  border-top: 1px solid rgba(56,189,248,0.1);
+  background: rgba(10,15,26,0.8);
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 760px) {
+  .ficha-body     { grid-template-columns: 1fr; }
+  .ficha-seccion  { border-right: none; border-bottom: 1px solid rgba(56,189,248,0.08); padding: 20px 18px; }
+  .ficha-header   { padding: 18px; }
+  .ficha-chips    { flex-direction: row; flex-wrap: wrap; gap: 6px; }
+  .mc-stats-row   { gap: 10px; }
+  .td-salud       { display: none; }
+}
+@media (max-width: 500px) {
+  .ficha-avatar   { width: 48px; height: 48px; font-size: 1.2rem; }
+  .ficha-nombre   { font-size: 1.1rem; }
+}

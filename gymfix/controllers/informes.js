@@ -2,11 +2,12 @@
 // controllers/informes.js - GESTIÓN DE ESTADÍSTICAS GYM CÚCUTA
 // ============================================================
 import { Auth }         from '../services/auth.js'
-import { buildNavbar, formatMoney }  from '../services/ui.js'
+import { buildNavbar, formatMoney, showLoader, hideLoader, isAdmin }  from '../services/ui.js'
 import { PersonaModel } from '../models/PersonaModel.js'
 
 // 1. SEGURIDAD Y NAVBAR
 Auth.requireAuth();
+if (!isAdmin()) { window.location.href = 'inicio.html'; }
 document.getElementById('navbar-container').innerHTML = buildNavbar('informes.html');
 
 // 2. CONFIGURACIÓN Y CONSTANTES
@@ -16,10 +17,12 @@ let todasPersonas = [];
 
 // 3. CARGA DE DATOS (Usando el Modelo)
 async function cargarDatos() {
+    showLoader('Cargando informes...')
     try {
         // Obtenemos los datos a través del modelo PersonaModel
         todasPersonas = await PersonaModel.getAll();
         renderAll();
+        hideLoader();
     } catch (error) {
         console.error("Error cargando informes:", error);
     }

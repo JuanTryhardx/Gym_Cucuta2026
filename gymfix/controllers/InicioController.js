@@ -81,10 +81,10 @@ export const InicioController = {
         { href: 'soporte.html',      icon: '🛟', label: 'Soporte'           },
       ],
       entrenador: [
-        { href: 'registrar.html', icon: '➕', label: 'Registrar Cliente' },
-        { href: 'personas.html',  icon: '👥', label: 'Mis Clientes'     },
-        { href: 'eventos.html',   icon: '📅', label: 'Eventos'          },
-        { href: 'soporte.html',   icon: '🛟', label: 'Soporte'          },
+        { href: 'mis-clientes.html', icon: '👥', label: 'Mis Clientes'     },
+        { href: 'registrar.html',    icon: '➕', label: 'Registrar Cliente' },
+        { href: 'eventos.html',      icon: '📅', label: 'Eventos'          },
+        { href: 'soporte.html',      icon: '🛟', label: 'Soporte'          },
       ],
       cliente: [
         { href: 'eventos.html', icon: '📅', label: 'Ver Eventos' },

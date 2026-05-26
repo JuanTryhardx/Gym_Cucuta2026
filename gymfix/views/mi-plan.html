@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mi Plan - App Gym Cúcuta</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="../assets/css/main.css"/>
+  <link rel="stylesheet" href="../assets/css/mi-plan.css"/>
+</head>
+<body>
+  <div id="navbar-container"></div>
+
+  <div class="page-content">
+
+    <!-- HEADER CON PERFIL DEL CLIENTE -->
+    <div class="mp-hero">
+      <div class="mp-hero-avatar" id="mpAvatar">?</div>
+      <div class="mp-hero-info">
+        <div class="mp-hero-nombre" id="mpNombre"></div>
+        <div class="mp-hero-meta">
+          <span>📄 <span id="mpDocumento"></span></span>
+          <span>📧 <span id="mpEmail"></span></span>
+          <span>📱 <span id="mpTelefono"></span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- GRID PRINCIPAL -->
+    <div class="mp-grid">
+
+      <!-- ── Col izquierda: Entrenador + Objetivo ── -->
+      <div class="mp-col-left">
+
+        <div class="card">
+          <div class="card-title">👨‍🏫 Mi Entrenador</div>
+          <div id="entrenadorCard"></div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <div class="card-title">🎯 Mi Objetivo</div>
+          <div id="objetivoCard"></div>
+        </div>
+
+      </div>
+
+      <!-- ── Col derecha: Evolución física ── -->
+      <div class="mp-col-right">
+        <div class="card">
+          <div class="card-title">📊 Mi Evolución Física</div>
+          <div id="evolucionCard"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module" src="../controllers/MiPlanController.js"></script>
+</body>
+</html>

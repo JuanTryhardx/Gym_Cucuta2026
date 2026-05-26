@@ -50,3 +50,38 @@
 }
 .reg-member-name { font-size: 0.88rem; font-weight: 700; color: var(--text); }
 .reg-member-plan { font-size: 0.75rem; color: var(--text-muted); }
+
+/* ── Stats panel lateral ─────────────────────────────────── */
+.reg-stat-item {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(56,189,248,0.1);
+  border-radius: 10px; padding: 14px 16px;
+  margin-bottom: 12px;
+}
+.reg-stat-label { font-size: 0.72rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.reg-stat-value { font-size: 1.6rem; font-weight: 800; color: #fff; }
+
+/* ── Últimos registrados ─────────────────────────────────── */
+.ultimos-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.ultimos-item:last-child { border-bottom: none; }
+.ultimos-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, #0284c7, #0ea5e9);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 0.9rem; color: #fff; flex-shrink: 0;
+}
+.ultimos-info      { flex: 1; min-width: 0; }
+.ultimos-nombre    { font-size: 0.87rem; font-weight: 700; color: #fff; }
+.ultimos-fecha     { font-size: 0.73rem; color: #94a3b8; margin-top: 1px; }
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .reg-layout { grid-template-columns: 1fr !important; }
+  .side-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+}
+@media (max-width: 560px) {
+  .side-panel { grid-template-columns: 1fr; }
+}

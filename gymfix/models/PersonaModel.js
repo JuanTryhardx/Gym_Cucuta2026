@@ -125,3 +125,47 @@ export const PersonaModel = {
         }
     }
 }
+// Métodos adicionales para el módulo entrenador/cliente
+
+// Clientes filtrados por nombre del entrenador asignado
+PersonaModel.getByEntrenador = async function(nombreEntrenador) {
+  const { data, error } = await supabase
+    .from('personas')
+    .select('*')
+    .eq('rol', 'cliente')
+    .ilike('entrenador', `%${nombreEntrenador}%`)
+    .order('nombre', { ascending: true })
+  if (error) { console.error('getByEntrenador:', error.message); throw error }
+  return data || []
+}
+
+// Busca entrenador por nombre (para el perfil del cliente)
+PersonaModel.getEntrenadorByNombre = async function(nombre) {
+  if (!nombre || !nombre.trim()) return null
+  const { data } = await supabase
+    .from('personas')
+    .select('id, nombre, especialidad, email, telefono')
+    .eq('rol', 'entrenador')
+    .ilike('nombre', `%${nombre.trim()}%`)
+    .limit(1)
+    .single()
+  return data || null
+}
+
+// Actualiza solo el objetivo de un miembro
+PersonaModel.updateObjetivo = async function(id, objetivo) {
+  const { error } = await supabase
+    .from('personas')
+    .update({ objetivo })
+    .eq('id', id)
+  if (error) { console.error('updateObjetivo:', error.message); throw error }
+}
+
+// Actualiza datos físicos (peso, altura, observaciones)
+PersonaModel.updateSalud = async function(id, payload) {
+  const { error } = await supabase
+    .from('personas')
+    .update(payload)
+    .eq('id', id)
+  if (error) { console.error('updateSalud:', error.message); throw error }
+}

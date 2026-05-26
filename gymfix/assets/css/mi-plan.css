@@ -1,0 +1,143 @@
+/* ============================================================
+   mi-plan.css — Vista del cliente
+   ============================================================ */
+
+/* ── Hero ────────────────────────────────────────────────── */
+.mp-hero {
+  display: flex; align-items: center; gap: 18px;
+  background: linear-gradient(135deg, #0d1f35 0%, #0a0f1a 100%);
+  border: 1px solid rgba(56,189,248,0.18);
+  border-radius: 16px; padding: 28px 32px;
+  margin-bottom: 22px; flex-wrap: wrap;
+}
+.mp-hero-avatar {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: linear-gradient(135deg, #0284c7, #38bdf8);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem; font-weight: 900; color: #fff;
+  box-shadow: 0 0 22px rgba(56,189,248,0.35); flex-shrink: 0;
+}
+.mp-hero-nombre { font-size: 1.5rem; font-weight: 800; color: #fff; margin-bottom: 8px; }
+.mp-hero-meta   { display: flex; flex-wrap: wrap; gap: 16px; font-size: 0.84rem; color: #94a3b8; }
+.mp-hero-meta span span { color: #cbd5e1; }
+
+/* ── Grid principal ──────────────────────────────────────── */
+.mp-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start;
+}
+.mp-col-left, .mp-col-right { display: flex; flex-direction: column; gap: 0; }
+
+/* ── Entrenador card ─────────────────────────────────────── */
+.entrenador-perfil {
+  display: flex; align-items: center; gap: 14px;
+  padding-bottom: 16px; margin-bottom: 16px;
+  border-bottom: 1px solid rgba(56,189,248,0.1);
+}
+.ent-avatar {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed, #a78bfa);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; font-weight: 900; color: #fff;
+  box-shadow: 0 0 16px rgba(167,139,250,0.3); flex-shrink: 0;
+}
+.ent-nombre       { font-size: 1.1rem; font-weight: 800; color: #fff; margin-bottom: 4px; }
+.ent-especialidad { font-size: 0.82rem; color: #a78bfa; font-weight: 600; }
+
+.ent-contacto { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.ent-contact-item {
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 10px; padding: 10px 14px;
+}
+.ent-contact-icon { font-size: 1.1rem; flex-shrink: 0; }
+.ent-contact-label { font-size: 0.68rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 2px; }
+.ent-contact-val   { font-size: 0.88rem; color: #e2e8f0; font-weight: 600; }
+
+.btn-contactar {
+  display: block; text-align: center; text-decoration: none;
+  margin-top: 6px; padding: 10px; border-radius: 9px;
+  font-size: 0.85rem; font-weight: 700;
+}
+.ent-tip {
+  font-size: 0.82rem; color: #94a3b8; font-style: italic;
+  padding: 10px; border-left: 3px solid rgba(56,189,248,0.3);
+  margin-top: 10px;
+}
+
+.sin-entrenador {
+  text-align: center; padding: 28px 14px; color: #6b7280;
+}
+.sin-entrenador p { font-size: 0.9rem; margin-bottom: 4px; }
+.sin-entrenador small { font-size: 0.78rem; }
+
+/* ── Evolución física ────────────────────────────────────── */
+.evol-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 16px;
+}
+.evol-item {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(56,189,248,0.1);
+  border-radius: 12px; padding: 16px 12px; text-align: center;
+  transition: transform 0.2s;
+}
+.evol-item:hover { transform: translateY(-2px); }
+.evol-icon  { font-size: 1.5rem; margin-bottom: 6px; }
+.evol-val   { font-size: 1.6rem; font-weight: 800; color: #fff; line-height: 1; margin-bottom: 4px; }
+.evol-label { font-size: 0.71rem; color: #94a3b8; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
+.evol-imc-label { font-size: 0.72rem; font-weight: 800; margin-top: 4px; }
+.evol-bar-wrap  { height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; margin-top: 8px; overflow: hidden; }
+.evol-bar       { height: 100%; border-radius: 2px; transition: width 1s ease; }
+
+.evol-consejo {
+  background: rgba(56,189,248,0.06);
+  border: 1px solid rgba(56,189,248,0.14);
+  border-radius: 10px; padding: 12px 14px;
+  font-size: 0.84rem; color: #cbd5e1; line-height: 1.55;
+  margin-bottom: 12px;
+}
+.evol-obs {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px; padding: 14px;
+  margin-top: 10px;
+}
+.evol-obs-titulo { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #38bdf8; margin-bottom: 8px; }
+.evol-obs p      { font-size: 0.85rem; color: #9ca3af; margin: 0; line-height: 1.6; }
+.sin-datos {
+  text-align: center; color: #6b7280; font-size: 0.85rem;
+  padding: 28px; font-style: italic;
+}
+
+/* ── Objetivo ────────────────────────────────────────────── */
+.obj-display {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 16px; background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(56,189,248,0.1);
+  border-radius: 12px; margin-bottom: 16px;
+}
+.obj-display-icon   { font-size: 2rem; flex-shrink: 0; }
+.obj-display-nombre { font-size: 1.05rem; font-weight: 800; margin-bottom: 6px; }
+.obj-display-desc   { font-size: 0.82rem; color: #9ca3af; line-height: 1.55; }
+
+.obj-tips-titulo { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #38bdf8; margin-bottom: 10px; }
+.obj-tips { display: flex; flex-direction: column; gap: 8px; }
+.obj-tip  {
+  font-size: 0.83rem; color: #cbd5e1; padding: 9px 12px;
+  background: rgba(255,255,255,0.03); border-radius: 8px;
+  border-left: 3px solid rgba(56,189,248,0.3);
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .mp-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .mp-hero    { padding: 18px; flex-direction: column; align-items: flex-start; }
+  .evol-grid  { grid-template-columns: repeat(3,1fr); gap: 8px; }
+  .evol-val   { font-size: 1.3rem; }
+  .mp-hero-meta { gap: 8px; flex-direction: column; }
+}
+@media (max-width: 380px) {
+  .evol-grid { grid-template-columns: 1fr 1fr; }
+}
