@@ -7,7 +7,7 @@ import { showToast, buildNavbar, showLoader, hideLoader,
 import { EventoModel } from '../models/EventoModel.js'
 
 const TIPO_COLORS = { clase:'#38bdf8', evento:'#c084fc', evaluacion:'#4ade80', mantenimiento:'#fbbf24', otro:'#f87171' }
-const TIPO_ICONS  = { clase:'🏋️', evento:'🎉', evaluacion:'📋', mantenimiento:'🔧', otro:'📌' }
+const TIPO_ICONS  = { clase:'Clase', evento:'Evento', evaluacion:'Evaluación', mantenimiento:'Mantenimiento', otro:'Otro' }
 
 export const EventosController = {
 
@@ -44,7 +44,7 @@ export const EventosController = {
       this._eventos = await EventoModel.getAll()
       this._renderCalendario()
       this._renderLista()
-    } catch(e) { console.error(e); showToast('❌ Error al cargar eventos', '#f87171') }
+    } catch(e) { console.error(e); showToast('Error al cargar eventos', '#f87171') }
   },
 
   _renderCalendario() {
@@ -86,7 +86,7 @@ export const EventosController = {
     const d     = new Date(ds + 'T00:00:00')
     const label = d.toLocaleDateString('es-CO',{weekday:'long',day:'numeric',month:'long'})
     const el    = document.getElementById('diaEventos')
-    el.innerHTML = `<div class="card-title">📌 ${label}</div>`
+    el.innerHTML = `<div class="card-title">${label}</div>`
     if (!evs.length) {
       el.innerHTML += '<p style="color:var(--text-muted);font-size:0.85rem;margin-top:10px">No hay eventos este día.</p>'
       return
@@ -95,10 +95,10 @@ export const EventosController = {
       <div class="ev-item">
         <div class="ev-tipo-dot" style="background:${TIPO_COLORS[e.tipo]||'#94a3b8'}"></div>
         <div class="ev-item-body">
-          <div class="ev-info-title">${TIPO_ICONS[e.tipo]||'📌'} ${e.titulo}</div>
+          <div class="ev-info-title">${e.titulo}</div>
           <div class="ev-info-meta">⏰ ${e.hora||'—'} ${e.descripcion ? '· '+e.descripcion : ''}</div>
         </div>
-        ${canEdit ? `<button class="ev-del-btn" onclick="eliminarEvento(${e.id})" title="Eliminar">❌</button>` : ''}
+        ${canEdit ? `<button class="ev-del-btn" onclick="eliminarEvento(${e.id})" title="Eliminar">Eliminar</button>` : ''}
       </div>`).join('')
   },
 
@@ -119,10 +119,10 @@ export const EventosController = {
         <div class="ev-item" style="${pasado?'opacity:0.45':''}">
           <div class="ev-tipo-dot" style="background:${TIPO_COLORS[e.tipo]||'#94a3b8'}"></div>
           <div class="ev-item-body" style="flex:1">
-            <div class="ev-info-title">${TIPO_ICONS[e.tipo]||'📌'} ${e.titulo}</div>
-            <div class="ev-info-meta">📅 ${d.toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'})} ⏰ ${e.hora||'—'}</div>
+            <div class="ev-info-title">${e.titulo}</div>
+            <div class="ev-info-meta">${d.toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'})} ⏰ ${e.hora||'—'}</div>
           </div>
-          ${canEdit ? `<button class="ev-del-btn" onclick="eliminarEvento(${e.id})" title="Eliminar">❌</button>` : ''}
+          ${canEdit ? `<button class="ev-del-btn" onclick="eliminarEvento(${e.id})" title="Eliminar">Eliminar</button>` : ''}
         </div>`
       }).join('')
   },
@@ -145,7 +145,7 @@ export const EventosController = {
   async guardar() {
     const titulo = document.getElementById('ev_titulo').value.trim()
     const fecha  = document.getElementById('ev_fecha').value
-    if (!titulo || !fecha) { showToast('⚠️ Completa título y fecha', '#fbbf24'); return }
+    if (!titulo || !fecha) { showToast('Completa título y fecha', '#fbbf24'); return }
     showLoader('Guardando evento...')
     try {
       await EventoModel.insert({

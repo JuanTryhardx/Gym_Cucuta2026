@@ -73,22 +73,22 @@ export const InicioController = {
     if (!container) return
     const acciones = {
       admin: [
-        { href: 'registrar.html',    icon: '➕', label: 'Registrar Persona' },
-        { href: 'personas.html',     icon: '👥', label: 'Ver Miembros'      },
-        { href: 'informes.html',     icon: '📊', label: 'Ver Informes'      },
-        { href: 'eventos.html',      icon: '📅', label: 'Eventos'           },
-        { href: 'validaciones.html', icon: '✅', label: 'Validaciones'      },
-        { href: 'soporte.html',      icon: '💬', label: 'Soporte'           },
+        { href: 'registrar.html',    icon: '', label: 'Registrar Persona' },
+        { href: 'personas.html',     icon: '', label: 'Ver Miembros'      },
+        { href: 'informes.html',     icon: '', label: 'Ver Informes'      },
+        { href: 'eventos.html',      icon: '', label: 'Eventos'           },
+        { href: 'validaciones.html', icon: '', label: 'Validaciones'      },
+        { href: 'soporte.html',      icon: '', label: 'Soporte'           },
       ],
       entrenador: [
-        { href: 'mis-clientes.html', icon: '👥', label: 'Mis Clientes'     },
-        { href: 'registrar.html',    icon: '➕', label: 'Registrar Cliente' },
-        { href: 'eventos.html',      icon: '📅', label: 'Eventos'          },
-        { href: 'soporte.html',      icon: '💬', label: 'Soporte'          },
+        { href: 'mis-clientes.html', icon: '', label: 'Mis Clientes'     },
+        { href: 'registrar.html',    icon: '', label: 'Registrar Cliente' },
+        { href: 'eventos.html',      icon: '', label: 'Eventos'          },
+        { href: 'soporte.html',      icon: '', label: 'Soporte'          },
       ],
       cliente: [
-        { href: 'eventos.html', icon: '📅', label: 'Ver Eventos' },
-        { href: 'soporte.html', icon: '💬', label: 'Soporte'     },
+        { href: 'eventos.html', icon: '', label: 'Ver Eventos' },
+        { href: 'soporte.html', icon: '', label: 'Soporte'     },
       ]
     }
     const items = acciones[rol] || acciones['cliente']
@@ -146,7 +146,7 @@ export const InicioController = {
     try {
       const data = await NoticiaModel.getAll()
       if (!data || data.length === 0) {
-        el.innerHTML = `<div class="empty-feed">📢 No hay publicaciones aún</div>`
+        el.innerHTML = `<div class="empty-feed">No hay publicaciones aún</div>`
         return
       }
       const tagMap = { novedad:'tag-novedad', actualización:'tag-actualizacion', importante:'tag-importante', motivacion:'tag-motivacion', salud:'tag-salud' }
@@ -154,7 +154,7 @@ export const InicioController = {
         const tagClass = tagMap[(n.tipo||'novedad').toLowerCase()] || 'tag-novedad'
         const media    = n.url_media
           ? `<img src="${n.url_media}" alt="noticia" style="width:64px;height:64px;object-fit:cover;border-radius:10px;flex-shrink:0">`
-          : `<div class="noticia-icon-placeholder">📰</div>`
+          : ``
         const fecha = n.fecha ? new Date(n.fecha).toLocaleDateString('es-CO', { day:'2-digit', month:'long', year:'numeric' }) : 'Reciente'
         return `
           <div class="noticia-item" style="animation-delay:${i*0.08}s">
@@ -167,7 +167,7 @@ export const InicioController = {
               <h4 class="noticia-titulo">${n.titulo}</h4>
               <p class="noticia-texto">${n.contenido}</p>
             </div>
-            ${canDelete ? `<button onclick="eliminarNoticia('${n.id}')" class="btn-del-noticia" title="Eliminar">✕</button>` : ''}
+            ${canDelete ? `<button onclick="eliminarNoticia('${n.id}')" class="btn-del-noticia" title="Eliminar">Eliminar</button>` : ''}
           </div>`
       }).join('')
     } catch(e) { console.error(e) }
@@ -187,7 +187,7 @@ export const InicioController = {
           <div class="evento-dot"></div>
           <div>
             <div class="evento-titulo">${e.titulo}</div>
-            ${e.fecha ? `<div class="evento-fecha">📅 ${formatDate(e.fecha)}</div>` : ''}
+            ${e.fecha ? `<div class="evento-fecha">${formatDate(e.fecha)}</div>` : ''}
           </div>
         </div>`).join('')
     } catch(e) { console.error(e) }
@@ -228,32 +228,32 @@ export const InicioController = {
 
     // Videos almacenados en memoria (en producción vendrían de BD)
     this._videos = this._videos || [
-      { tag: '💪 Fuerza',   url: 'https://www.youtube.com/embed/IODxDxX7oi4', titulo: 'Rutina Completa de Fuerza',       desc: 'Entrena todos los grupos musculares con este circuito profesional.' },
-      { tag: '🔥 Cardio',   url: 'https://www.youtube.com/embed/UItWltVZZmE', titulo: 'HIIT de Alto Impacto',            desc: 'Quema calorías en 20 minutos con este entrenamiento de intervalos.' },
-      { tag: '🥗 Nutrición',url: 'https://www.youtube.com/embed/qWJ1SzGTVLA', titulo: 'Alimentación para Deportistas',   desc: 'Aprende qué comer antes y después de entrenar para mejores resultados.' },
+      { tag: 'Fuerza',   url: 'https://www.youtube.com/embed/IODxDxX7oi4', titulo: 'Rutina Completa de Fuerza',       desc: 'Entrena todos los grupos musculares con este circuito profesional.' },
+      { tag: 'Cardio',   url: 'https://www.youtube.com/embed/UItWltVZZmE', titulo: 'HIIT de Alto Impacto',            desc: 'Quema calorías en 20 minutos con este entrenamiento de intervalos.' },
+      { tag: 'Nutrición',url: 'https://www.youtube.com/embed/qWJ1SzGTVLA', titulo: 'Alimentación para Deportistas',   desc: 'Aprende qué comer antes y después de entrenar para mejores resultados.' },
     ]
     this._beneficios = this._beneficios || [
-      { icon: '🏋️', titulo: 'Equipos de Última Generación',  desc: 'Acceso a más de 80 máquinas y equipos profesionales' },
-      { icon: '👨‍🏫', titulo: 'Entrenadores Certificados',    desc: 'Guía personalizada de expertos con experiencia comprobada' },
-      { icon: '📅', titulo: 'Clases Grupales',                desc: 'Más de 20 clases semanales: yoga, crossfit, spinning y más' },
-      { icon: '🚿', titulo: 'Vestuarios Completos',           desc: 'Duchas, casilleros y zonas de descanso a tu disposición' },
+      { icon: '', titulo: 'Equipos de Última Generación',  desc: 'Acceso a más de 80 máquinas y equipos profesionales' },
+      { icon: '', titulo: 'Entrenadores Certificados',    desc: 'Guía personalizada de expertos con experiencia comprobada' },
+      { icon: '', titulo: 'Clases Grupales',                desc: 'Más de 20 clases semanales: yoga, crossfit, spinning y más' },
+      { icon: '', titulo: 'Vestuarios Completos',           desc: 'Duchas, casilleros y zonas de descanso a tu disposición' },
     ]
 
     container.innerHTML = `
       <!-- Tarjetas motivacionales -->
       <div class="motivacional-grid">
         <div class="card motivacional-card">
-          <div class="motiv-header">🎯 Tu Objetivo</div>
+          <div class="motiv-header">Tu Objetivo</div>
           <p class="motiv-text">Cada entrenamiento te acerca a la mejor versión de ti mismo. Hoy es un buen día para superar tus límites.</p>
           <div class="motiv-quote">"El dolor que sientes hoy es la fuerza que sentirás mañana."</div>
         </div>
         <div class="card motivacional-card">
-          <div class="motiv-header">💡 Consejo del Día</div>
+          <div class="motiv-header">Consejo del Día</div>
           <p class="motiv-text">La hidratación es clave. Bebe al menos 2 litros de agua al día, especialmente antes y después de entrenar.</p>
           <div class="motiv-tips">
-            <span class="tip-chip">💧 Hidratación</span>
-            <span class="tip-chip">😴 Descanso</span>
-            <span class="tip-chip">🥗 Nutrición</span>
+            <span class="tip-chip">Hidratación</span>
+            <span class="tip-chip">Descanso</span>
+            <span class="tip-chip">Nutrición</span>
           </div>
         </div>
       </div>
@@ -263,7 +263,7 @@ export const InicioController = {
         <div class="card-title-section">
           <span class="card-title-icon">▶️</span>
           <span>Videos de Entrenamiento</span>
-          ${canEdit ? `<button class="btn-add-content" onclick="openVideoModal()" title="Agregar video">➕ Agregar Video</button>` : ''}
+          ${canEdit ? `<button class="btn-add-content" onclick="openVideoModal()" title="Agregar video">Agregar Video</button>` : ''}
         </div>
         <div class="videos-grid" id="videosGrid">
           ${this._renderVideosHTML(canEdit)}
@@ -273,9 +273,9 @@ export const InicioController = {
       <!-- Beneficios -->
       <div class="card beneficios-section">
         <div class="card-title-section">
-          <span class="card-title-icon">⭐</span>
+          
           <span>Beneficios de tu Membresía</span>
-          ${canEdit ? `<button class="btn-add-content" onclick="openBeneficioModal()" title="Agregar beneficio">➕ Agregar Beneficio</button>` : ''}
+          ${canEdit ? `<button class="btn-add-content" onclick="openBeneficioModal()" title="Agregar beneficio">Agregar Beneficio</button>` : ''}
         </div>
         <div class="beneficios-grid" id="beneficiosGrid">
           ${this._renderBeneficiosHTML(canEdit)}
@@ -299,7 +299,7 @@ export const InicioController = {
           <div class="form-row" style="margin-bottom:14px">
             <div class="form-group">
               <label>Etiqueta</label>
-              <input id="v_tag" placeholder="💪 Fuerza"/>
+              <input id="v_tag" placeholder="Fuerza"/>
             </div>
             <div class="form-group">
               <label>Descripción</label>
@@ -316,11 +316,11 @@ export const InicioController = {
       <!-- Modal agregar beneficio (solo admin) -->
       <div id="beneficioModal" class="modal-overlay" style="display:none">
         <div class="modal-box" style="max-width:460px">
-          <h3>⭐ Agregar Beneficio</h3>
+          <h3>Agregar Beneficio</h3>
           <div class="form-row" style="margin-bottom:12px">
             <div class="form-group" style="max-width:80px">
               <label>Ícono (emoji)</label>
-              <input id="b_icon" placeholder="🏋️" style="text-align:center;font-size:1.3rem"/>
+              <input id="b_icon" placeholder="Icono" style="text-align:center"/>
             </div>
             <div class="form-group">
               <label>Título</label>
@@ -381,7 +381,7 @@ export const InicioController = {
     const tag    = document.getElementById('v_tag').value.trim()
     const desc   = document.getElementById('v_desc').value.trim()
     if (!titulo || !url) { await swalError('Campos requeridos', 'Título y URL son obligatorios.'); return }
-    this._videos.push({ titulo, url, tag: tag || '🎬 Video', desc })
+    this._videos.push({ titulo, url, tag: tag || 'Video', desc })
     this.closeVideoModal()
     document.getElementById('videosGrid').innerHTML = this._renderVideosHTML(true)
     await swalSuccess('¡Video agregado!', 'El video ya aparece en la sección.')
@@ -406,7 +406,7 @@ export const InicioController = {
     const titulo = document.getElementById('b_titulo').value.trim()
     const desc   = document.getElementById('b_desc').value.trim()
     if (!titulo) { await swalError('Campo requerido', 'Escribe un título para el beneficio.'); return }
-    this._beneficios.push({ icon: icon || '⭐', titulo, desc })
+    this._beneficios.push({ icon: icon || '', titulo, desc })
     this.closeBeneficioModal()
     document.getElementById('beneficiosGrid').innerHTML = this._renderBeneficiosHTML(true)
     await swalSuccess('¡Beneficio agregado!', 'Ya aparece en la sección de membresía.')

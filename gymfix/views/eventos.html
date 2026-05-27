@@ -17,7 +17,7 @@
         <p class="section-sub" id="eventosSubtitle"></p>
       </div>
       <!-- Solo visible para admin/entrenador — controlado por JS -->
-      <button class="btn-primary" id="btnNuevoEvento" style="display:none" onclick="openEvento()">➕ Nuevo Evento</button>
+      <button class="btn-primary" id="btnNuevoEvento" style="display:none" onclick="openEvento()">Nuevo Evento</button>
     </div>
 
     <div class="eventos-layout">
@@ -37,11 +37,11 @@
       <!-- PANEL DERECHO -->
       <div class="eventos-side">
         <div class="card" id="eventosDelDia">
-          <div class="card-title">📌 Eventos del Día</div>
+          <div class="card-title">Eventos del Día</div>
           <div id="diaEventos"><p style="color:var(--text-muted);font-size:0.85rem">Selecciona un día en el calendario.</p></div>
         </div>
         <div class="card" style="margin-top:16px">
-          <div class="card-title">📋 Todos los Eventos</div>
+          <div class="card-title">Todos los Eventos</div>
           <div id="listaEventos"></div>
         </div>
       </div>
@@ -51,7 +51,7 @@
   <!-- MODAL (solo admin/entrenador) -->
   <div id="eventoModal" class="modal-overlay" style="display:none">
     <div class="modal-box">
-      <h3>📅 Nuevo Evento</h3>
+      <h3>Nuevo Evento</h3>
       <div class="form-group"><label>Título del Evento</label><input id="ev_titulo" placeholder="Ej: Clase de Crossfit"/></div>
       <div class="form-row" style="margin-top:12px">
         <div class="form-group"><label>Fecha</label><input id="ev_fecha" type="date"/></div>
@@ -60,11 +60,11 @@
       <div class="form-row" style="margin-top:12px">
         <div class="form-group"><label>Tipo</label>
           <select id="ev_tipo">
-            <option value="clase">🏋️ Clase</option>
-            <option value="evento">🎉 Evento</option>
-            <option value="evaluacion">📋 Evaluación</option>
-            <option value="mantenimiento">🔧 Mantenimiento</option>
-            <option value="otro">📌 Otro</option>
+            <option value="clase">Clase</option>
+            <option value="evento">Evento</option>
+            <option value="evaluacion">Evaluación</option>
+            <option value="mantenimiento">Mantenimiento</option>
+            <option value="otro">Otro</option>
           </select>
         </div>
       </div>
@@ -73,7 +73,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn-secondary" onclick="closeEvento()">Cancelar</button>
-        <button class="btn-primary" onclick="guardarEvento()">💾 Guardar</button>
+        <button class="btn-primary" onclick="guardarEvento()">Guardar</button>
       </div>
     </div>
   </div>

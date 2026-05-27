@@ -168,6 +168,21 @@ window.renderAll = function () {
     }
     drawBar('chartCrecimiento', meses, mesData, '#38bdf8');
 
+    // Gráfico de Objetivos
+    const OBJETIVOS = ['Pérdida de peso', 'Ganancia muscular', 'Mantenimiento', 'Resistencia', 'Rehabilitación', 'General'];
+    const OBJ_COLORS = ['#f87171', '#38bdf8', '#fbbf24', '#c084fc', '#4ade80', '#94a3b8'];
+    const objData = OBJETIVOS.map(o => todas.filter(p => (p.objetivo || 'General') === o).length);
+    const objFiltN = OBJETIVOS.filter((_, i) => objData[i] > 0);
+    const objFiltD = objData.filter(v => v > 0);
+    const objFiltC = OBJ_COLORS.filter((_, i) => objData[i] > 0);
+    drawDonut('chartObjetivos', objFiltD.length ? objFiltD : [1], objFiltN.length ? objFiltN : ['Sin datos'], objFiltD.length ? objFiltC : ['#334155']);
+    if (objFiltN.length) {
+        buildLegend('legendObjetivos', objFiltN, objFiltD, objFiltC);
+    } else {
+        const legEl = document.getElementById('legendObjetivos');
+        if (legEl) legEl.innerHTML = '<span style="color:var(--text-muted);font-size:0.85rem">Sin datos de objetivos registrados</span>';
+    }
+
     // Tabla de ingresos por plan
     const totalIng = ingresos || 1;
     const tabla = document.getElementById('tablaPlanes');

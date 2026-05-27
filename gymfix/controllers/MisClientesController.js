@@ -81,12 +81,12 @@ export const MisClientesController = {
 
   _objetivoBadge(obj) {
     const map = {
-      'Pérdida de peso':   { cls: 'obj-perdida',  icon: '🔥' },
-      'Ganancia muscular': { cls: 'obj-musculo',  icon: '💪' },
-      'Mantenimiento':     { cls: 'obj-mant',     icon: '⚖️' },
-      'Resistencia':       { cls: 'obj-resist',   icon: '🏃' },
-      'Rehabilitación':    { cls: 'obj-rehab',    icon: '🩹' },
-      'General':           { cls: 'obj-general',  icon: '🎯' },
+      'Pérdida de peso':   { cls: 'obj-perdida',  icon: '' },
+      'Ganancia muscular': { cls: 'obj-musculo',  icon: '' },
+      'Mantenimiento':     { cls: 'obj-mant',     icon: '' },
+      'Resistencia':       { cls: 'obj-resist',   icon: '' },
+      'Rehabilitación':    { cls: 'obj-rehab',    icon: '' },
+      'General':           { cls: 'obj-general',  icon: '' },
     }
     const o = map[obj] || map['General']
     return `<span class="obj-badge ${o.cls}">${o.icon} ${obj || 'General'}</span>`
@@ -138,13 +138,13 @@ export const MisClientesController = {
         <td><span class="doc-chip">${c.documento || '-'}</span></td>
         <td>${this._objetivoBadge(c.objetivo)}</td>
         <td class="td-salud">
-          ${c.peso ? `<span class="salud-chip">⚖️ ${c.peso}kg</span>` : '<span style="color:#4b5563">—</span>'}
-          ${c.altura ? `<span class="salud-chip">📏 ${c.altura}cm</span>` : ''}
+          ${c.peso ? `<span class="salud-chip">${c.peso}kg</span>` : '<span style="color:#4b5563">—</span>'}
+          ${c.altura ? `<span class="salud-chip">${c.altura}cm</span>` : ''}
           ${imc ? `<span class="salud-chip imc" style="border-color:${imcData?.color};color:${imcData?.color}">IMC ${imc}</span>` : ''}
         </td>
         <td><span class="status-badge ${c.estado==='Activo'?'badge-activo':'badge-inactivo'}">${c.estado||'Activo'}</span></td>
         <td class="td-actions">
-          <button class="btn-edit" onclick="event.stopPropagation();abrirFicha(${c.id})">📋 Ver Ficha</button>
+          <button class="btn-edit" onclick="event.stopPropagation();abrirFicha(${c.id})">Ver Ficha</button>
         </td>
       </tr>`
     }).join('')

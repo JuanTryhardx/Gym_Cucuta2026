@@ -35,7 +35,7 @@
           <span>Noticias y Actualizaciones</span>
           <!-- Botón solo visible para admin/entrenador — controlado por JS -->
           <button id="btnPublicar" class="btn-secondary btn-publicar" style="margin-left:auto;display:none" onclick="openNoticiaModal()">
-            ➕ Publicar
+            Publicar
           </button>
         </div>
         <div id="noticiasLista"></div>
@@ -44,12 +44,12 @@
       <!-- Columna Derecha -->
       <aside class="side-col">
         <article class="card">
-          <div class="card-title">⚡ Acciones Rápidas</div>
+          <div class="card-title">Acciones Rápidas</div>
           <div class="quick-actions" id="quickActionsContainer"></div>
         </article>
 
         <article class="card" style="margin-top:16px">
-          <div class="card-title">📅 Próximos Eventos</div>
+          <div class="card-title">Próximos Eventos</div>
           <div id="proximosEventos"></div>
         </article>
       </aside>
@@ -63,7 +63,7 @@
   <!-- MODAL PUBLICAR (solo admin/entrenador) -->
   <div id="noticiaModal" style="display:none;position:fixed;z-index:3000;inset:0;background:rgba(0,0,0,0.78);align-items:center;justify-content:center;backdrop-filter:blur(5px)">
     <div class="modal-box" style="max-width:560px">
-      <h3>📣 Nueva Publicación</h3>
+      <h3>Nueva Publicación</h3>
       <form id="formNuevaNoticia" onsubmit="event.preventDefault()">
         <div class="form-group" style="margin-bottom:12px">
           <label>Título *</label>

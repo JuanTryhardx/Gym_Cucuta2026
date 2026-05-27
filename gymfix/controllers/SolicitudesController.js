@@ -30,7 +30,7 @@ export async function renderSolicitudesPanel () {
   }
 
   if (!data.length) {
-    container.innerHTML = '<p style="color:var(--text-muted);font-size:0.88rem;text-align:center;padding:12px 0">No hay solicitudes pendientes. ✅</p>'
+    container.innerHTML = '<p style="color:var(--text-muted);font-size:0.88rem;text-align:center;padding:12px 0">No hay solicitudes pendientes. </p>'
     return
   }
 
@@ -39,17 +39,17 @@ export async function renderSolicitudesPanel () {
       <div class="solicitud-info">
         <div class="solicitud-nombre">${s.nombre}</div>
         <div class="solicitud-meta">
-          <span>📄 ${s.documento}</span>
-          ${s.email ? `<span>📧 ${s.email}</span>` : ''}
-          ${s.telefono ? `<span>📞 ${s.telefono}</span>` : ''}
+          <span>${s.documento}</span>
+          ${s.email ? `<span>${s.email}</span>` : ''}
+          ${s.telefono ? `<span>${s.telefono}</span>` : ''}
         </div>
-        <div class="solicitud-especialidad">🎯 ${s.especialidad}</div>
+        <div class="solicitud-especialidad">${s.especialidad}</div>
         ${s.motivacion ? `<div class="solicitud-motivacion">"${s.motivacion}"</div>` : ''}
         <div class="solicitud-fecha">Recibida: ${new Date(s.fecha_solicitud).toLocaleDateString('es-CO', {day:'2-digit',month:'short',year:'numeric'})}</div>
       </div>
       <div class="solicitud-acciones">
-        <button class="btn-aprobar" onclick="aprobarEntrenador(${s.id})">✅ Aprobar</button>
-        <button class="btn-rechazar" onclick="rechazarSolicitud(${s.id})">❌ Rechazar</button>
+        <button class="btn-aprobar" onclick="aprobarEntrenador(${s.id})">Aprobar</button>
+        <button class="btn-rechazar" onclick="rechazarSolicitud(${s.id})">Rechazar</button>
       </div>
     </div>
   `).join('')
@@ -66,7 +66,7 @@ window.aprobarEntrenador = async function (id) {
     .single()
 
   if (errGet || !sol) {
-    showToast('❌ No se pudo obtener la solicitud', '#f87171')
+    showToast('No se pudo obtener la solicitud', '#f87171')
     return
   }
 
@@ -82,7 +82,7 @@ window.aprobarEntrenador = async function (id) {
 
   if (errInsert) {
     console.error('Error creando entrenador:', errInsert)
-    showToast('❌ Error al crear el entrenador', '#f87171')
+    showToast('Error al crear el entrenador', '#f87171')
     return
   }
 
@@ -96,7 +96,7 @@ window.aprobarEntrenador = async function (id) {
     console.error('Error actualizando solicitud:', errUpdate)
   }
 
-  showToast(`✅ ${sol.nombre} aprobado como entrenador`)
+  showToast(`${sol.nombre} aprobado como entrenador`)
   renderSolicitudesPanel()
 }
 
@@ -110,11 +110,11 @@ window.rechazarSolicitud = async function (id) {
     .eq('id', id)
 
   if (error) {
-    showToast('❌ Error al rechazar', '#f87171')
+    showToast('Error al rechazar', '#f87171')
     return
   }
 
-  showToast('🚫 Solicitud rechazada', '#fbbf24')
+  showToast('Solicitud rechazada', '#fbbf24')
   renderSolicitudesPanel()
 }
 

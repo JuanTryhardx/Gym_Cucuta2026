@@ -18,7 +18,7 @@ export const AuthController = {
       const btn = document.getElementById('togglePassBtn')
       const isPass = inp.type === 'password'
       inp.type = isPass ? 'text' : 'password'
-      btn.textContent = isPass ? '🙈' : '👁'
+      btn.textContent = isPass ? 'Ver' : 'Ocultar'
     }
 
     form.addEventListener('submit', async function(e) {
@@ -54,7 +54,7 @@ export const AuthController = {
       const inp = document.getElementById(id)
       const isPass = inp.type === 'password'
       inp.type = isPass ? 'text' : 'password'
-      btn.textContent = isPass ? '🙈' : '👁'
+      btn.textContent = isPass ? 'Ver' : 'Ocultar'
     }
     window.checkPasswordStrength = () => this._checkStrength()
   },
@@ -189,7 +189,7 @@ export const AuthController = {
           estado: 'Activo',
           fecha_inicio: new Date().toISOString().split('T')[0]
         })
-        this._mostrarExito('✅', '¡Registro exitoso!', `Bienvenido/a ${nombre}. Tu cuenta ha sido activada, ya puedes iniciar sesión.`)
+        this._mostrarExito('', '¡Registro exitoso!', `Bienvenido/a ${nombre}. Tu cuenta ha sido activada, ya puedes iniciar sesión.`)
         } else {
         // Registro como solicitud de Entrenador
         const especialidad = document.getElementById('reg_especialidad').value.trim()
@@ -200,7 +200,7 @@ export const AuthController = {
           especialidad,
           estado: 'Pendiente' // CAMBIO: Asegúrate de poner la 'P' mayúscula exacta aquí
         })
-        this._mostrarExito('⏳', 'Solicitud enviada', `Hola ${nombre}, tu perfil de entrenador será revisado por el administrador.`)
+        this._mostrarExito('', 'Solicitud enviada', `Hola ${nombre}, tu perfil de entrenador será revisado por el administrador.`)
       }
 
 

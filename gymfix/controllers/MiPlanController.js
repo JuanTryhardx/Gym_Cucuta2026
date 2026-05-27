@@ -47,7 +47,7 @@ export const MiPlanController = {
     if (!nombreEntrenador || !nombreEntrenador.trim()) {
       el.innerHTML = `
         <div class="sin-entrenador">
-          <div style="font-size:2rem;margin-bottom:10px">👨‍🏫</div>
+          
           <p>Aún no tienes un entrenador asignado.</p>
           <small>Contacta al administrador del gimnasio para que te asignen uno.</small>
         </div>`
@@ -62,16 +62,16 @@ export const MiPlanController = {
           <div class="ent-avatar">${(e.nombre||'E').charAt(0).toUpperCase()}</div>
           <div class="ent-info">
             <div class="ent-nombre">${e.nombre}</div>
-            <div class="ent-especialidad">🏅 ${e.especialidad || 'Entrenamiento General'}</div>
+            <div class="ent-especialidad">${e.especialidad || 'Entrenamiento General'}</div>
           </div>
         </div>
         <div class="ent-contacto">
-          ${e.email    ? `<div class="ent-contact-item"><span class="ent-contact-icon">📧</span><div><div class="ent-contact-label">Correo</div><div class="ent-contact-val">${e.email}</div></div></div>` : ''}
-          ${e.telefono ? `<div class="ent-contact-item"><span class="ent-contact-icon">📱</span><div><div class="ent-contact-label">Teléfono</div><div class="ent-contact-val">${e.telefono}</div></div></div>` : ''}
-          <div class="ent-contact-item"><span class="ent-contact-icon">🏋️</span><div><div class="ent-contact-label">Especialidad</div><div class="ent-contact-val">${e.especialidad || 'Entrenamiento General'}</div></div></div>
-          <div class="ent-contact-item"><span class="ent-contact-icon">🕐</span><div><div class="ent-contact-label">Atención</div><div class="ent-contact-val">Lun–Sáb · 6:00 AM – 8:00 PM</div></div></div>
+          ${e.email    ? `<div class="ent-contact-item"><span class="ent-contact-icon"></span><div><div class="ent-contact-label">Correo</div><div class="ent-contact-val">${e.email}</div></div></div>` : ''}
+          ${e.telefono ? `<div class="ent-contact-item"><span class="ent-contact-icon"></span><div><div class="ent-contact-label">Teléfono</div><div class="ent-contact-val">${e.telefono}</div></div></div>` : ''}
+          <div class="ent-contact-item"><div><div class="ent-contact-label">Especialidad</div><div class="ent-contact-val">${e.especialidad || 'Entrenamiento General'}</div></div></div>
+          <div class="ent-contact-item"><span class="ent-contact-icon"></span><div><div class="ent-contact-label">Atención</div><div class="ent-contact-val">Lun–Sáb · 6:00 AM – 8:00 PM</div></div></div>
         </div>
-        <a href="soporte.html" class="btn-secondary btn-contactar">📨 Enviar mensaje al soporte</a>`
+        <a href="soporte.html" class="btn-secondary btn-contactar">Enviar mensaje al soporteoporte</a>`
     } catch(e) {
       // Si el entrenador no está en BD, mostrar solo el nombre
       el.innerHTML = `
@@ -79,7 +79,7 @@ export const MiPlanController = {
           <div class="ent-avatar">${(nombreEntrenador||'E').charAt(0).toUpperCase()}</div>
           <div class="ent-info">
             <div class="ent-nombre">${nombreEntrenador}</div>
-            <div class="ent-especialidad">🏅 Entrenador Personal</div>
+            <div class="ent-especialidad">Entrenador Personal</div>
           </div>
         </div>
         <div class="ent-tip">Contacta al gimnasio para más información sobre tu entrenador.</div>`
@@ -94,10 +94,10 @@ export const MiPlanController = {
   _imcInfo(imc) {
     if (!imc) return null
     const v = parseFloat(imc)
-    if (v < 18.5) return { label: 'Bajo peso',  color: '#60a5fa', icon: '📉', consejo: 'Tu entrenador te ayudará a ganar masa muscular de forma saludable.' }
-    if (v < 25)   return { label: 'Normal',      color: '#4ade80', icon: '✅', consejo: '¡Excelente! Mantén tus hábitos de entrenamiento y nutrición.' }
-    if (v < 30)   return { label: 'Sobrepeso',   color: '#fbbf24', icon: '⚠️', consejo: 'Con constancia en el gimnasio y buena alimentación lo lograrás.' }
-    return              { label: 'Obesidad',      color: '#f87171', icon: '🚨', consejo: 'Tu entrenador diseñará un plan seguro para ti. ¡Confía en el proceso!' }
+    if (v < 18.5) return { label: 'Bajo peso',  color: '#60a5fa', icon: '', consejo: 'Tu entrenador te ayudará a ganar masa muscular de forma saludable.' }
+    if (v < 25)   return { label: 'Normal',      color: '#4ade80', icon: '', consejo: '¡Excelente! Mantén tus hábitos de entrenamiento y nutrición.' }
+    if (v < 30)   return { label: 'Sobrepeso',   color: '#fbbf24', icon: '', consejo: 'Con constancia en el gimnasio y buena alimentación lo lograrás.' }
+    return              { label: 'Obesidad',      color: '#f87171', icon: '', consejo: 'Tu entrenador diseñará un plan seguro para ti. ¡Confía en el proceso!' }
   },
 
   _renderEvolucion(d) {
@@ -111,25 +111,25 @@ export const MiPlanController = {
     el.innerHTML = `
       <div class="evol-grid">
         <div class="evol-item">
-          <div class="evol-icon">⚖️</div>
+          <div class="evol-icon"></div>
           <div class="evol-val">${d.peso ? d.peso + ' kg' : '—'}</div>
           <div class="evol-label">Peso Actual</div>
           ${d.peso ? `<div class="evol-bar-wrap"><div class="evol-bar" style="width:${pctPeso}%;background:#38bdf8"></div></div>` : ''}
         </div>
         <div class="evol-item">
-          <div class="evol-icon">📏</div>
+          <div class="evol-icon"></div>
           <div class="evol-val">${d.altura ? d.altura + ' cm' : '—'}</div>
           <div class="evol-label">Altura</div>
         </div>
         <div class="evol-item ${imc ? 'evol-imc' : ''}">
-          <div class="evol-icon">${imcInfo?.icon || '🔢'}</div>
+          <div class="evol-icon">${imcInfo?.label || 'IMC'}</div>
           <div class="evol-val" style="color:${imcInfo?.color || '#94a3b8'}">${imc || '—'}</div>
           <div class="evol-label">IMC</div>
           ${imcInfo ? `<div class="evol-imc-label" style="color:${imcInfo.color}">${imcInfo.label}</div>` : ''}
         </div>
       </div>
       ${imcInfo ? `<div class="evol-consejo">${imcInfo.icon} ${imcInfo.consejo}</div>` : ''}
-      ${d.observaciones ? `<div class="evol-obs"><div class="evol-obs-titulo">📋 Notas de tu entrenador</div><p>${d.observaciones}</p></div>` : ''}
+      ${d.observaciones ? `<div class="evol-obs"><div class="evol-obs-titulo">Notas de tu entrenador</div><p>${d.observaciones}</p></div>` : ''}
       ${!d.peso && !d.altura ? `<div class="sin-datos">Tu entrenador o administrador aún no ha registrado tu información física.</div>` : ''}`
   },
 
@@ -139,12 +139,12 @@ export const MiPlanController = {
 
     const obj = d.objetivo || 'General'
     const map = {
-      'Pérdida de peso':   { icon:'🔥', color:'#f87171', desc:'Déficit calórico + cardio + fuerza moderada. Evitar el sedentarismo y mantener hidratación constante.' },
-      'Ganancia muscular': { icon:'💪', color:'#38bdf8', desc:'Superávit calórico + entrenamiento de fuerza progresivo. Priorizar proteínas y descanso de calidad.' },
-      'Mantenimiento':     { icon:'⚖️', color:'#fbbf24', desc:'Calorías de mantenimiento + rutina mixta de fuerza y cardio. Consistencia por encima de todo.' },
-      'Resistencia':       { icon:'🏃', color:'#c084fc', desc:'Alto volumen + trabajo aeróbico progresivo. Entrenamientos de duración creciente.' },
-      'Rehabilitación':    { icon:'🩹', color:'#4ade80', desc:'Ejercicio controlado bajo supervisión. Coordinación con fisioterapia si es necesario.' },
-      'General':           { icon:'🎯', color:'#94a3b8', desc:'Rutina equilibrada de fuerza, cardio y flexibilidad para mejorar la condición física general.' },
+      'Pérdida de peso':   { icon:'', color:'#f87171', desc:'Déficit calórico + cardio + fuerza moderada. Evitar el sedentarismo y mantener hidratación constante.' },
+      'Ganancia muscular': { icon:'', color:'#38bdf8', desc:'Superávit calórico + entrenamiento de fuerza progresivo. Priorizar proteínas y descanso de calidad.' },
+      'Mantenimiento':     { icon:'', color:'#fbbf24', desc:'Calorías de mantenimiento + rutina mixta de fuerza y cardio. Consistencia por encima de todo.' },
+      'Resistencia':       { icon:'', color:'#c084fc', desc:'Alto volumen + trabajo aeróbico progresivo. Entrenamientos de duración creciente.' },
+      'Rehabilitación':    { icon:'', color:'#4ade80', desc:'Ejercicio controlado bajo supervisión. Coordinación con fisioterapia si es necesario.' },
+      'General':           { icon:'', color:'#94a3b8', desc:'Rutina equilibrada de fuerza, cardio y flexibilidad para mejorar la condición física general.' },
     }
     const o = map[obj] || map['General']
 
@@ -156,12 +156,12 @@ export const MiPlanController = {
           <div class="obj-display-desc">${o.desc}</div>
         </div>
       </div>
-      <div class="obj-tips-titulo">💡 Recomendaciones</div>
+      <div class="obj-tips-titulo">Recomendaciones</div>
       <div class="obj-tips">
-        <div class="obj-tip">🥗 Lleva un registro de tu alimentación diaria</div>
-        <div class="obj-tip">💧 Bebe mínimo 2 litros de agua al día</div>
-        <div class="obj-tip">😴 Duerme entre 7 y 9 horas para recuperarte</div>
-        <div class="obj-tip">📊 Consulta con tu entrenador tu progreso cada semana</div>
+        <div class="obj-tip">Lleva un registro de tu alimentación diaria</div>
+        <div class="obj-tip">Bebe mínimo 2 litros de agua al día</div>
+        <div class="obj-tip">Duerme entre 7 y 9 horas para recuperarte</div>
+        <div class="obj-tip">Consulta con tu entrenador tu progreso cada semana</div>
       </div>`
   }
 }

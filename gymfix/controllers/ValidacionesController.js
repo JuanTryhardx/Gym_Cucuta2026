@@ -40,14 +40,14 @@ export const ValidacionesController = {
   },
 
   _actualizarStats() {
-    const count = (est) => this._data.filter(s => (s.estado||'').toLowerCase() === est).length
+    const count = (est) => this._data.filter(s => (s.estado||'').trim().toLowerCase() === est.toLowerCase()).length
     document.getElementById('stat-pendientes').textContent = count('pendiente')
     document.getElementById('stat-aprobados').textContent  = count('aprobado')
     document.getElementById('stat-rechazados').textContent = count('rechazado')
     const badge = document.getElementById('contador-badge')
     const p = count('pendiente')
     if (badge) {
-      badge.textContent  = p === 0 ? '✓ Al día' : `${p} pendiente${p > 1 ? 's' : ''}`
+      badge.textContent  = p === 0 ? 'Al día' : `${p} pendiente${p > 1 ? 's' : ''}`
       badge.style.background = p === 0 ? 'rgba(34,197,94,0.15)' : 'rgba(251,191,36,0.15)'
       badge.style.color      = p === 0 ? '#4ade80' : '#fbbf24'
       badge.style.border     = p === 0 ? '1px solid rgba(34,197,94,0.3)' : '1px solid rgba(251,191,36,0.3)'
@@ -62,7 +62,7 @@ export const ValidacionesController = {
 
     const lista = this._filtro === 'todos'
       ? this._data
-      : this._data.filter(s => (s.estado||'').toLowerCase() === this._filtro)
+      : this._data.filter(s => (s.estado||'').trim().toLowerCase() === this._filtro.toLowerCase())
 
     if (label) label.textContent = `${lista.length} solicitud${lista.length !== 1 ? 'es' : ''} encontrada${lista.length !== 1 ? 's' : ''}`
 
@@ -85,12 +85,12 @@ export const ValidacionesController = {
         rechazado: 'badge-inactivo'
       }
       const badgeClass = badgeMap[estado] || 'badge-pendiente'
-      const badgeLabel = { pendiente:'⏳ Pendiente', aprobado:'✅ Aprobado', rechazado:'❌ Rechazado' }[estado] || estado
+      const badgeLabel = { pendiente:'Pendiente', aprobado:'Aprobado', rechazado:'Rechazado' }[estado] || estado
 
       const botones = estado === 'pendiente'
         ? `<div class="val-card-actions">
-            <button class="btn-aprobar" onclick="aprobarSolicitud(${sol.id})">✅ Aprobar</button>
-            <button class="btn-rechazar" onclick="rechazarSolicitud(${sol.id})">❌ Rechazar</button>
+            <button class="btn-aprobar" onclick="aprobarSolicitud(${sol.id})">Aprobar</button>
+            <button class="btn-rechazar" onclick="rechazarSolicitud(${sol.id})">Rechazar</button>
            </div>`
         : `<div class="val-card-procesado">Solicitud Procesada</div>`
 
@@ -116,7 +116,7 @@ export const ValidacionesController = {
           </div>
 
           <div class="val-card-footer">
-            <button class="btn-secondary btn-sm" onclick="verDetalle(${sol.id})">🔍 Ver detalle</button>
+            <button class="btn-secondary btn-sm" onclick="verDetalle(${sol.id})">Ver detalle</button>
             ${botones}
           </div>
         </article>`
@@ -164,7 +164,7 @@ export const ValidacionesController = {
   },
 
   async aprobar(id) {
-    const ok = await swalConfirm('¿Aprobar entrenador?', 'Se creará su perfil y podrá iniciar sesión en el sistema.', '✅ Sí, aprobar')
+    const ok = await swalConfirm('¿Aprobar entrenador?', 'Se creará su perfil y podrá iniciar sesión en el sistema.', ' Sí, aprobar')
     if (!ok) return
     const sol = this._data.find(s => s.id === id)
     if (!sol) { await swalError('Error', 'Solicitud no encontrada.'); return }
@@ -185,7 +185,7 @@ export const ValidacionesController = {
   },
 
   async rechazar(id) {
-    const ok = await swalConfirm('¿Rechazar solicitud?', 'Esta acción notificará al entrenador que su solicitud fue denegada.', '❌ Sí, rechazar')
+    const ok = await swalConfirm('¿Rechazar solicitud?', 'Esta acción notificará al entrenador que su solicitud fue denegada.', 'Sí, rechazar')
     if (!ok) return
     showLoader('Rechazando...')
     try {

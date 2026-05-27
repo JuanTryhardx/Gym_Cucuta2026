@@ -54,7 +54,7 @@ export async function swalConfirm(titulo, texto, confirmTxt = 'Confirmar') {
   return r.isConfirmed
 }
 export async function swalSuccess(titulo, texto = '') {
-  if (!_swal()) { showToast('✅ ' + titulo); return }
+  if (!_swal()) { showToast(titulo); return }
   await window.Swal.fire({
     title: titulo, text: texto, icon: 'success',
     confirmButtonColor: '#38bdf8', background: '#0d1424', color: '#e2e8f0',
@@ -63,7 +63,7 @@ export async function swalSuccess(titulo, texto = '') {
   })
 }
 export async function swalError(titulo, texto = '') {
-  if (!_swal()) { showToast('❌ ' + titulo, '#f87171'); return }
+  if (!_swal()) { showToast(titulo, '#f87171'); return }
   await window.Swal.fire({
     title: titulo, text: texto, icon: 'error',
     confirmButtonColor: '#38bdf8', background: '#0d1424', color: '#e2e8f0',
@@ -142,7 +142,7 @@ export function buildNavbar(activePage) {
   const liItems = links.map(l => `
     <li>
       <a href="${l.href}" class="${l.href === activePage ? 'active' : ''}">
-        ${l.icon} ${l.label}
+        ${l.icon ? l.icon + " " : ""}${l.label}
       </a>
     </li>`).join('')
 
@@ -172,7 +172,7 @@ export function buildNavbar(activePage) {
     <ul class="nav-links" id="nav-links-list">${liItems}</ul>
     <div class="nav-right" id="nav-right-bar">
       <div class="nav-user-info">
-        <span class="nav-user-name">👤 ${nombre}</span>
+        <span class="nav-user-name">${nombre}</span>
         <span class="nav-role-badge rol-${rol}">${rolLabel}</span>
       </div>
       <button class="btn-logout" onclick="logout()">⏻ Salir</button>

@@ -29,9 +29,9 @@ export const SoporteController = {
           <div class="ticket-prioridad" style="background:${PRIORIDAD_COLORS[t.prioridad]||'#94a3b8'}"></div>
           <div class="ticket-info">
             <div class="ticket-asunto">${t.asunto}</div>
-            <div class="ticket-meta">📂 ${t.categoria} · 📅 ${formatDate(t.fecha)}</div>
+            <div class="ticket-meta">${t.categoria} · ${formatDate(t.fecha)}</div>
           </div>
-          <span class="ticket-estado">⏳ Pendiente</span>
+          <span class="ticket-estado">Pendiente</span>
         </div>`).join('')
     } catch(e) {
       this._renderLocal()
@@ -47,16 +47,16 @@ export const SoporteController = {
         <div class="ticket-prioridad" style="background:${PRIORIDAD_COLORS[t.prioridad]||'#94a3b8'}"></div>
         <div class="ticket-info">
           <div class="ticket-asunto">${t.asunto}</div>
-          <div class="ticket-meta">📂 ${t.categoria} · 📅 ${formatDate(t.fecha)}</div>
+          <div class="ticket-meta">${t.categoria} · ${formatDate(t.fecha)}</div>
         </div>
-        <span class="ticket-estado">⏳ Pendiente</span>
+        <span class="ticket-estado">Pendiente</span>
       </div>`).join('')
   },
 
   async enviar() {
     const asunto      = document.getElementById('s_asunto').value.trim()
     const descripcion = document.getElementById('s_descripcion').value.trim()
-    if (!asunto || !descripcion) { showToast('⚠️ Completa asunto y descripción', '#fbbf24'); return }
+    if (!asunto || !descripcion) { showToast('Completa asunto y descripción', '#fbbf24'); return }
     const ticket = {
       asunto, descripcion,
       categoria: document.getElementById('s_categoria').value,
@@ -77,6 +77,6 @@ export const SoporteController = {
     }
     document.getElementById('s_asunto').value = ''
     document.getElementById('s_descripcion').value = ''
-    showToast('✅ Ticket enviado correctamente')
+    showToast('Ticket enviado correctamente')
   }
 }

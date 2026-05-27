@@ -25,24 +25,24 @@
     <!-- STATS -->
     <section class="val-stats">
       <div class="val-stat-card pendiente">
-        <div class="val-stat-label">⏳ Pendientes</div>
+        <div class="val-stat-label">Pendientes</div>
         <div class="val-stat-num" id="stat-pendientes">—</div>
       </div>
       <div class="val-stat-card aprobado">
-        <div class="val-stat-label">✅ Aprobadas</div>
+        <div class="val-stat-label">Aprobadas</div>
         <div class="val-stat-num" id="stat-aprobados">—</div>
       </div>
       <div class="val-stat-card rechazado">
-        <div class="val-stat-label">❌ Rechazadas</div>
+        <div class="val-stat-label">Rechazadas</div>
         <div class="val-stat-num" id="stat-rechazados">—</div>
       </div>
     </section>
 
     <!-- FILTRO TABS -->
     <nav class="val-tabs">
-      <button class="val-tab active" data-filter="pendiente" onclick="setFiltro('pendiente')">⏳ Pendientes</button>
-      <button class="val-tab" data-filter="aprobado"  onclick="setFiltro('aprobado')">✅ Aprobadas</button>
-      <button class="val-tab" data-filter="rechazado" onclick="setFiltro('rechazado')">❌ Rechazadas</button>
+      <button class="val-tab active" data-filter="pendiente" onclick="setFiltro('pendiente')">Pendientes</button>
+      <button class="val-tab" data-filter="aprobado"  onclick="setFiltro('aprobado')">Aprobadas</button>
+      <button class="val-tab" data-filter="rechazado" onclick="setFiltro('rechazado')">Rechazadas</button>
     </nav>
 
     <div id="countLabel" class="count-label" style="margin-bottom:14px"></div>
@@ -51,7 +51,7 @@
     <section id="contenedor-tarjetas-validaciones" class="cards-container-layout"></section>
 
     <div id="emptyMsg" class="val-empty" style="display:none">
-      <div style="font-size:2.5rem;margin-bottom:12px">📋</div>
+      <div style="font-size:2.5rem;margin-bottom:12px"></div>
       <p>No hay solicitudes en esta categoría.</p>
     </div>
 
@@ -60,12 +60,12 @@
   <!-- MODAL DETALLE -->
   <div id="detalleModal" class="modal-overlay" style="display:none">
     <div class="modal-box" style="max-width:480px">
-      <h3>📋 Detalle de Solicitud</h3>
+      <h3>Detalle de Solicitud</h3>
       <div id="detalle-content" class="detalle-grid"></div>
       <div class="modal-footer">
         <button class="btn-secondary" onclick="closeDetalle()">Cerrar</button>
-        <button class="btn-rechazar" id="btn-rechazar-modal" onclick="">❌ Rechazar</button>
-        <button class="btn-aprobar"  id="btn-aprobar-modal"  onclick="">✅ Aprobar</button>
+        <button class="btn-rechazar" id="btn-rechazar-modal" onclick="">Rechazar</button>
+        <button class="btn-aprobar"  id="btn-aprobar-modal"  onclick="">Aprobar</button>
       </div>
     </div>
   </div>

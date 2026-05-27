@@ -109,7 +109,7 @@ export const PersonasController = {
         <td>${this._estadoBadge(p.estado)}</td>
         <td class="td-actions">
           <button class="btn-edit" onclick="openEdit(${p.id})" title="Editar">Editar</button>
-          <button class="btn-del"  onclick="eliminar(${p.id})" title="Eliminar">❌</button>
+          <button class="btn-del"  onclick="eliminar(${p.id})" title="Eliminar">Eliminar</button>
         </td>
       </tr>`).join('')
   },
