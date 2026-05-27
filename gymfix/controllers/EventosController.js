@@ -98,7 +98,7 @@ export const EventosController = {
           <div class="ev-info-title">${TIPO_ICONS[e.tipo]||'📌'} ${e.titulo}</div>
           <div class="ev-info-meta">⏰ ${e.hora||'—'} ${e.descripcion ? '· '+e.descripcion : ''}</div>
         </div>
-        ${canEdit ? `<button class="ev-del-btn" onclick="eliminarEvento(${e.id})" title="Eliminar">🗑️</button>` : ''}
+        ${canEdit ? `<button class="ev-del-btn" onclick="eliminarEvento(${e.id})" title="Eliminar">❌</button>` : ''}
       </div>`).join('')
   },
 
@@ -122,7 +122,7 @@ export const EventosController = {
             <div class="ev-info-title">${TIPO_ICONS[e.tipo]||'📌'} ${e.titulo}</div>
             <div class="ev-info-meta">📅 ${d.toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'})} ⏰ ${e.hora||'—'}</div>
           </div>
-          ${canEdit ? `<button class="ev-del-btn" onclick="eliminarEvento(${e.id})" title="Eliminar">🗑️</button>` : ''}
+          ${canEdit ? `<button class="ev-del-btn" onclick="eliminarEvento(${e.id})" title="Eliminar">❌</button>` : ''}
         </div>`
       }).join('')
   },
@@ -165,7 +165,7 @@ export const EventosController = {
   },
 
   async eliminar(id) {
-    const ok = await swalConfirm('¿Eliminar evento?', 'Esta acción no se puede deshacer.', '🗑️ Eliminar')
+    const ok = await swalConfirm('¿Eliminar evento?', 'Esta acción no se puede deshacer.', ' Eliminar')
     if (!ok) return
     showLoader('Eliminando...')
     try {

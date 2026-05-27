@@ -133,10 +133,10 @@ window.renderAll = function () {
     const kpiGrid = document.getElementById('kpiGrid');
     if(kpiGrid) {
         kpiGrid.innerHTML = `
-            <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-label">Total Miembros</div><div class="stat-value">${todas.length}</div></div>
-            <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-label">Activos</div><div class="stat-value" style="color:#4ade80">${activos}</div></div>
-            <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-label">Ingresos Proyectados</div><div class="stat-value" style="font-size:1.3rem">${formatMoney(ingresos)}</div></div>
-            <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-label">En período</div><div class="stat-value">${personas.length}</div></div>`;
+            <div class="stat-card"><div class="stat-icon"></div><div class="stat-label">Total Miembros</div><div class="stat-value">${todas.length}</div></div>
+            <div class="stat-card"><div class="stat-icon"></div><div class="stat-label">Activos</div><div class="stat-value" style="color:#4ade80">${activos}</div></div>
+            <div class="stat-card"><div class="stat-icon"></div><div class="stat-label">Ingresos Proyectados</div><div class="stat-value" style="font-size:1.3rem">${formatMoney(ingresos)}</div></div>
+            <div class="stat-card"><div class="stat-icon"></div><div class="stat-label">En período</div><div class="stat-value">${personas.length}</div></div>`;
     }
 
     // Gráfico de Estados

@@ -198,7 +198,7 @@ export const AuthController = {
         await SolicitudModel.insert({
           ...base,
           especialidad,
-          estado: 'Pendiente' // 🔥 CAMBIO: Asegúrate de poner la 'P' mayúscula exacta aquí
+          estado: 'Pendiente' // CAMBIO: Asegúrate de poner la 'P' mayúscula exacta aquí
         })
         this._mostrarExito('⏳', 'Solicitud enviada', `Hola ${nombre}, tu perfil de entrenador será revisado por el administrador.`)
       }

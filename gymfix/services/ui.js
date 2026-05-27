@@ -115,26 +115,26 @@ export function buildNavbar(activePage) {
 
   const menus = {
     cliente: [
-      { href: 'inicio.html',   label: 'Inicio',   icon: '🏠' },
-      { href: 'mi-plan.html',  label: 'Mi Plan',  icon: '📋' },
-      { href: 'eventos.html',  label: 'Eventos',  icon: '📅' },
-      { href: 'soporte.html',  label: 'Soporte',  icon: '🛟' }
+      { href: 'inicio.html',   label: 'Inicio' , icon: ''},
+      { href: 'mi-plan.html',  label: 'Mi Plan', icon: ''},
+      { href: 'eventos.html',  label: 'Eventos', icon: ''},
+      { href: 'soporte.html',  label: 'Soporte', icon: ''}
     ],
     entrenador: [
-      { href: 'inicio.html',       label: 'Inicio',       icon: '🏠' },
-      { href: 'mis-clientes.html', label: 'Mis Clientes', icon: '👥' },
-      { href: 'registrar.html',    label: 'Registrar',    icon: '➕' },
-      { href: 'eventos.html',      label: 'Eventos',      icon: '📅' },
-      { href: 'soporte.html',      label: 'Soporte',      icon: '🛟' }
+      { href: 'inicio.html',       label: 'Inicio',       icon: '' },
+      { href: 'mis-clientes.html', label: 'Mis Clientes', icon: '' },
+      { href: 'registrar.html',    label: 'Registrar',    icon: '' },
+      { href: 'eventos.html',      label: 'Eventos',      icon: '' },
+      { href: 'soporte.html',      label: 'Soporte',      icon: '' }
     ],
     admin: [
-      { href: 'inicio.html',       label: 'Inicio',       icon: '🏠' },
-      { href: 'registrar.html',    label: 'Registrar',    icon: '➕' },
-      { href: 'personas.html',     label: 'Personas',     icon: '👥' },
-      { href: 'informes.html',     label: 'Informes',     icon: '📊' },
-      { href: 'eventos.html',      label: 'Eventos',      icon: '📅' },
-      { href: 'validaciones.html', label: 'Validaciones', icon: '✅' },
-      { href: 'soporte.html',      label: 'Soporte',      icon: '🛟' }
+      { href: 'inicio.html',       label: 'Inicio',       icon: '' },
+      { href: 'registrar.html',    label: 'Registrar',    icon: '' },
+      { href: 'personas.html',     label: 'Personas',     icon: '' },
+      { href: 'informes.html',     label: 'Informes',     icon: '' },
+      { href: 'eventos.html',      label: 'Eventos',      icon: '' },
+      { href: 'validaciones.html', label: 'Validaciones', icon: '' },
+      { href: 'soporte.html',      label: 'Soporte',      icon: '' }
     ]
   }
 

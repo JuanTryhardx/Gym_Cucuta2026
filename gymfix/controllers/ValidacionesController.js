@@ -100,19 +100,19 @@ export const ValidacionesController = {
             <div class="val-avatar">${(sol.nombre||'?').charAt(0).toUpperCase()}</div>
             <div class="val-card-info">
               <div class="val-nombre">${sol.nombre || 'Sin nombre'}</div>
-              <div class="val-fecha">📅 Solicitado el ${fecha}</div>
+              <div class="val-fecha"> Solicitado el ${fecha}</div>
             </div>
             <span class="status-badge ${badgeClass}">${badgeLabel}</span>
           </div>
 
           <div class="val-contacto">
-            <div class="val-contacto-item">📧 <span>${sol.email || '-'}</span></div>
-            <div class="val-contacto-item">📱 <span>${sol.telefono || '-'}</span></div>
+            <div class="val-contacto-item">Correo: <span>${sol.email || '-'}</span></div>
+            <div class="val-contacto-item">Telefono: <span>${sol.telefono || '-'}</span></div>
           </div>
 
           <div class="val-detalles">
-            <div class="val-detalle-item">🎓 <label>Especialización:</label> <span>${sol.especialidad || 'General'}</span></div>
-            <div class="val-detalle-item">📄 <label>Documento:</label> <span>${sol.documento || '-'}</span></div>
+            <div class="val-detalle-item"><label>Especialización:</label> <span>${sol.especialidad || 'General'}</span></div>
+            <div class="val-detalle-item"><label>Documento:</label> <span>${sol.documento || '-'}</span></div>
           </div>
 
           <div class="val-card-footer">

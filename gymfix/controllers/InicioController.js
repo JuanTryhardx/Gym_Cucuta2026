@@ -78,17 +78,17 @@ export const InicioController = {
         { href: 'informes.html',     icon: '📊', label: 'Ver Informes'      },
         { href: 'eventos.html',      icon: '📅', label: 'Eventos'           },
         { href: 'validaciones.html', icon: '✅', label: 'Validaciones'      },
-        { href: 'soporte.html',      icon: '🛟', label: 'Soporte'           },
+        { href: 'soporte.html',      icon: '💬', label: 'Soporte'           },
       ],
       entrenador: [
         { href: 'mis-clientes.html', icon: '👥', label: 'Mis Clientes'     },
         { href: 'registrar.html',    icon: '➕', label: 'Registrar Cliente' },
         { href: 'eventos.html',      icon: '📅', label: 'Eventos'          },
-        { href: 'soporte.html',      icon: '🛟', label: 'Soporte'          },
+        { href: 'soporte.html',      icon: '💬', label: 'Soporte'          },
       ],
       cliente: [
         { href: 'eventos.html', icon: '📅', label: 'Ver Eventos' },
-        { href: 'soporte.html', icon: '🛟', label: 'Soporte'     },
+        { href: 'soporte.html', icon: '💬', label: 'Soporte'     },
       ]
     }
     const items = acciones[rol] || acciones['cliente']
@@ -113,20 +113,17 @@ export const InicioController = {
 
       el.innerHTML = `
         <div class="stat-card stat-total">
-          <div class="stat-icon-wrap">👥</div>
           <div class="stat-label">Miembros Totales</div>
           <div class="stat-value">${total}</div>
           <div class="stat-bar-wrap"><div class="stat-bar" style="width:100%;background:rgba(56,189,248,0.5)"></div></div>
         </div>
         <div class="stat-card stat-activos">
-          <div class="stat-icon-wrap">✅</div>
           <div class="stat-label">Activos</div>
           <div class="stat-value" style="color:#4ade80">${activos}</div>
           <div class="stat-bar-wrap"><div class="stat-bar" style="width:${pct}%;background:#4ade80"></div></div>
           <div class="stat-sub">${pct}% del total</div>
         </div>
         <div class="stat-card stat-inactivos">
-          <div class="stat-icon-wrap">⚠️</div>
           <div class="stat-label">Inactivos</div>
           <div class="stat-value" style="color:#f87171">${inactivos}</div>
           <div class="stat-bar-wrap"><div class="stat-bar" style="width:${100-pct}%;background:#f87171"></div></div>
@@ -134,7 +131,6 @@ export const InicioController = {
         </div>
         ${seeIngresos ? `
         <div class="stat-card stat-ingresos">
-          <div class="stat-icon-wrap">💰</div>
           <div class="stat-label">Ingresos Mensuales</div>
           <div class="stat-value" style="color:#3b82f6">${formatMoney(ingresos)}</div>
           <div class="stat-sub">Suma de mensualidades</div>
@@ -142,7 +138,7 @@ export const InicioController = {
     } catch(e) { console.error(e) }
   },
 
-  // ── Noticias ──────────────────────────────────────────────
+  // ── Noticias ────────────
   async renderNoticias() {
     const el = document.getElementById('noticiasLista')
     if (!el) return
@@ -215,7 +211,7 @@ export const InicioController = {
   },
 
   async eliminarNoticia(id) {
-    const ok = await swalConfirm('¿Eliminar publicación?', 'Esta acción no se puede deshacer.', '🗑️ Eliminar')
+    const ok = await swalConfirm('¿Eliminar publicación?', 'Esta acción no se puede deshacer.', ' Eliminar')
     if (!ok) return
     showLoader('Eliminando...')
     try { await NoticiaModel.delete(id); await this.renderNoticias() }
@@ -312,7 +308,7 @@ export const InicioController = {
           </div>
           <div class="modal-footer">
             <button class="btn-secondary" onclick="closeVideoModal()">Cancelar</button>
-            <button class="btn-primary" onclick="guardarVideo()">💾 Guardar</button>
+            <button class="btn-primary" onclick="guardarVideo()"> Guardar</button>
           </div>
         </div>
       </div>
@@ -337,7 +333,7 @@ export const InicioController = {
           </div>
           <div class="modal-footer">
             <button class="btn-secondary" onclick="closeBeneficioModal()">Cancelar</button>
-            <button class="btn-primary" onclick="guardarBeneficio()">💾 Guardar</button>
+            <button class="btn-primary" onclick="guardarBeneficio()"> Guardar</button>
           </div>
         </div>
       </div>` : ''}
@@ -356,7 +352,7 @@ export const InicioController = {
           <div class="video-tag">${v.tag}</div>
           <div class="video-title">${v.titulo}</div>
           <div class="video-desc">${v.desc}</div>
-          ${canEdit ? `<button class="btn-del-content" onclick="eliminarVideo(${i})" title="Eliminar video">🗑️ Eliminar</button>` : ''}
+          ${canEdit ? `<button class="btn-del-content" onclick="eliminarVideo(${i})" title="Eliminar video"> Eliminar</button>` : ''}
         </div>
       </div>`).join('')
   },
@@ -367,7 +363,7 @@ export const InicioController = {
         <div class="bene-icon">${b.icon}</div>
         <div class="bene-titulo">${b.titulo}</div>
         <div class="bene-desc">${b.desc}</div>
-        ${canEdit ? `<button class="btn-del-content" onclick="eliminarBeneficio(${i})" title="Eliminar">🗑️</button>` : ''}
+        ${canEdit ? `<button class="btn-del-content" onclick="eliminarBeneficio(${i})" title="Eliminar">Eliminar</button>` : ''}
       </div>`).join('')
   },
 
@@ -391,7 +387,7 @@ export const InicioController = {
     await swalSuccess('¡Video agregado!', 'El video ya aparece en la sección.')
   },
   async eliminarVideo(idx) {
-    const ok = await swalConfirm('¿Eliminar video?', 'Se quitará de la sección.', '🗑️ Eliminar')
+    const ok = await swalConfirm('¿Eliminar video?', 'Se quitará de la sección.', ' Eliminar')
     if (!ok) return
     this._videos.splice(idx, 1)
     document.getElementById('videosGrid').innerHTML = this._renderVideosHTML(true)
@@ -416,7 +412,7 @@ export const InicioController = {
     await swalSuccess('¡Beneficio agregado!', 'Ya aparece en la sección de membresía.')
   },
   async eliminarBeneficio(idx) {
-    const ok = await swalConfirm('¿Eliminar beneficio?', 'Se quitará de la lista.', '🗑️ Eliminar')
+    const ok = await swalConfirm('¿Eliminar beneficio?', 'Se quitará de la lista.', ' Eliminar')
     if (!ok) return
     this._beneficios.splice(idx, 1)
     document.getElementById('beneficiosGrid').innerHTML = this._renderBeneficiosHTML(true)
