@@ -108,14 +108,14 @@ export const PersonasController = {
         <td class="td-date">${formatDate(p.fecha_inicio)}</td>
         <td>${this._estadoBadge(p.estado)}</td>
         <td class="td-actions">
-          <button class="btn-edit" onclick="openEdit(${p.id})" title="Editar">✏️ Editar</button>
-          <button class="btn-del"  onclick="eliminar(${p.id})" title="Eliminar">🗑️</button>
+          <button class="btn-edit" onclick="openEdit(${p.id})" title="Editar">Editar</button>
+          <button class="btn-del"  onclick="eliminar(${p.id})" title="Eliminar">❌</button>
         </td>
       </tr>`).join('')
   },
 
   async eliminar(id) {
-    const ok = await swalConfirm('¿Eliminar miembro?', 'Esta acción no se puede deshacer.', '🗑️ Sí, eliminar')
+    const ok = await swalConfirm('¿Eliminar miembro?', 'Esta acción no se puede deshacer.', ' Sí, eliminar')
     if (!ok) return
     showLoader('Eliminando...')
     try {
