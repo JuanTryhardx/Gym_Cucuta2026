@@ -230,7 +230,7 @@ export const InicioController = {
     this._videos = this._videos || [
       { tag: 'Fuerza',   url: 'https://www.youtube.com/embed/IODxDxX7oi4', titulo: 'Rutina Completa de Fuerza',       desc: 'Entrena todos los grupos musculares con este circuito profesional.' },
       { tag: 'Cardio',   url: 'https://www.youtube.com/embed/UItWltVZZmE', titulo: 'HIIT de Alto Impacto',            desc: 'Quema calorías en 20 minutos con este entrenamiento de intervalos.' },
-      { tag: 'Nutrición',url: 'https://www.youtube.com/embed/qWJ1SzGTVLA', titulo: 'Alimentación para Deportistas',   desc: 'Aprende qué comer antes y después de entrenar para mejores resultados.' },
+      { tag: 'Nutrición',url: 'https://youtu.be/ho5tVxBJWLA', titulo: 'Alimentación para Deportistas',   desc: 'Aprende qué comer antes y después de entrenar para mejores resultados.' },
     ]
     this._beneficios = this._beneficios || [
       { icon: '', titulo: 'Equipos de Última Generación',  desc: 'Acceso a más de 80 máquinas y equipos profesionales' },
