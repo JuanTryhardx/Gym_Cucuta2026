@@ -1,9 +1,6 @@
-// ============================================================
-// services/ui.js — Helpers UI: roles, loader, SweetAlert, navbar
-// ============================================================
+
 import { Auth } from './auth.js'
 
-// ── Loader Global ────────────────────────────────────────────
 export function showLoader(msg = 'Cargando...') {
   let el = document.getElementById('global-loader')
   if (!el) {
@@ -38,7 +35,7 @@ export function hideLoader() {
 window.showLoader = showLoader
 window.hideLoader = hideLoader
 
-// ── SweetAlert2 helpers ──────────────────────────────────────
+//sweets alerts
 function _swal() { return typeof window.Swal !== 'undefined' }
 
 export async function swalConfirm(titulo, texto, confirmTxt = 'Confirmar') {
@@ -74,7 +71,7 @@ window.swalConfirm = swalConfirm
 window.swalSuccess = swalSuccess
 window.swalError   = swalError
 
-// ── Toast fallback ───────────────────────────────────────────
+//Toast fallback
 export function showToast(msg, color = '#38bdf8') {
   const t = document.createElement('div')
   t.className = 'toast'
@@ -85,7 +82,7 @@ export function showToast(msg, color = '#38bdf8') {
 }
 window.showToast = showToast
 
-// ── Helpers de formato ───────────────────────────────────────
+// Helpers de formato
 export function formatMoney(n) {
   return '$' + Number(n || 0).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
 }
@@ -96,7 +93,7 @@ export function formatDate(iso) {
 window.formatMoney = formatMoney
 window.formatDate  = formatDate
 
-// ── Rol del usuario actual ───────────────────────────────────
+// Rol del usuario actual
 export function getUserRol() {
   const user = Auth.getUser()
   return user ? (user.rol || 'cliente').toLowerCase() : 'cliente'
@@ -105,7 +102,7 @@ export function isAdmin()      { return getUserRol() === 'admin' }
 export function isEntrenador() { return getUserRol() === 'entrenador' }
 export function isCliente()    { return getUserRol() === 'cliente' }
 
-// ── Navbar por Roles ─────────────────────────────────────────
+// Navbar por Roles
 export function buildNavbar(activePage) {
   const user = Auth.getUser()
   if (!user) { window.location.href = 'index.html'; return '' }

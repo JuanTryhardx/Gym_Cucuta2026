@@ -1,12 +1,11 @@
-// ============================================================
-// services/auth.js
-// Manejo de sesión: login, logout, verificación de auth.
-// ============================================================
+
+// donde manejamos la sesión: login, logout, verificación de auth.
+
 import { supabase } from './supabase.js'
 
 export const Auth = {
 
-  /** Busca usuario por email y valida contraseña */
+  //busca el usuario por email y valida contraseña
   async login(email, password) {
     const { data, error } = await supabase
       .from('personas')
@@ -18,7 +17,7 @@ export const Auth = {
 
     const passwordValido = data.password
       ? password === data.password
-      : password === '1234'                    // fallback cuentas antiguas
+      : password === '1234'
 
     if (!passwordValido)                        throw new Error('Contraseña incorrecta')
     if ((data.estado || '').toLowerCase() === 'inactivo') throw new Error('Cuenta inactiva')
@@ -33,7 +32,7 @@ export const Auth = {
     window.location.href = '../views/index.html'
   },
 
-  /** Redirige al login si no hay sesión activa */
+  // Redirige al login si no hay sesión activa
   requireAuth() {
     if (!sessionStorage.getItem('gymLoggedIn')) {
       window.location.href = '../views/index.html'

@@ -1,8 +1,6 @@
-// ============================================================
-// services/supabase.js
-// Punto único de conexión a Supabase.
-// Todos los modelos importan desde aquí.
-// ============================================================
+
+// Punto único de conexión a Supabase 
+// y los modelos van importados desde aqui
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
 const SUPABASE_URL = 'https://aaxkqxzfyhbbsjqpwygi.supabase.co'
