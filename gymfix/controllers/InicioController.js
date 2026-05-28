@@ -47,16 +47,6 @@ export const InicioController = {
     window.publicarNoticia = () => canPublish ? this.publicarNoticia() : null
     window.eliminarNoticia = (id) => canPublish ? this.eliminarNoticia(id) : null
 
-    // Handlers para edición de videos/beneficios (solo admin)
-    window.openVideoModal     = ()    => canEdit ? this.openVideoModal()     : null
-    window.closeVideoModal    = ()    => this.closeVideoModal()
-    window.guardarVideo       = ()    => canEdit ? this.guardarVideo()       : null
-    window.eliminarVideo      = (idx) => canEdit ? this.eliminarVideo(idx)   : null
-    window.openBeneficioModal = ()    => canEdit ? this.openBeneficioModal() : null
-    window.closeBeneficioModal= ()    => this.closeBeneficioModal()
-    window.guardarBeneficio   = ()    => canEdit ? this.guardarBeneficio()   : null
-    window.eliminarBeneficio  = (idx) => canEdit ? this.eliminarBeneficio(idx): null
-
     showLoader('Cargando...')
     const tasks = [this.renderNoticias(), this.renderEventos()]
     if (seeStats) tasks.push(this.renderStats(seeIngresos))
@@ -226,17 +216,17 @@ export const InicioController = {
     if (!container) return
     container.style.display = 'block'
 
-    // Videos almacenados en memoria (en producción vendrían de BD)
-    this._videos = this._videos || [
-      { tag: 'Fuerza',   url: 'https://www.youtube.com/embed/IODxDxX7oi4', titulo: 'Rutina Completa de Fuerza',       desc: 'Entrena todos los grupos musculares con este circuito profesional.' },
-      { tag: 'Cardio',   url: 'https://www.youtube.com/embed/UItWltVZZmE', titulo: 'HIIT de Alto Impacto',            desc: 'Quema calorías en 20 minutos con este entrenamiento de intervalos.' },
-      { tag: 'Nutrición',url: 'https://youtu.be/ho5tVxBJWLA', titulo: 'Alimentación para Deportistas',   desc: 'Aprende qué comer antes y después de entrenar para mejores resultados.' },
+    // Videos y beneficios fijos en código — editar aquí directamente
+    this._videos = [
+      { tag: 'Fuerza',    url: 'https://www.youtube.com/embed/IODxDxX7oi4', titulo: 'Rutina Completa de Fuerza',     desc: 'Entrena todos los grupos musculares con este circuito profesional.' },
+      { tag: 'Cardio',    url: 'https://www.youtube.com/embed/UItWltVZZmE', titulo: 'HIIT de Alto Impacto',          desc: 'Quema calorías en 20 minutos con este entrenamiento de intervalos.' },
+      { tag: 'Nutrición', url: 'https://www.youtube.com/embed/qWJ1SzGTVLA', titulo: 'Alimentación para Deportistas', desc: 'Aprende qué comer antes y después de entrenar para mejores resultados.' },
     ]
-    this._beneficios = this._beneficios || [
-      { icon: '', titulo: 'Equipos de Última Generación',  desc: 'Acceso a más de 80 máquinas y equipos profesionales' },
-      { icon: '', titulo: 'Entrenadores Certificados',    desc: 'Guía personalizada de expertos con experiencia comprobada' },
-      { icon: '', titulo: 'Clases Grupales',                desc: 'Más de 20 clases semanales: yoga, crossfit, spinning y más' },
-      { icon: '', titulo: 'Vestuarios Completos',           desc: 'Duchas, casilleros y zonas de descanso a tu disposición' },
+    this._beneficios = [
+      { titulo: 'Equipos de Última Generación', desc: 'Acceso a más de 80 máquinas y equipos profesionales' },
+      { titulo: 'Entrenadores Certificados',    desc: 'Guía personalizada de expertos con experiencia comprobada' },
+      { titulo: 'Clases Grupales',              desc: 'Más de 20 clases semanales: yoga, crossfit, spinning y más' },
+      { titulo: 'Vestuarios Completos',         desc: 'Duchas, casilleros y zonas de descanso a tu disposición' },
     ]
 
     container.innerHTML = `
@@ -263,10 +253,9 @@ export const InicioController = {
         <div class="card-title-section">
           <span class="card-title-icon">▶️</span>
           <span>Videos de Entrenamiento</span>
-          ${canEdit ? `<button class="btn-add-content" onclick="openVideoModal()" title="Agregar video">Agregar Video</button>` : ''}
         </div>
         <div class="videos-grid" id="videosGrid">
-          ${this._renderVideosHTML(canEdit)}
+          ${this._renderVideosHTML()}
         </div>
       </div>
 
@@ -275,73 +264,17 @@ export const InicioController = {
         <div class="card-title-section">
           
           <span>Beneficios de tu Membresía</span>
-          ${canEdit ? `<button class="btn-add-content" onclick="openBeneficioModal()" title="Agregar beneficio">Agregar Beneficio</button>` : ''}
         </div>
         <div class="beneficios-grid" id="beneficiosGrid">
-          ${this._renderBeneficiosHTML(canEdit)}
+          ${this._renderBeneficiosHTML()}
         </div>
       </div>
 
-      <!-- Modal agregar video (solo admin) -->
-      ${canEdit ? `
-      <div id="videoModal" class="modal-overlay" style="display:none">
-        <div class="modal-box" style="max-width:500px">
-          <h3>▶️ Agregar Video</h3>
-          <div class="form-group" style="margin-bottom:12px">
-            <label>Título</label>
-            <input id="v_titulo" placeholder="Ej: Rutina de piernas"/>
-          </div>
-          <div class="form-group" style="margin-bottom:12px">
-            <label>URL embed YouTube</label>
-            <input id="v_url" placeholder="https://www.youtube.com/embed/XXXX"/>
-            <small style="color:#94a3b8;font-size:0.75rem;margin-top:4px;display:block">Usa el enlace de incrustación de YouTube</small>
-          </div>
-          <div class="form-row" style="margin-bottom:14px">
-            <div class="form-group">
-              <label>Etiqueta</label>
-              <input id="v_tag" placeholder="Fuerza"/>
-            </div>
-            <div class="form-group">
-              <label>Descripción</label>
-              <input id="v_desc" placeholder="Breve descripción..."/>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button class="btn-secondary" onclick="closeVideoModal()">Cancelar</button>
-            <button class="btn-primary" onclick="guardarVideo()"> Guardar</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Modal agregar beneficio (solo admin) -->
-      <div id="beneficioModal" class="modal-overlay" style="display:none">
-        <div class="modal-box" style="max-width:460px">
-          <h3>Agregar Beneficio</h3>
-          <div class="form-row" style="margin-bottom:12px">
-            <div class="form-group" style="max-width:80px">
-              <label>Ícono (emoji)</label>
-              <input id="b_icon" placeholder="Icono" style="text-align:center"/>
-            </div>
-            <div class="form-group">
-              <label>Título</label>
-              <input id="b_titulo" placeholder="Nombre del beneficio"/>
-            </div>
-          </div>
-          <div class="form-group" style="margin-bottom:16px">
-            <label>Descripción</label>
-            <textarea id="b_desc" rows="2" placeholder="Breve descripción..."></textarea>
-          </div>
-          <div class="modal-footer">
-            <button class="btn-secondary" onclick="closeBeneficioModal()">Cancelar</button>
-            <button class="btn-primary" onclick="guardarBeneficio()"> Guardar</button>
-          </div>
-        </div>
-      </div>` : ''}
     `
   },
 
-  _renderVideosHTML(canEdit) {
-    return this._videos.map((v, i) => `
+  _renderVideosHTML() {
+    return this._videos.map((v) => `
       <div class="video-card">
         <div class="video-wrapper">
           <iframe src="${v.url}" title="${v.titulo}" frameborder="0"
@@ -352,71 +285,18 @@ export const InicioController = {
           <div class="video-tag">${v.tag}</div>
           <div class="video-title">${v.titulo}</div>
           <div class="video-desc">${v.desc}</div>
-          ${canEdit ? `<button class="btn-del-content" onclick="eliminarVideo(${i})" title="Eliminar video"> Eliminar</button>` : ''}
         </div>
       </div>`).join('')
   },
 
-  _renderBeneficiosHTML(canEdit) {
-    return this._beneficios.map((b, i) => `
+  _renderBeneficiosHTML() {
+    return this._beneficios.map((b) => `
       <div class="beneficio-item">
-        <div class="bene-icon">${b.icon}</div>
         <div class="bene-titulo">${b.titulo}</div>
         <div class="bene-desc">${b.desc}</div>
-        ${canEdit ? `<button class="btn-del-content" onclick="eliminarBeneficio(${i})" title="Eliminar">Eliminar</button>` : ''}
       </div>`).join('')
   },
 
-  // ── Gestión videos (solo admin) ───────────────────────────
-  openVideoModal() {
-    document.getElementById('videoModal').style.display = 'flex'
-  },
-  closeVideoModal() {
-    document.getElementById('videoModal').style.display = 'none'
-    ;['v_titulo','v_url','v_tag','v_desc'].forEach(id => { const el = document.getElementById(id); if (el) el.value = '' })
-  },
-  async guardarVideo() {
-    const titulo = document.getElementById('v_titulo').value.trim()
-    const url    = document.getElementById('v_url').value.trim()
-    const tag    = document.getElementById('v_tag').value.trim()
-    const desc   = document.getElementById('v_desc').value.trim()
-    if (!titulo || !url) { await swalError('Campos requeridos', 'Título y URL son obligatorios.'); return }
-    this._videos.push({ titulo, url, tag: tag || 'Video', desc })
-    this.closeVideoModal()
-    document.getElementById('videosGrid').innerHTML = this._renderVideosHTML(true)
-    await swalSuccess('¡Video agregado!', 'El video ya aparece en la sección.')
-  },
-  async eliminarVideo(idx) {
-    const ok = await swalConfirm('¿Eliminar video?', 'Se quitará de la sección.', ' Eliminar')
-    if (!ok) return
-    this._videos.splice(idx, 1)
-    document.getElementById('videosGrid').innerHTML = this._renderVideosHTML(true)
-  },
-
-  // ── Gestión beneficios (solo admin) ──────────────────────
-  openBeneficioModal() {
-    document.getElementById('beneficioModal').style.display = 'flex'
-  },
-  closeBeneficioModal() {
-    document.getElementById('beneficioModal').style.display = 'none'
-    ;['b_icon','b_titulo','b_desc'].forEach(id => { const el = document.getElementById(id); if (el) el.value = '' })
-  },
-  async guardarBeneficio() {
-    const icon   = document.getElementById('b_icon').value.trim()
-    const titulo = document.getElementById('b_titulo').value.trim()
-    const desc   = document.getElementById('b_desc').value.trim()
-    if (!titulo) { await swalError('Campo requerido', 'Escribe un título para el beneficio.'); return }
-    this._beneficios.push({ icon: icon || '', titulo, desc })
-    this.closeBeneficioModal()
-    document.getElementById('beneficiosGrid').innerHTML = this._renderBeneficiosHTML(true)
-    await swalSuccess('¡Beneficio agregado!', 'Ya aparece en la sección de membresía.')
-  },
-  async eliminarBeneficio(idx) {
-    const ok = await swalConfirm('¿Eliminar beneficio?', 'Se quitará de la lista.', ' Eliminar')
-    if (!ok) return
-    this._beneficios.splice(idx, 1)
-    document.getElementById('beneficiosGrid').innerHTML = this._renderBeneficiosHTML(true)
-  },
 
   _videos: null,
   _beneficios: null
