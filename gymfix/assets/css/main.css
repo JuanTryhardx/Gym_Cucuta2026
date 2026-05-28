@@ -23,7 +23,7 @@ body {
   min-height: 100vh;
 }
 
-/* ===== NAVBAR ===== */
+/*  NAVBAR  */
 .navbar {
   position: fixed; top: 0; left: 0; right: 0;
   height: var(--navbar-h);
@@ -118,7 +118,7 @@ body {
   color: #fca5a5;
 }
 
-/* ===== PAGE CONTENT ===== */
+/*  PAGE CONTENT  */
 .page-content {
   margin-top: var(--navbar-h);
   padding: 30px 28px;
@@ -128,7 +128,7 @@ body {
   padding-top: calc(var(--navbar-h) + 30px);
 }
 
-/* ===== CARDS ===== */
+/*  CARDS  */
 .card {
   background: var(--card-bg);
   border: 1px solid var(--border);
@@ -147,7 +147,7 @@ body {
   display: flex; align-items: center; gap: 8px;
 }
 
-/* ===== BUTTONS ===== */
+/*  BUTTONS  */
 .btn-primary {
   background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid));
   color: #fff;
@@ -181,7 +181,7 @@ body {
 }
 .btn-secondary:hover { background: rgba(56,189,248,0.2); }
 
-/* ===== TABLES ===== */
+/*  TABLES  */
 .table-wrapper { overflow-x: auto; border-radius: 12px; }
 table { width: 100%; border-collapse: collapse; }
 thead th {
@@ -206,7 +206,7 @@ tbody td {
   font-size: 0.9rem;
 }
 
-/* ===== FORMS ===== */
+/*  FORMS  */
 .form-row { display: flex; gap: 16px; flex-wrap: wrap; }
 .form-group { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 180px; }
 .form-group label {
@@ -237,7 +237,7 @@ tbody td {
 }
 .form-group select option { background: var(--dark2); }
 
-/* ===== BADGE ===== */
+/*  BADGE  */
 .badge {
   padding: 3px 10px;
   border-radius: 20px;
@@ -248,7 +248,7 @@ tbody td {
 .badge-inactive { background: rgba(248,113,113,0.12); color: #f87171; border: 1px solid rgba(248,113,113,0.25); }
 .badge-pending { background: rgba(251,191,36,0.12); color: #fbbf24; border: 1px solid rgba(251,191,36,0.25); }
 
-/* ===== SECTION HEADER ===== */
+/*  SECTION HEADER  */
 .section-header {
   display: flex; justify-content: space-between; align-items: center;
   margin-bottom: 24px;
@@ -262,7 +262,7 @@ tbody td {
 }
 .section-header h2 span { color: var(--blue-light); }
 
-/* ===== GRID STATS ===== */
+/*  GRID STATS  */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -283,7 +283,7 @@ tbody td {
 .stat-value { font-family: 'Rajdhani', sans-serif; font-size: 2rem; font-weight: 700; color: var(--blue-light); }
 .stat-sub { color: var(--text-muted); font-size: 0.75rem; }
 
-/* ===== TOAST ===== */
+/*  TOAST  */
 .toast {
   position: fixed;
   bottom: 30px; right: 30px;
@@ -299,7 +299,7 @@ tbody td {
 }
 @keyframes toastIn { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
 
-/* ===== PAGE TITLES ===== */
+/*  PAGE TITLES  */
 .page-icon { font-size: 1.4rem; }
 
 /* Scrollbar */
@@ -335,7 +335,7 @@ body {
   transform: scale(1.05);
 }
 
-/* ===== VALIDACIONES ===== */
+/*  VALIDACIONES  */
 .grid-solicitudes {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -411,14 +411,12 @@ body {
   font-size: 1rem;
 }
 
-/* ============================================================
-   RESPONSIVE GLOBAL — Mobile First
-   ============================================================ */
+/* RESPONSIVE GLOBAL — Mobile*/
 
 /* Hamburger oculto en desktop */
 .nav-toggle { display: none; }
 
-/* ── Tablet ≤ 900px ─────────────────────────────────────── */
+/*  Tablet ≤ 900px  */
 @media (max-width: 900px) {
   :root { --navbar-h: 56px; }
 
@@ -487,7 +485,7 @@ body {
   .page-content { padding: 20px 18px; padding-top: calc(var(--navbar-h) + 20px); }
 }
 
-/* ── Mobile ≤ 600px ─────────────────────────────────────── */
+/*  Mobile ≤ 600px  */
 @media (max-width: 600px) {
   .page-content {
     padding: 14px;
@@ -537,7 +535,7 @@ body {
   .btn-del      { padding: 4px 7px; }
 }
 
-/* ── Extra pequeño ≤ 380px ──────────────────────────────── */
+/*  Extra pequeño ≤ 380px  */
 @media (max-width: 380px) {
   .nav-logo-text   { display: none; }
   .section-header h2 { font-size: 1.15rem; }
@@ -545,9 +543,7 @@ body {
 }
 
 
-/* ============================================================
-   LOADER GLOBAL
-   ============================================================ */
+/* LOADER GLOBAL*/
 #global-loader {
   position: fixed; inset: 0; z-index: 9999;
   display: flex; align-items: center; justify-content: center;
@@ -580,9 +576,7 @@ body {
   margin: 0;
 }
 
-/* ============================================================
-   TOAST mejorado
-   ============================================================ */
+/* TOAST mejorado */
 .toast {
   position: fixed;
   bottom: 24px; right: 24px;
@@ -604,9 +598,7 @@ body {
   to   { opacity:1; transform:translateY(0); }
 }
 
-/* ============================================================
-   SECTION HEADER
-   ============================================================ */
+/* SECTION HEADER*/
 .section-header {
   display: flex;
   justify-content: space-between;
@@ -624,9 +616,7 @@ body {
 }
 .section-header h2 span { color: var(--blue-light); }
 
-/* ============================================================
-   BOTONES GLOBALES
-   ============================================================ */
+/* BOTONES GLOBALES*/
 .btn-primary {
   background: linear-gradient(135deg, var(--blue-mid), var(--blue-dark));
   color: #fff;
@@ -667,9 +657,7 @@ body {
 }
 .btn-logout:hover { background: rgba(239,68,68,0.22); }
 
-/* ============================================================
-   PAGE CONTENT
-   ============================================================ */
+/* PAGE CONTENT*/
 .page-content {
   padding: 24px 28px;
   padding-top: calc(var(--navbar-h) + 24px);
@@ -678,7 +666,7 @@ body {
 }
 
 
-/* ── Modal overlay global (centrado, fixed) ─────────────── */
+/*  Modal overlay global (centrado, fixed)  */
 .modal-overlay {
   position: fixed !important;
   inset: 0 !important;

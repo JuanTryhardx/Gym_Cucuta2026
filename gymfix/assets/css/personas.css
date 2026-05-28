@@ -1,8 +1,6 @@
-/* ============================================================
-   personas.css - Tablas mejoradas + Badges + Export buttons
-   ============================================================ */
+/* personas.css - Tablas mejoradas + Badges + Export buttons */
 
-/* ── Filtros Bar ──────────────────────────────────────────── */
+/*  Filtros Bar  */
 .filtros-bar {
   display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
   margin-bottom: 16px;
@@ -36,7 +34,7 @@
 }
 .filtro-select option { background: #111827; }
 
-/* ── Header actions ───────────────────────────────────────── */
+/*  Header actions  */
 .section-sub {
   color: var(--text-muted);
   font-size: 0.85rem;

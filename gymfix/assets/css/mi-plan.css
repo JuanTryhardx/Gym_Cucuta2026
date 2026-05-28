@@ -1,8 +1,6 @@
-/* ============================================================
-   mi-plan.css — Vista del cliente
-   ============================================================ */
+/* mi-plan.css — Vista del cliente */
 
-/* ── Hero ────────────────────────────────────────────────── */
+/*  Hero  */
 .mp-hero {
   display: flex; align-items: center; gap: 18px;
   background: linear-gradient(135deg, #0d1f35 0%, #0a0f1a 100%);
@@ -21,13 +19,13 @@
 .mp-hero-meta   { display: flex; flex-wrap: wrap; gap: 16px; font-size: 0.84rem; color: #94a3b8; }
 .mp-hero-meta span span { color: #cbd5e1; }
 
-/* ── Grid principal ──────────────────────────────────────── */
+/*  Grid principal  */
 .mp-grid {
   display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start;
 }
 .mp-col-left, .mp-col-right { display: flex; flex-direction: column; gap: 0; }
 
-/* ── Entrenador card ─────────────────────────────────────── */
+/*  Entrenador card  */
 .entrenador-perfil {
   display: flex; align-items: center; gap: 14px;
   padding-bottom: 16px; margin-bottom: 16px;
@@ -71,7 +69,7 @@
 .sin-entrenador p { font-size: 0.9rem; margin-bottom: 4px; }
 .sin-entrenador small { font-size: 0.78rem; }
 
-/* ── Evolución física ────────────────────────────────────── */
+/*  Evolución física  */
 .evol-grid {
   display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 16px;
 }
@@ -109,7 +107,7 @@
   padding: 28px; font-style: italic;
 }
 
-/* ── Objetivo ────────────────────────────────────────────── */
+/*  Objetivo  */
 .obj-display {
   display: flex; align-items: flex-start; gap: 16px;
   padding: 16px; background: rgba(255,255,255,0.03);
@@ -128,7 +126,7 @@
   border-left: 3px solid rgba(56,189,248,0.3);
 }
 
-/* ── Responsive ──────────────────────────────────────────── */
+/*  Responsive  */
 @media (max-width: 900px) {
   .mp-grid { grid-template-columns: 1fr; }
 }

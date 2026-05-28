@@ -1,8 +1,5 @@
-/* ============================================================
-   eventos.css — Calendario + Responsive
-   ============================================================ */
 
-/* ── Layout ──────────────────────────────────────────────── */
+/*Layout */
 .eventos-layout {
   display: grid;
   grid-template-columns: 1fr 340px;
@@ -10,7 +7,7 @@
   align-items: start;
 }
 
-/* ── Calendario ──────────────────────────────────────────── */
+/* Calendario*/
 .calendario-card { padding: 20px; }
 .cal-nav {
   display: flex; align-items: center; justify-content: space-between;
@@ -65,10 +62,10 @@
 .cal-dot.mantenimiento  { background: #fbbf24; }
 .cal-dot.otro           { background: #f87171; }
 
-/* ── Panel Derecho ───────────────────────────────────────── */
+/*  Panel Derecho */
 .eventos-side { display: flex; flex-direction: column; gap: 16px; }
 
-/* ── Evento item ─────────────────────────────────────────── */
+/*  Evento item  */
 .ev-item {
   display: flex; align-items: flex-start; gap: 10px;
   padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
@@ -91,7 +88,7 @@
 }
 .ev-del-btn:hover { background: rgba(239,68,68,0.12); color: #f87171; }
 
-/* ── Responsive ──────────────────────────────────────────── */
+/* Responsive  */
 @media (max-width: 900px) {
   .eventos-layout { grid-template-columns: 1fr; }
   .eventos-side   { flex-direction: row; flex-wrap: wrap; gap: 14px; }
