@@ -1,21 +1,18 @@
-// ============================================================
-// controllers/informes.js - GESTIÓN DE ESTADÍSTICAS GYM CÚCUTA
-// ============================================================
 import { Auth }         from '../services/auth.js'
 import { buildNavbar, formatMoney, showLoader, hideLoader, isAdmin }  from '../services/ui.js'
 import { PersonaModel } from '../models/PersonaModel.js'
 
-// 1. SEGURIDAD Y NAVBAR
+// SEGURIDAD Y NAVBAR
 Auth.requireAuth();
 if (!isAdmin()) { window.location.href = 'inicio.html'; }
 document.getElementById('navbar-container').innerHTML = buildNavbar('informes.html');
 
-// 2. CONFIGURACIÓN Y CONSTANTES
+// CONFIGURACIÓN Y CONSTANTES
 const PLANES = { 1:'Mensual', 2:'Trimestral', 3:'Semestral', 4:'Anual', 5:'Clase suelta' };
 const COLORS = ['#38bdf8','#0ea5e9','#4ade80','#fbbf24','#c084fc','#f87171','#34d399','#fb923c'];
 let todasPersonas = [];
 
-// 3. CARGA DE DATOS (Usando el Modelo)
+// CARGA DE DATOS (Usando el Modelo)
 async function cargarDatos() {
     showLoader('Cargando informes...')
     try {
@@ -28,7 +25,7 @@ async function cargarDatos() {
     }
 }
 
-// 4. LÓGICA DE FILTRADO
+// LoGICA DE FILTRADO
 function getPersonasFiltradas() {
     const periodo = document.getElementById('periodoSelect')?.value || 'todo';
     if (periodo === 'todo') return todasPersonas;
@@ -40,7 +37,7 @@ function getPersonasFiltradas() {
     return todasPersonas.filter(p => p.fecha_registro && new Date(p.fecha_registro) >= desde);
 }
 
-// 5. FUNCIONES DE DIBUJO (Canvas)
+// FUNCIONES DE DIBUJO (Canvas)
 function drawDonut(canvasId, data, labels, colors) {
     const canvas = document.getElementById(canvasId); 
     if (!canvas) return;
@@ -123,7 +120,7 @@ function drawBar(canvasId, labels, data, color) {
     });
 }
 
-// 6. RENDERIZADO GLOBAL
+// RENDERIZADO GLOBAL
 window.renderAll = function () {
     const personas = getPersonasFiltradas();
     const todas = todasPersonas;

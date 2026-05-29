@@ -1,6 +1,3 @@
-// ============================================================
-// models/EventoModel.js
-// ============================================================
 import { supabase } from '../services/supabase.js'
 
 export const EventoModel = {

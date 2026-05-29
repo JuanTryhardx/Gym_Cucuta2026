@@ -1,7 +1,3 @@
-// ============================================================
-// models/SolicitudModel.js
-// CRUD sobre "solicitudes_entrenador".
-// ============================================================
 import { supabase } from '../services/supabase.js'
 
 export const SolicitudModel = {

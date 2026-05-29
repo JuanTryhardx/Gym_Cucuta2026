@@ -1,8 +1,3 @@
-// ============================================================
-// MisClientesController.js — Vista exclusiva para Entrenadores
-// Muestra sus clientes asignados, fichas de salud y control
-// de objetivos
-// ============================================================
 import { Auth }         from '../services/auth.js'
 import { buildNavbar, showLoader, hideLoader, swalConfirm,
          swalSuccess, swalError, formatDate, isEntrenador, isAdmin } from '../services/ui.js'
@@ -249,5 +244,6 @@ export const MisClientesController = {
   _entrenadorNombre: '',
   _entrenadorId: null
 }
+
 
 MisClientesController.init()

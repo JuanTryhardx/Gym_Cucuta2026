@@ -14,7 +14,6 @@
       --border-soft: rgba(255, 255, 255, 0.08);
     }
     
-    /* Forzamos a que solo el documento global maneje el scroll vertical */
     html, body {
         height: auto;
         min-height: 100%;
@@ -25,7 +24,6 @@
         overflow-x: hidden;
     }
     
-    /* El wrapper no debe aislar el scroll ni generar contenedores dobles */
     .registro-wrapper {
         padding: 40px 15px;
         display: flex;
@@ -47,7 +45,6 @@
         max-height: none !important;
     }
     
-    /* Eliminamos el scroll interno de este div que duplicaba la barra */
     .form-scroll {
         overflow: visible !important; 
         height: auto !important;

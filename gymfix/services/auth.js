@@ -1,6 +1,4 @@
-
 // donde manejamos la sesión: login, logout, verificación de auth.
-
 import { supabase } from './supabase.js'
 
 export const Auth = {

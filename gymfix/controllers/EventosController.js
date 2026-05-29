@@ -1,6 +1,3 @@
-// ============================================================
-// controllers/EventosController.js — Roles coherentes
-// ============================================================
 import { Auth }        from '../services/auth.js'
 import { showToast, buildNavbar, showLoader, hideLoader,
          swalConfirm, swalError, swalSuccess, isCliente, getUserRol } from '../services/ui.js'
@@ -17,7 +14,7 @@ export const EventosController = {
 
     const canEdit = !isCliente()
 
-    // Botón nuevo evento solo para admin/entrenador
+    // Botón evento solo para admin/entrenador
     const btnNuevo = document.getElementById('btnNuevoEvento')
     if (btnNuevo) btnNuevo.style.display = canEdit ? 'inline-flex' : 'none'
 

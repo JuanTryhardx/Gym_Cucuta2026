@@ -1,8 +1,4 @@
-/* ============================================================
-   validaciones.css
-   ============================================================ */
-
-/* ── Stats ───────────────────────────────────────────────── */
+/*  Stats  */
 .val-stats {
   display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 24px;
 }
@@ -20,7 +16,7 @@
 .val-stat-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #94a3b8; margin-bottom: 6px; }
 .val-stat-num   { font-size: 2rem; font-weight: 800; color: #fff; }
 
-/* ── Badge contador ──────────────────────────────────────── */
+/*  Badge contador  */
 .val-badge {
   display: inline-flex; align-items: center;
   padding: 4px 14px; border-radius: 20px;
@@ -28,7 +24,7 @@
   letter-spacing: 0.3px;
 }
 
-/* ── Tabs filtro ─────────────────────────────────────────── */
+/*  Tabs filtro  */
 .val-tabs {
   display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;
 }
@@ -42,10 +38,10 @@
 .val-tab:hover  { background: rgba(56,189,248,0.08); color: #38bdf8; }
 .val-tab.active { background: rgba(56,189,248,0.14); color: #38bdf8; border-color: rgba(56,189,248,0.35); }
 
-/* ── Cards container ─────────────────────────────────────── */
+/*  Cards container  */
 .cards-container-layout { display: flex; flex-direction: column; gap: 14px; }
 
-/* ── Tarjeta de solicitud ────────────────────────────────── */
+/*  Tarjeta de solicitud  */
 .val-card {
   background: rgba(17,24,39,0.95);
   border: 1px solid rgba(56,189,248,0.1);
@@ -119,14 +115,14 @@
   width: 100%; padding: 4px 0;
 }
 
-/* ── Detalle modal ───────────────────────────────────────── */
+/*  Detalle modal  */
 .detalle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
 .detalle-item { display: flex; flex-direction: column; gap: 3px; }
 .detalle-item.full-width { grid-column: 1 / -1; }
 .detalle-item label { font-size: 0.72rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; }
 .detalle-item span  { font-size: 0.9rem; color: #fff; font-weight: 600; }
 
-/* ── Empty state ─────────────────────────────────────────── */
+/*  Empty state  */
 .val-empty {
   text-align: center; padding: 56px 20px;
   color: #6b7280; background: rgba(255,255,255,0.02);
@@ -135,7 +131,7 @@
 }
 .val-empty p { font-size: 0.92rem; }
 
-/* ── Responsive ──────────────────────────────────────────── */
+/*  Responsive  */
 @media (max-width: 700px) {
   .val-stats    { grid-template-columns: repeat(3,1fr); gap: 10px; }
   .val-stat-num { font-size: 1.5rem; }

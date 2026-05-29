@@ -1,6 +1,3 @@
-// ============================================================
-// models/NoticiaModel.js
-// ============================================================
 import { supabase } from '../services/supabase.js'
 
 export const NoticiaModel = {

@@ -1,6 +1,3 @@
-// ============================================================
-// models/TicketModel.js
-// ============================================================
 import { supabase } from '../services/supabase.js'
 
 export const TicketModel = {

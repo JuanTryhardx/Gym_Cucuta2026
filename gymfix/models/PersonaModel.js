@@ -1,15 +1,8 @@
-// ============================================================
-// models/PersonaModel.js
-// CRUD sobre la tabla "personas" en Supabase.
-// Estructura optimizada para Alto Rendimiento - Gym Cúcuta
-// ============================================================
 import { supabase } from '../services/supabase.js'
 
 export const PersonaModel = {
 
-    /**
-     * Obtiene todos los miembros con todos sus campos
-     */
+    /*Obtiene todos los miembros con todos sus campos*/
     async getAll() {
         const { data, error } = await supabase
             .from('personas')
@@ -23,9 +16,7 @@ export const PersonaModel = {
         return data || [];
     },
 
-    /**
-     * Obtiene un miembro específico por ID
-     */
+    /*Obtiene un miembro específico por ID */
     async getById(id) {
         const { data, error } = await supabase
             .from('personas')
@@ -40,9 +31,7 @@ export const PersonaModel = {
         return data;
     },
 
-    /**
-     * Verificaciones rápidas para duplicados (Email/Documento)
-     */
+    /*Verificaciones rápidas para duplicados (Email/Documento)  */
     async getByEmail(email) {
         const { data } = await supabase
             .from('personas')
@@ -59,9 +48,7 @@ export const PersonaModel = {
         return data || [];
     },
 
-    /**
-     * OPTIMIZADO: Obtiene solo los campos necesarios para los gráficos de Informes
-     */
+    /* Obtiene solo los campos necesarios para los gráficos de Informes */
     async getStats() {
         const { data, error } = await supabase
             .from('personas')
@@ -74,9 +61,7 @@ export const PersonaModel = {
         return data || [];
     },
 
-    /**
-     * Obtiene los últimos registros para el dashboard de inicio
-     */
+    /* Obtiene los últimos registros para el dashboard de inicio */
     async getUltimos(limit = 5) {
         const { data, error } = await supabase
             .from('personas')
@@ -91,7 +76,7 @@ export const PersonaModel = {
         return data || [];
     },
 
-    // --- OPERACIONES DE ESCRITURA ---
+    // OPERACIONES DE ESCRITURA
 
     async insert(payload) {
         const { error } = await supabase.from('personas').insert([payload]);

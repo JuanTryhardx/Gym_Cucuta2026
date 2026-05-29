@@ -1,4 +1,3 @@
-/* personas.css - Tablas mejoradas + Badges + Export buttons */
 
 /*  Filtros Bar  */
 .filtros-bar {
@@ -66,7 +65,7 @@
 }
 .btn-excel:hover { background: rgba(34,197,94,0.22); transform: translateY(-1px); }
 
-/* ── Table Card ───────────────────────────────────────────── */
+/*  Table Card  */
 .table-card { padding: 20px; }
 .table-topbar {
   display: flex; justify-content: space-between; align-items: center;
@@ -81,7 +80,7 @@
   border-radius: 20px;
 }
 
-/* ── Tabla ────────────────────────────────────────────────── */
+/*  Tabla  */
 .table-wrapper {
   overflow-x: auto;
   border-radius: 12px;
@@ -121,7 +120,7 @@ tbody td {
   vertical-align: middle;
 }
 
-/* ── Celda Miembro ────────────────────────────────────────── */
+/*  Celda Miembro  */
 .member-cell { display: flex; gap: 10px; align-items: center; }
 .mem-avatar {
   width: 38px; height: 38px; border-radius: 50%;
@@ -134,7 +133,7 @@ tbody td {
 .mem-info .mem-name { font-weight: 700; font-size: 0.9rem; }
 .mem-info .mem-email { font-size: 0.74rem; color: var(--text-muted); margin-top: 1px; }
 
-/* ── Chips ────────────────────────────────────────────────── */
+/*  Chips  */
 .doc-chip {
   background: rgba(255,255,255,0.05);
   border: 1px solid var(--border);
@@ -157,7 +156,7 @@ tbody td {
 .td-money { color: #4ade80; font-weight: 700; font-size: 0.88rem; }
 .td-date  { color: var(--text-muted); font-size: 0.82rem; white-space: nowrap; }
 
-/* ── Status Badges ────────────────────────────────────────── */
+/*  Status Badges  */
 .status-badge {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 4px 12px; border-radius: 20px;
@@ -168,7 +167,7 @@ tbody td {
 .badge-inactivo  { background: rgba(239,68,68,0.12);  border: 1px solid rgba(239,68,68,0.3);   color: #f87171; }
 .badge-pendiente { background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.3);  color: #fbbf24; }
 
-/* ── Action Buttons ───────────────────────────────────────── */
+/*  Action Buttons  */
 .td-actions { display: flex; gap: 6px; flex-wrap: nowrap; }
 .btn-edit {
   background: rgba(56,189,248,0.1);
@@ -195,7 +194,7 @@ tbody td {
 }
 .btn-del:hover { background: rgba(248,113,113,0.2); transform: translateY(-1px); }
 
-/* ── Empty State ──────────────────────────────────────────── */
+/*  Empty State  */
 .empty-msg {
   text-align: center; padding: 60px 20px;
   color: var(--text-muted);
@@ -204,7 +203,7 @@ tbody td {
 .empty-msg p  { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
 .empty-msg small { font-size: 0.82rem; }
 
-/* ── Modal ────────────────────────────────────────────────── */
+/*  Modal  */
 .modal-overlay {
   position: fixed; inset: 0;
   background: rgba(0,0,0,0.75);
@@ -269,13 +268,13 @@ tbody td {
   padding-top: 16px; border-top: 1px solid var(--border);
 }
 
-/* ── SweetAlert personalizado ─────────────────────────────── */
+/* SweetAlert */
 .swal-gym.swal2-popup {
   border: 1px solid rgba(56,189,248,0.25) !important;
   border-radius: 16px !important;
 }
 
-/* ── Responsive ───────────────────────────────────────────── */
+/*  Responsive  */
 @media (max-width: 768px) {
   .header-actions { width: 100%; justify-content: flex-start; }
   .btn-export { font-size: 0.78rem; padding: 8px 12px; }

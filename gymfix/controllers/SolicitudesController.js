@@ -1,12 +1,8 @@
-// ===== SOLICITUDES.JS =====
 // Panel de administración de solicitudes de entrenadores.
-// Se carga desde inicio.html como módulo adicional.
-// NO modifica ningún código existente de inicio.js.
-
 import { supabase } from '../services/supabase.js'
 import { showToast } from '../services/ui.js'
 
-// ── Renderizar bloque de solicitudes en el dashboard ──────────────────────
+//  Renderizar bloque de solicitudes en el dashboard 
 export async function renderSolicitudesPanel () {
   const container = document.getElementById('solicitudesPanel')
   if (!container) return
@@ -55,7 +51,7 @@ export async function renderSolicitudesPanel () {
   `).join('')
 }
 
-// ── Aprobar: crea entrenador + marca solicitud aprobada ───────────────────
+//  Aprobar: crea entrenador + marca solicitud aprobada 
 window.aprobarEntrenador = async function (id) {
   if (!confirm('¿Aprobar esta solicitud y crear el entrenador?')) return
 
@@ -70,7 +66,7 @@ window.aprobarEntrenador = async function (id) {
     return
   }
 
-  // 1. Insertar en tabla entrenadores (estructura existente)
+  // Insertar en tabla entrenadores
   const { error: errInsert } = await supabase
     .from('entrenadores')
     .insert([{
@@ -86,7 +82,7 @@ window.aprobarEntrenador = async function (id) {
     return
   }
 
-  // 2. Actualizar estado de la solicitud
+  // Actualizar estado de la solicitud
   const { error: errUpdate } = await supabase
     .from('solicitudes_entrenador')
     .update({ estado: 'aprobado', fecha_resolucion: new Date().toISOString() })
@@ -100,7 +96,7 @@ window.aprobarEntrenador = async function (id) {
   renderSolicitudesPanel()
 }
 
-// ── Rechazar solicitud ────────────────────────────────────────────────────
+// Rechazar solicitud 
 window.rechazarSolicitud = async function (id) {
   if (!confirm('¿Rechazar esta solicitud?')) return
 
@@ -118,5 +114,5 @@ window.rechazarSolicitud = async function (id) {
   renderSolicitudesPanel()
 }
 
-// ── Auto-init cuando el módulo se carga ────────────────────────────────────
+// Auto-init cuando el módulo se carga 
 renderSolicitudesPanel()

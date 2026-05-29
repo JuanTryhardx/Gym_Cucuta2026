@@ -1,6 +1,3 @@
-// ============================================================
-// controllers/AuthController.js - VERSIÓN OPTIMIZADA GYM CÚCUTA
-// ============================================================
 import { Auth }         from '../services/auth.js'
 import { showToast }    from '../services/ui.js'
 import { PersonaModel } from '../models/PersonaModel.js'
@@ -8,7 +5,7 @@ import { SolicitudModel } from '../models/SolicitudModel.js'
 
 export const AuthController = {
 
-  // ── LOGIN ────────────────────────────────────────────────
+  // LOGIN 
   initLogin() {
     const form = document.getElementById('loginForm')
     if (!form) return
@@ -45,9 +42,8 @@ export const AuthController = {
     })
   },
 
-  // ── REGISTRO ─────────────────────────────────────────────
+  //  REGISTRO 
   async initRegistro() {
-    // Ya no cargamos planes aquí porque los quitamos del HTML
     window.setRol = (rol) => this._setRol(rol)
     window.registrarUsuario = () => this._registrar()
     window.togglePassReg = (id, btn) => {
@@ -73,7 +69,7 @@ export const AuthController = {
 
     if (rol === 'entrenador') {
       if (secEntrenador) secEntrenador.style.display = 'block';
-      if (info) info.className = 'rol-info'; // Mantiene las reglas estructurales del CSS
+      if (info) info.className = 'rol-info'; 
       if (infoText) infoText.textContent = 'Tu solicitud quedará pendiente hasta que el administrador la apruebe.';
       if (btnReg) btnReg.textContent = 'ENVIAR SOLICITUD';
     } else {
@@ -90,14 +86,12 @@ export const AuthController = {
     if(txt) txt.textContent = msg
     if(box) {
         box.style.display = 'flex'
-        // Auto scroll al error para que el usuario lo vea de inmediato
         box.scrollIntoView({ behavior: 'smooth', block: 'center' })
         setTimeout(() => { box.style.display = 'none' }, 5000)
     }
   },
 
   _mostrarExito(icon, titulo, mensaje) {
-    // FIX: Se remueve la referencia a 'exitoIcon' ya que fue retirado del HTML unificado en azul
     const titleEl = document.getElementById('exitoTitulo')
     const msgEl   = document.getElementById('exitoMensaje')
     const modal   = document.getElementById('modalExito')
@@ -120,13 +114,12 @@ export const AuthController = {
     if (/[0-9]/.test(pass)) score++
     if (/[^A-Za-z0-9]/.test(pass)) score++
     
-    // UNIFICACIÓN EN AZUL: Reemplazamos los tonos verdes y naranjas por intensidades azuladas corporativas
     const levels = [
-      { color: '#60a5fa', text: 'Muy débil',  width: '20%' },  // Azul claro tenue
-      { color: '#3b82f6', text: 'Débil',      width: '40%' },  // Azul medio
-      { color: '#2563eb', text: 'Regular',    width: '60%' },  // Azul intermedio
-      { color: '#1d4ed8', text: 'Fuerte',     width: '80%' },  // Azul oscuro
-      { color: '#1e40af', text: 'Muy fuerte', width: '100%' }, // Azul profundo
+      { color: '#60a5fa', text: 'Muy débil',  width: '20%' }, 
+      { color: '#3b82f6', text: 'Débil',      width: '40%' },
+      { color: '#2563eb', text: 'Regular',    width: '60%' }, 
+      { color: '#1d4ed8', text: 'Fuerte',     width: '80%' }, 
+      { color: '#1e40af', text: 'Muy fuerte', width: '100%' }, 
     ]
     
     const lvl = levels[Math.max(0, score - 1)] || levels[0]
@@ -162,7 +155,7 @@ export const AuthController = {
       btn.disabled = true
       btn.textContent = 'PROCESANDO...'
 
-      // Consumo de tus modelos para validación de datos existentes
+      // Consumo de modelos para validación de datos existentes
       const dupDoc   = await PersonaModel.getByDocumento(documento)
       if (dupDoc && dupDoc.length > 0) { throw new Error('Ya existe una cuenta con ese documento') }
       
@@ -181,7 +174,6 @@ export const AuthController = {
 
 
       if (rol === 'cliente') {
-        // Inserción limpia a tu tabla de Miembros/Personas en Supabase
         await PersonaModel.insert({
           ...base, 
           plan_id: null, 
@@ -191,14 +183,14 @@ export const AuthController = {
         })
         this._mostrarExito('', '¡Registro exitoso!', `Bienvenido/a ${nombre}. Tu cuenta ha sido activada, ya puedes iniciar sesión.`)
         } else {
-        // Registro como solicitud de Entrenador
+        // Registro para la solicitud de Entrenador
         const especialidad = document.getElementById('reg_especialidad').value.trim()
         if (!especialidad) { throw new Error('La especialidad es obligatoria para entrenadores') }
         
         await SolicitudModel.insert({
           ...base,
           especialidad,
-          estado: 'Pendiente' // CAMBIO: Asegúrate de poner la 'P' mayúscula exacta aquí
+          estado: 'Pendiente'
         })
         this._mostrarExito('', 'Solicitud enviada', `Hola ${nombre}, tu perfil de entrenador será revisado por el administrador.`)
       }

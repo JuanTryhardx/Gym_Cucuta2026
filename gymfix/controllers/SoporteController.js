@@ -1,6 +1,3 @@
-// ============================================================
-// controllers/SoporteController.js
-// ============================================================
 import { Auth }        from '../services/auth.js'
 import { showToast, buildNavbar, formatDate, showLoader, hideLoader, swalSuccess, swalError } from '../services/ui.js'
 import { TicketModel } from '../models/TicketModel.js'

@@ -1,7 +1,3 @@
-// ============================================================
-// MiPlanController.js — Vista exclusiva para Clientes
-// Muestra: perfil entrenador + evolución física + objetivo
-// ============================================================
 import { Auth }         from '../services/auth.js'
 import { buildNavbar, showLoader, hideLoader, swalError, isCliente } from '../services/ui.js'
 import { PersonaModel } from '../models/PersonaModel.js'
@@ -10,7 +6,7 @@ export const MiPlanController = {
 
   async init() {
     Auth.requireAuth()
-    // Solo clientes acceden a "Mi Plan"
+    // Solo clientes acceden a Mi Plan
     if (!isCliente()) { window.location.href = 'inicio.html'; return }
 
     document.getElementById('navbar-container').innerHTML = buildNavbar('mi-plan.html')

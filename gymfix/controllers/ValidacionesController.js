@@ -1,6 +1,3 @@
-// ============================================================
-// ValidacionesController.js — Solo Admin
-// ============================================================
 import { Auth }           from '../services/auth.js'
 import { buildNavbar, showLoader, hideLoader, swalConfirm, swalSuccess, swalError, isAdmin } from '../services/ui.js'
 import { SolicitudModel } from '../models/SolicitudModel.js'

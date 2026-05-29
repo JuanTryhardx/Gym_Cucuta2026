@@ -1,6 +1,3 @@
-// ============================================================
-// RegistrarController.js — Admin y Entrenador
-// ============================================================
 import { Auth }         from '../services/auth.js'
 import { buildNavbar, formatMoney, formatDate, showLoader, hideLoader,
          swalSuccess, swalError, isCliente } from '../services/ui.js'

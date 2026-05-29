@@ -1,9 +1,3 @@
-// ============================================================
-// InicioController.js — Roles: Admin ve y edita todo
-//   Admin    → stats + noticias + videos + beneficios (edita todo)
-//   Entrenador → stats parciales + noticias + videos + beneficios (solo lee)
-//   Cliente  → noticias + videos + beneficios (solo lee)
-// ============================================================
 import { Auth } from '../services/auth.js'
 import { buildNavbar, formatMoney, formatDate, showLoader, hideLoader,
          swalConfirm, swalError, swalSuccess, isAdmin, isEntrenador, isCliente, getUserRol } from '../services/ui.js'
@@ -18,11 +12,11 @@ export const InicioController = {
     const rol = getUserRol()
     document.getElementById('navbar-container').innerHTML = buildNavbar('inicio.html')
 
-    // ── Permisos por rol ────────────────────────────────────
-    const canEdit    = isAdmin()                  // Solo admin edita
-    const canPublish = isAdmin()                  // Solo admin publica/elimina noticias
-    const seeStats   = !isCliente()               // Admin y entrenador ven stats
-    const seeIngresos = isAdmin()                 // Solo admin ve $$ ingresos
+    // Permisos por rol 
+    const canEdit    = isAdmin()
+    const canPublish = isAdmin() 
+    const seeStats   = !isCliente()
+    const seeIngresos = isAdmin()
 
     // Botón publicar noticias
     const btnPublicar = document.getElementById('btnPublicar')
@@ -57,7 +51,7 @@ export const InicioController = {
     hideLoader()
   },
 
-  // ── Acciones rápidas por rol ──────────────────────────────
+  // Acciones rápidas por rol 
   _renderAccionesRapidas(rol) {
     const container = document.getElementById('quickActionsContainer')
     if (!container) return
@@ -89,7 +83,7 @@ export const InicioController = {
       </a>`).join('')
   },
 
-  // ── Stats (admin ve ingresos, entrenador no) ──────────────
+  // Stats (admin ve ingresos, entrenador no)
   async renderStats(seeIngresos) {
     const el = document.getElementById('statsGrid')
     if (!el) return
@@ -128,7 +122,7 @@ export const InicioController = {
     } catch(e) { console.error(e) }
   },
 
-  // ── Noticias ────────────
+  // Noticias
   async renderNoticias() {
     const el = document.getElementById('noticiasLista')
     if (!el) return
@@ -183,7 +177,7 @@ export const InicioController = {
     } catch(e) { console.error(e) }
   },
 
-  // ── Publicar / Eliminar noticias (solo admin) ─────────────
+  //  Publicar / Eliminar noticias (solo admin)
   async publicarNoticia() {
     const titulo    = document.getElementById('noticiaTitulo')?.value.trim()
     const contenido = document.getElementById('noticiaContenido')?.value.trim()
@@ -209,14 +203,14 @@ export const InicioController = {
     finally { hideLoader() }
   },
 
-  // ── Sección motivacional — visible para TODOS ────────────
+  // Sección motivacional — visible para TODOS 
   // Admin ve botones de edición, el resto solo ve el contenido
   _renderSeccionMotivacional(canEdit) {
     const container = document.getElementById('clienteMotivacional')
     if (!container) return
     container.style.display = 'block'
 
-    // Videos y beneficios fijos en código — editar aquí directamente
+    // Videos y beneficios fijos en código — editar aquí directamente!!!!*******************************************
     this._videos = [
       { tag: 'Fuerza',    url: 'https://www.youtube.com/embed/IODxDxX7oi4', titulo: 'Rutina Completa de Fuerza',     desc: 'Entrena todos los grupos musculares con este circuito profesional.' },
       { tag: 'Cardio',    url: 'https://www.youtube.com/embed/UItWltVZZmE', titulo: 'HIIT de Alto Impacto',          desc: 'Quema calorías en 20 minutos con este entrenamiento de intervalos.' },

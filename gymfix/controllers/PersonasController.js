@@ -1,7 +1,3 @@
-// ============================================================
-// controllers/PersonasController.js
-// Exportar PDF/Excel + SweetAlert + Loader + Tablas mejoradas
-// ============================================================
 import { Auth }         from '../services/auth.js'
 import { showToast, showLoader, hideLoader, swalConfirm, swalSuccess, swalError, buildNavbar, formatMoney, formatDate } from '../services/ui.js'
 import { PersonaModel } from '../models/PersonaModel.js'
@@ -182,7 +178,7 @@ export const PersonasController = {
     document.getElementById('editModal').style.display = 'none'
   },
 
-  // ── Exportar PDF ────────────────────────────────────────────
+  // Exportar PDF 
   exportarPDF() {
     if (!this._data || this._data.length === 0) {
       swalError('Sin datos', 'No hay miembros para exportar.')
@@ -227,7 +223,7 @@ export const PersonasController = {
     swalSuccess('PDF exportado', 'El archivo se descargó correctamente.')
   },
 
-  // ── Exportar Excel ──────────────────────────────────────────
+  // Exportar Excel
   exportarExcel() {
     if (!this._data || this._data.length === 0) {
       swalError('Sin datos', 'No hay miembros para exportar.')
