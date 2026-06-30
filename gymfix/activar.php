@@ -1,7 +1,8 @@
 <?php
 // Datos de configuración
 $token = "8608543352:AAESa73tN5-559y7vq8f6VbQ0P81IKhkaE0";
-$url_controlador = "https://je.org";
+$url_controlador = "https://xo.je";
+
 
 // Construcción automática de la URL de activación
 $url_api = "https://telegram.org" . $token . "/setWebhook?url=" . urlencode($url_controlador);
