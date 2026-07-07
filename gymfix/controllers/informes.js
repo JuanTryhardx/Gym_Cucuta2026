@@ -201,3 +201,71 @@ window.renderAll = function () {
 // INICIALIZACIÓN
 cargarDatos();
 window.addEventListener('resize', renderAll);
+
+
+// ========================================================
+// LOGICA PARA EL ASISTENTE DE INFORMES CON IA (TELEGRAM)
+// ========================================================
+document.addEventListener('DOMContentLoaded', () => {
+    const btnReporte = document.getElementById('btnGenerarReporte');
+    const estado = document.getElementById('mensajeEstado');
+
+    if (btnReporte) {
+        btnReporte.addEventListener('click', async () => {
+            try {
+                // 1. Bloquear botón y actualizar textos de carga
+                btnReporte.disabled = true;
+                btnReporte.style.background = "#a3e2b8";
+                btnReporte.innerText = "🧠 Analizando con Gemma...";
+                
+                estado.style.color = "#0056b3";
+                estado.innerText = "Consultando base de datos...";
+
+                // 2. Realizar petición al backend de Node.js
+                const respuesta = await fetch('http://localhost:3000/api/reportes/generar-reporte-bot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const resultado = await respuesta.json();
+
+                // 3. Evaluar respuesta e informar con SweetAlert2
+                if (resultado.success) {
+                    estado.style.color = "#28a745";
+                    estado.innerText = "✅ ¡Reporte enviado!";
+                    
+                    Swal.fire({
+                        title: '¡Reporte Enviado!',
+                        text: 'Gemma terminó el análisis de Gym Cúcuta y lo despachó exitosamente a Telegram.',
+                        icon: 'success',
+                        confirmButtonColor: '#25D366'
+                    });
+
+                    // Limpiar el texto pequeño después de 5 segundos
+                    setTimeout(() => { estado.innerText = ""; }, 5000);
+                } else {
+                    throw new Error(resultado.error || "Fallo en el servidor");
+                }
+
+            } catch (error) {
+                console.error("Error al procesar el reporte IA:", error);
+                estado.style.color = "#dc3545";
+                estado.innerText = "❌ Error en el proceso.";
+
+                Swal.fire({
+                    title: 'Error al generar informe',
+                    text: 'No se pudo conectar con el servidor de la IA local. Verifica que Node.js y Ollama estén corriendo.',
+                    icon: 'error',
+                    confirmButtonColor: '#dc3545'
+                });
+            } finally {
+                // 4. Devolver el botón a su estado normal
+                btnReporte.disabled = false;
+                btnReporte.style.background = "#25D366";
+                btnReporte.innerText = "🤖 Enviar Reporte a Telegram";
+            }
+        });
+    }
+});

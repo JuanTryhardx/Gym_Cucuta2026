@@ -1,0 +1,8 @@
+# Variables de entorno (¡Seguridad!)
+.env
+
+# Dependencias de Node (No se suben porque pesan mucho y se reconstruyen con npm install)
+node_modules/
+
+# Archivos del sistema u otros temporales
+.DS_Store

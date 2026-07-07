@@ -4,7 +4,6 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Informes – App Gym Cúcuta</title>
-  <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="../assets/css/main.css"/>
   <link rel="stylesheet" href="../assets/css/informes.css"/>
@@ -14,7 +13,6 @@
 
   <div class="page-content">
 
-    <!-- HEADER -->
     <div class="section-header">
       <h2> Informes <span>y Estadísticas</span></h2>
       <select id="periodoSelect" class="filtro-select" onchange="renderAll()">
@@ -24,15 +22,29 @@
       </select>
     </div>
 
-    <!-- KPI CARDS -->
+    <div class="card" style="margin-bottom: 24px; padding: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+      <div style="flex: 1; min-width: 280px;">
+        <h3 style="margin: 0 0 4px 0; color: var(--text-color, #333); font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+          🤖 Asistente Ejecutivo Inteligente
+        </h3>
+        <p style="margin: 0; color: #666; font-size: 0.85rem;">
+          Genera un análisis estratégico de las métricas actuales usando Gemma (IA) y envíalo automáticamente al canal de Telegram.
+        </p>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px;">
+        <button id="btnGenerarReporte" style="background: #25D366; color: white; border: none; padding: 10px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: background 0.3s ease; font-size: 0.9rem;">
+          🤖 Enviar Reporte a Telegram
+        </button>
+        <span id="mensajeEstado" style="font-size: 0.8rem; font-weight: 500;"></span>
+      </div>
+    </div>
+
     <div class="stats-grid" id="kpiGrid">
         <p style="color:var(--text-muted); padding:20px;">Cargando estadísticas...</p>
     </div>
 
-    <!-- GRÁFICAS -->
     <div class="charts-grid">
 
-      <!-- Estado de miembros -->
       <div class="card">
         <div class="card-title">Estado de miembros</div>
         <div class="chart-wrap">
@@ -41,7 +53,6 @@
         <div class="chart-legend" id="legendEstado">Cargando datos...</div>
       </div>
 
-      <!-- Distribución por plan -->
       <div class="card">
         <div class="card-title">Distribución por plan</div>
         <div class="chart-wrap">
@@ -50,7 +61,6 @@
         <div class="chart-legend" id="legendPlan">Cargando datos...</div>
       </div>
 
-      <!-- Barra de crecimiento -->
       <div class="card chart-wide">
         <div class="card-title">Nuevos registros últimos 6 meses</div>
         <div class="chart-wrap-wide">
@@ -58,7 +68,6 @@
         </div>
       </div>
 
-      <!-- Donut objetivos -->
       <div class="card">
         <div class="card-title">Objetivos de miembros</div>
         <div class="chart-wrap">
@@ -67,7 +76,6 @@
         <div class="chart-legend" id="legendObjetivos">Cargando datos...</div>
       </div>
 
-      <!--Tabla ingresos -->
       <div class="card">
         <div class="card-title">Ingresos por plan</div>
         <div class="table-wrapper" style="margin-top:8px">
