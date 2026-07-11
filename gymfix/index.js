@@ -21,7 +21,7 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY
 // ==========================================
 app.post('/api/reportes/generar-reporte-bot', async (req, res) => {
     try {
-        console.log("🤖 Iniciando recopilación de datos para el reporte...");
+        console.log("Iniciando recopilación de datos para el reporte...");
 
         // 1. OBTENER FECHA DE INICIO DE ESTE MES
         const inicioMes = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
