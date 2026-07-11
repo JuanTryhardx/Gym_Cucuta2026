@@ -90,39 +90,46 @@
           </div>
         </div>
 
-        <!-- CONTACTO -->
+        <!-- CONTACTO DIRECTO -->
         <div class="card" style="margin-top:16px">
           <div class="card-title">Contacto Directo</div>
           <div class="contacto-item">
-            
             <div><div class="contacto-label">Email Soporte</div><div class="contacto-val">jcro278@gmail.com</div></div>
           </div>
           <div class="contacto-item">
-            
-            <div><div class="contacto-label">WhatsApp</div><div class="contacto-val">+57 311 204 6181</div></div>
+            <div>
+              <div class="contacto-label">WhatsApp</div>
+              <div class="contacto-val">
+                <a 
+                  href="https://wa.me/573112046181?text=Hola,%20necesito%20soporte%20con%20la%20plataforma%20Gym%20C%C3%BAcuta" 
+                  target="_blank" 
+                  style="color: inherit; text-decoration: none;"
+                >
+                  +57 311 204 6181
+                </a>
+              </div>
+            </div>
           </div>
           <div class="contacto-item">
-            
             <div><div class="contacto-label">Horario de atención</div><div class="contacto-val">Lun-Sáb · 6:00 AM – 8:00 PM</div></div>
           </div>
           <div class="contacto-item">
-            
             <div><div class="contacto-label">Dirección</div><div class="contacto-val">Cúcuta, Norte de Santander</div></div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
+  <!-- Inicialización de EmailJS -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script type="text/javascript">
     (function(){
-      // ¡REEMPLAZA ESTO! Pon aquí tu Public Key (búscala abajo a la izquierda en EmailJS -> Account)
       emailjs.init("9Q9xnyBUjjr-t7Q7T"); 
     })();
   </script>
 
+  <!-- Controlador de la vista -->
   <script type="module" src="../controllers/soporte.js"></script>
-  
 </body>
 </html>
