@@ -71,6 +71,39 @@ export const PersonasController = {
     return planes[plan_id] || plan_id || '-'
   },
 
+  // === NUEVA FUNCIÓN AGREGADA ===
+  _calcularDiasRestantes(fechaInicioStr, planId) {
+
+    // === NUEVA VALIDACIÓN: Si no hay fecha o no hay plan válido, no calcula ===
+    if (!fechaInicioStr || !planId || planId === '-') {
+      return '<span class="text-muted">-</span>';
+    }
+
+    // Mapeo de días según el tipo de plan
+    const duracionPlanes = { 1: 30, 2: 90, 3: 180, 4: 365 };
+    const diasDelPlan = duracionPlanes[planId] || 30; // 30 por defecto
+
+    const fechaInicio = new Date(fechaInicioStr);
+    const fechaVencimiento = new Date(fechaInicio);
+    
+    // Le sumamos los días correspondientes del plan
+    fechaVencimiento.setDate(fechaInicio.getDate() + diasDelPlan);
+    
+    const hoy = new Date();
+    
+    // Calcular diferencia en días
+    const diferenciaTiempo = fechaVencimiento - hoy;
+    const diasRestantes = Math.ceil(diferenciaTiempo / (1000 * 60 * 60 * 24));
+    
+    if (diasRestantes > 5) {
+      return `<span style="color: #38bdf8; font-weight: bold;">${diasRestantes} días</span>`;
+    } else if (diasRestantes > 0 && diasRestantes <= 5) {
+      return `<span style="color: #f59e0b; font-weight: bold;">${diasRestantes} días (Por vencer)</span>`;
+    } else {
+      return `<span style="color: #ef4444; font-weight: bold;">Vencido</span>`;
+    }
+  },
+
   _renderTabla(data) {
     const tbody    = document.getElementById('tablaPersonas')
     const emptyMsg = document.getElementById('emptyMsg')
@@ -102,6 +135,9 @@ export const PersonasController = {
         <td><span class="plan-chip">${this._planLabel(p.plan_id)}</span></td>
         <td class="td-money">${formatMoney(p.mensualidad || 0)}</td>
         <td class="td-date">${formatDate(p.fecha_inicio)}</td>
+        
+        <td>${this._calcularDiasRestantes(p.fecha_inicio, p.plan_id)}</td>
+        
         <td>${this._estadoBadge(p.estado)}</td>
         <td class="td-actions">
           <button class="btn-edit" onclick="openEdit(${p.id})" title="Editar">Editar</button>

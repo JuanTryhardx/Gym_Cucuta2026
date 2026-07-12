@@ -178,7 +178,7 @@ export const AuthController = {
           ...base, 
           plan_id: null, 
           objetivo: 'General', 
-          estado: 'Activo',
+          estado: 'Inactivo',
           fecha_inicio: new Date().toISOString().split('T')[0]
         })
         this._mostrarExito('', '¡Registro exitoso!', `Bienvenido/a ${nombre}. Tu cuenta ha sido activada, ya puedes iniciar sesión.`)

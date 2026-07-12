@@ -52,7 +52,7 @@ export const RegistrarController = {
         fecha_inicio:         document.getElementById('r_inicio')?.value || new Date().toISOString().split('T')[0],
         entrenador:           document.getElementById('r_entrenador')?.value.trim() || '',
         objetivo:             document.getElementById('r_objetivo')?.value || 'General',
-        estado:               document.getElementById('r_estado')?.value || 'Activo',
+        estado:               document.getElementById('r_estado')?.value || 'Inactivo',
         peso:                 parseFloat(document.getElementById('r_peso')?.value) || null,
         altura:               parseFloat(document.getElementById('r_altura')?.value) || null,
         contacto_emergencia:  document.getElementById('r_emergencia')?.value.trim() || '',
